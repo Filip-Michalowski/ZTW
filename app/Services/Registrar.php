@@ -53,10 +53,10 @@ class Registrar implements RegistrarContract {
 
 			$porty = Port::all();
 			
-		DB::table('gracz_porty')->insert()
+		/*DB::table('gracz_porty')->insert()
 			['gracz_id' => $user->id,
 			'port_id' => $port->id])
-		;
+		;*/
 			return $user;
 	}
 
