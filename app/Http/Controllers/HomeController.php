@@ -4,6 +4,9 @@ use App\User;
 use App\Port;
 use Auth;
 use Cookie;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use \Cache;
 class HomeController extends Controller {
 
 	/*
@@ -47,20 +50,16 @@ class HomeController extends Controller {
 
 	public function get_id_port($id)
 	{
-		//$porty = Port::all();
-		//$id_akt = $porty->where('nazwa','=',$nazwa) ->id;
-		//$id_akt=1;
-		// $id = Auth::user()->id;
-		// $gracz_porty = Gracz_Porty::leftjoin('porty',function($join){
-		// 	$join->on('gracz_porty.port_id','=','porty.id');})->where('gracz_id','=',$id)->get();
-		// // $_SESSION['aktualny'] = $id_akt;
+		//Cache::forever('id_akt',$id);
+
 		Cookie::make('id_akt',$id);
-	$id = Auth::user()->id;
-		$gracz_porty = Gracz_Porty::leftjoin('porty',function($join){
-			$join->on('gracz_porty.port_id','=','porty.id');})->where('gracz_id','=',$id)
-		->get();
-		//$_SESSION['porty'] = $gracz_porty;
-		return view('przeglad.index',compact ('gracz_porty'));
+	// $id = Auth::user()->id;
+	// 	$gracz_porty = Gracz_Porty::leftjoin('porty',function($join){
+	// 		$join->on('gracz_porty.port_id','=','porty.id');})->where('gracz_id','=',$id)
+	// 	->get();
+	// 	//$_SESSION['porty'] = $gracz_porty;
+	// 	//return view('przeglad.index',compact ('gracz_porty'));
+		return Redirect::action('HomeController@index');
 	}
 
 }

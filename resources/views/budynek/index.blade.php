@@ -10,7 +10,7 @@
 			<table>
 				<tr><td></td><td>Nazwa budynku</td><td>Poziom</td><td>Koszt</td><td>Akcja</td></tr>
 				@foreach ($port_budynki as $bud )
-				<tr><td></td><td> {{$bud ->nazwa }}</td><td> {{$bud ->poziom }}</td><td>{{$bud ->koszt }}</td><td><button onclick="update">Update</button></td></tr>
+				<tr><td></td><td> {{$bud ->nazwa }}</td><td> {{$bud ->poziom }}</td><td>{{$bud ->koszt }}</td><td><a href="{{ action('BudynekController@update', [$bud->id]) }}">Update</a></td></tr>
 				@endforeach
 			</table>
 	</div>

@@ -2,6 +2,8 @@
 
 use App\User;
 use Validator;
+use App\Port;
+use \DB;
 use Illuminate\Contracts\Auth\Registrar as RegistrarContract;
 
 class Registrar implements RegistrarContract {
@@ -29,11 +31,33 @@ class Registrar implements RegistrarContract {
 	 */
 	public function create(array $data)
 	{
-		return User::create([
+
+
+		/*return User::create([
 			'name' => $data['name'],
 			'email' => $data['email'],
 			'password' => bcrypt($data['password']),
 		]);
+*/
+
+			
+			$user= User::create([
+			'name' => $data['name'],
+			'email' => $data['email'],
+			'password' => bcrypt($data['password']),
+		]);
+
+		$port =DB::table('porty')->insert(
+				['nazwa'=>'nowa']
+			);
+
+			$porty = Port::all();
+			
+		DB::table('gracz_porty')->insert()
+			['gracz_id' => $user->id,
+			'port_id' => $port->id])
+		;
+			return $user;
 	}
 
 }
