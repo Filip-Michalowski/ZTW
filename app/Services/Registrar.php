@@ -47,16 +47,18 @@ class Registrar implements RegistrarContract {
 			'password' => bcrypt($data['password']),
 		]);
 
-		$port =DB::table('porty')->insert(
-				['nazwa'=>'nowa']
-			);
-
-			$porty = Port::all();
+		 // $port =DB::table('porty')->insert(
+	 	// 	['nazwa'=>'nowa']
+		 // 	);
+			$port =Port::create([
+				'nazwa' => $data['name_port']
+				]
+			) ;
 			
-		/*DB::table('gracz_porty')->insert()
+		DB::table('gracz_porty')->insert(
 			['gracz_id' => $user->id,
 			'port_id' => $port->id])
-		;*/
+		;
 			return $user;
 	}
 

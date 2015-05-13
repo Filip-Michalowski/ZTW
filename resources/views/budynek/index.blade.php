@@ -21,8 +21,6 @@
       <br />
       </div>
       <div class="line"></div>
-      <script type="text/javascript" src="update.js"></script>
-    <!-- End Footer
-    href="{{ action('BudynekController@update', [$bud->id]) }}" -->
+     
    
 @stop

@@ -6,4 +6,5 @@ class Port extends Model {
 
 	protected $table = 'porty';
 	
+	protected $fillable = ['nazwa'];
 }

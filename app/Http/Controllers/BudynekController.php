@@ -8,6 +8,7 @@ use App\Port_Budynki;
 use App\Gracz_Porty;
 use App\HomeController;
 use \Cache;
+use Cookie;
 
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class BudynekController extends Controller {
 	{
 		$budynki = Budynek::all();
 		$porty = Port::all();
-		$ind = unserialize($_COOKIE['id_akt']);
+		$ind = Cache::get('id_akt');
 		$port_budynki = Port_Budynki::leftjoin('budynki',function($join){
 			$join->on('port_budynki.budynek_id','=','budynki.id');})->where('port_id','=', $ind)
 		->get();
@@ -25,8 +26,7 @@ class BudynekController extends Controller {
 	}
 
 	public  function update($id){
-		//$ind = Cache::get('id_akt');
-		$ind = unserialize($_COOKIE['id_akt']);
+		$ind = Cache::get('id_akt');
 		$budpom = Port_Budynki::where('budynek_id', $id)-> where('port_id', $ind)->increment('poziom');
 		return Redirect::action('BudynekController@index');
 	}

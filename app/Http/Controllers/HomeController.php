@@ -50,15 +50,7 @@ class HomeController extends Controller {
 
 	public function get_id_port($id)
 	{
-		//Cache::forever('id_akt',$id);
-
-		Cookie::make('id_akt',$id);
-	// $id = Auth::user()->id;
-	// 	$gracz_porty = Gracz_Porty::leftjoin('porty',function($join){
-	// 		$join->on('gracz_porty.port_id','=','porty.id');})->where('gracz_id','=',$id)
-	// 	->get();
-	// 	//$_SESSION['porty'] = $gracz_porty;
-	// 	//return view('przeglad.index',compact ('gracz_porty'));
+		Cache::forever('id_akt',$id);
 		return Redirect::action('HomeController@index');
 	}
 

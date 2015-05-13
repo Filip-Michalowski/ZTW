@@ -11,9 +11,9 @@ class JednostkaController extends Controller {
 
 	public function index()
 	{
-		$ind = unserialize($_COOKIE['id_akt']);
+		//$ind = unserialize($_COOKIE['id_akt']);
+		$ind = Cache::get('id_akt');
 		$jednostki = Jednostka::all();
-
 		$port_jednostki = Port_Jednostki::leftjoin('jednostki',function($join){
 			$join->on('port_jednostki.jednostka_id','=','jednostki.id');})->where('port_id','=', $ind)
 		->get();
@@ -21,19 +21,8 @@ class JednostkaController extends Controller {
 	}
 
 	public  function werbuj($id){
-		$ind = unserialize($_COOKIE['id_akt']);
-		//$ind = Cache::get('id_akt');
-		return $ind;
+		$ind = Cache::get('id_akt');	
 		$budpom = Port_Jednostki::where('jednostka_id', $id)-> where('port_id', $ind)->increment('ilosc');
-		
-
-		
-		// $ind = unserialize($_COOKIE['id_akt']);
-		// $jednostki = Jednostka::all();
-
-		// $port_jednostki = Port_Jednostki::leftjoin('jednostki',function($join){
-		// 	$join->on('port_jednostki.jednostka_id','=','jednostki.id');})->where('port_id','=', $ind)
-		// ->get();
 		return Redirect::action('JednostkaController@index');
 
 		
