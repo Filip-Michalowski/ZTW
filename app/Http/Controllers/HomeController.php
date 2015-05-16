@@ -41,8 +41,7 @@ class HomeController extends Controller {
 	{
 		//session_start();
 		$id = Auth::user()->id;
-		$gracz_porty = Gracz_Porty::leftjoin('porty',function($join){
-			$join->on('gracz_porty.port_id','=','porty.id');})->where('gracz_id','=',$id)
+		$gracz_porty = Port::where('gracz_id','=',$id)
 		->get();
 		//$_SESSION['porty'] = $gracz_porty;
 		return view('przeglad.index',compact ('gracz_porty'));

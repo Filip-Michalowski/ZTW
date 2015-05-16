@@ -31,34 +31,20 @@ class Registrar implements RegistrarContract {
 	 */
 	public function create(array $data)
 	{
-
-
-		/*return User::create([
-			'name' => $data['name'],
-			'email' => $data['email'],
-			'password' => bcrypt($data['password']),
-		]);
-*/
-
 			
-			$user= User::create([
+		$user = User::create([
 			'name' => $data['name'],
 			'email' => $data['email'],
-			'password' => bcrypt($data['password']),
+			'password' => bcrypt($data['password'])
 		]);
 
 		 // $port =DB::table('porty')->insert(
 	 	// 	['nazwa'=>'nowa']
 		 // 	);
-			$port =Port::create([
-				'nazwa' => $data['name_port']
-				]
-			) ;
-			
-		DB::table('gracz_porty')->insert(
-			['gracz_id' => $user->id,
-			'port_id' => $port->id])
-		;
+		$port = Port::create([
+			'nazwa' => $data['name_port'],
+			'gracz_id' => $user->id
+		]);
 			return $user;
 	}
 

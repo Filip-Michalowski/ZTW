@@ -6,5 +6,5 @@ class Port extends Model {
 
 	protected $table = 'porty';
 	
-	protected $fillable = ['nazwa'];
+	protected $fillable = ['nazwa','gracz_id'];
 }

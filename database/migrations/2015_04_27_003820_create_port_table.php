@@ -15,8 +15,13 @@ class CreatePortTable extends Migration {
 		Schema::create('porty', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('nazwa');	
+			$table->string('nazwa');
+			$table->integer('gracz_id')->unsigned();
 			$table->timestamps();
+
+			$table->foreign('gracz_id')
+				  ->references('id')
+				  ->on('users');
 		});
 	}
 
