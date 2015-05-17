@@ -58,24 +58,7 @@ class HomeController extends Controller {
 		//Czy na pewno to powinno być cache?
 		Cache::forever('id_akt',$id);
 		//return Redirect::action('HomeController@index');
-		return Redirect::action('MapaController@index');//działa
-	}
-
-	public function get_id_port2($id)
-	{
-		//Czy na pewno to powinno być cache?
-		Session::flush();
-		//return Redirect::action('HomeController@index');
-		return Redirect::to('/auth/logout');//działa
-	}
-	
-	//Nie jestem pewien, czy to najlepsze umiejscowienie tej funkcji
-	public function hardlogout() {
-		/*echo("Calling hard_logout");
-		Session::flush();
-		Auth::logout();
-		return Redirect::action('MSapaController@index');//nie robi niczego*/
-		//Auth::logout();
+		return Redirect::action('HomeController@index');//działa
 	}
 
 	public function actual_logout() {//nie działa
