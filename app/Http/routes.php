@@ -13,6 +13,12 @@
 
 // Route::get('/', 'WelcomeController@index');
 
+Event::listen('illuminate.query', function($sql)
+	{?>app/routes.php<?php
+		var_dump($sql);}
+);
+
+
 Route::get('/', 'HomeController@index');
 // Route::get('/klan', 'KlanController@index');
 // Route::get('/budynek','BudynekController@index');
