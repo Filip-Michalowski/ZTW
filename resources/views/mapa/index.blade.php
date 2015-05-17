@@ -8,24 +8,24 @@
 			<table style="border-collapse: collapse; border-spacing: 0; width: 0; margin: 0 auto;">
 				<colgroup>
 					<col span="1">
-					<col span="{{$upper_bond - $lower_bond + 1}}">
+					<col span="{{$upper_bond_x - $lower_bond_x + 1}}">
 					<col span="1">
 				</colgroup>
 
 				<tr>
-					<td rowspan="{{$upper_bond - $lower_bond + 1 + 2}}" style="padding: 0; height: 100%;">
-						<a href="#left" style="display: inline-block; padding: 370px 8px 0 2px; width: 100%; height: 100%;">&lArr;</a>
+					<td rowspan="{{$upper_bond_y - $lower_bond_y + 1 + 2}}" style="padding: 0; height: 100%;">
+						<a href="{{ action('MapaController@left') }}" style="display: inline-block; padding: 370px 8px 0 2px; width: 100%; height: 100%;">&lArr;</a>
 					</td>
-					<td colspan="{{$upper_bond - $lower_bond + 1}}" style="padding: 0;">
-						<a href="#up" style="display: inline-block; padding: 2px 50% 8px 50%; width: 100%; height: 100%;">&uArr;</a>
+					<td colspan="{{$upper_bond_x - $lower_bond_x + 1}}" style="padding: 0;">
+						<a href="{{ action('MapaController@up') }}" style="display: inline-block; padding: 2px 50% 8px 50%; width: 100%; height: 100%;">&uArr;</a>
 					</td>
-					<td rowspan="{{$upper_bond - $lower_bond + 1 + 2}}" style="vertical-align: middle; padding: 0;">
-						<a href="#right" style="display: inline-block; padding: 370px 2px 0 8px; width: 100%; height: 100%;">&rArr;</a>
+					<td rowspan="{{$upper_bond_y - $lower_bond_y + 1 + 2}}" style="vertical-align: middle; padding: 0;">
+						<a href="{{ action('MapaController@right') }}" style="display: inline-block; padding: 370px 2px 0 8px; width: 100%; height: 100%;">&rArr;</a>
 					</td>
 				</tr>
 
 				@foreach($mapy as $map)
-					@if(($map->pos_x - $lower_bond) % $upper_bond == 0)
+					@if(($map->pos_x - $lower_bond_x) % ($upper_bond_x-$lower_bond_x+1) == 0)
 						<tr style="border: 0; background: #2faff8;">
 					@endif
 					
@@ -52,25 +52,32 @@
 					@endif
 					</td>
 					
-					@if(($map->pos_x - $lower_bond) % $upper_bond == $upper_bond - 1)
+					@if(($map->pos_x - $lower_bond_x) % ($upper_bond_x-$lower_bond_x+1) == ($upper_bond_x-$lower_bond_x))
 						</tr>
 					@endif
 				@endforeach
 
 				<tr>
-					<td colspan="{{$upper_bond - $lower_bond + 1}}" style="padding: 0;">
-						<a href="#down" style="display: inline-block; padding: 2px 50% 8px 50%; width: 100%; height: 100%;">&dArr;</a>
+					<td colspan="{{$upper_bond_x - $lower_bond_x + 1}}" style="padding: 0;">
+						<a href="{{ action('MapaController@down') }}" style="display: inline-block; padding: 2px 50% 8px 50%; width: 100%; height: 100%;">&dArr;</a>
 					</td>
 				</tr>
 			</table>
+
+			<ul>
+				<li>lower_bond_x = {{$lower_bond_x}}</li>
+				<li>upper_bond_x = {{$upper_bond_x}}</li>
+				<li>lower_bond_y = {{$lower_bond_y}}</li>
+				<li>upper_bond_y = {{$upper_bond_y}}</li>
+				<li>{{Cache::get('id_akt')}}</li>
+			</ul>
 	</div>
 	
 	
       
       
     <div id="footer">
-    <a href="mapa.html" class="button" style="position:center">Przełącz widok</a>
-    
+    <a href="{{ action('MapaController@center') }}" class="button" style="margin: 0 400px 0 auto;">Wycentruj na obecnej wiosce</a>    
 	</div>
     <!-- End Footer -->
 @stop

@@ -35,7 +35,7 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
-Route::get('surowiec', ['middleware' => 'auth', 'uses' => 'SurowiecController@index']);
+Route::get('/surowiec', ['middleware' => 'auth', 'uses' => 'SurowiecController@index']);
 Route::get('/mapa',['middleware' => 'auth', 'uses' => 'MapaController@index']);
 Route::get('/klan', ['middleware' => 'auth', 'uses' => 'KlanController@index']);
 Route::get('/budynek',['middleware' => 'auth', 'uses' => 'BudynekController@index']);
@@ -47,3 +47,14 @@ Route::get('/klan/create',['middleware' => 'auth', 'uses' => 'KlanController@ind
 Route::get('//{nazwa}',['middleware' => 'auth', 'uses' => 'HomeController@get_id_port']);
 Route::get('/budynek/{nazwa}',['middleware' => 'auth', 'uses' => 'BudynekController@update']);
 Route::get('/jednostka/{nazwa}',['middleware' => 'auth', 'uses' => 'JednostkaController@werbuj']);
+
+Route::get('/hardlogout',['middleware' => 'auth', 'uses' => 'HomeController@hardlogout']);
+Route::get('/logout/{nazwa}',['middleware' => 'auth', 'uses' => 'HomeController@actual_logout']);
+Route::get('/dwa/{nazwa}',['middleware' => 'auth', 'uses' => 'HomeController@get_id_port2']);
+
+//Tymczasowe rozwiązanie do czasu zaimplementowania AJAXa
+Route::get('/mapa/left', ['middleware' => 'auth', 'uses' => 'MapaController@left']);
+Route::get('/mapa/right', ['middleware' => 'auth', 'uses' => 'MapaController@right']);
+Route::get('/mapa/up', ['middleware' => 'auth', 'uses' => 'MapaController@up']);
+Route::get('/mapa/down', ['middleware' => 'auth', 'uses' => 'MapaController@down']);
+Route::get('/mapa/center', ['middleware' => 'auth', 'uses' => 'MapaController@center']);

@@ -15,9 +15,9 @@
       <!-- <div id="carousel-scroll"><a href="#" id="prev"></a><a href="#" id="next"></a></div> -->
       <ul>
         
-       @foreach ($gracz_porty as $gp )
+      @foreach ($gracz_porty as $gp )
         <li><a href="{{ action('HomeController@get_id_port', [$gp->id]) }}"> {{$gp -> nazwa }}</a></li>
-        @endforeach
+      @endforeach
         
       </ul>
     </div>
