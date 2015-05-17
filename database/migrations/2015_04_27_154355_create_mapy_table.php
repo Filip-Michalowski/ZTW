@@ -15,18 +15,7 @@ class CreateMapyTable extends Migration {
 		Schema::create('mapy', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('pos_x');
-			$table->integer('pos_y');
-			$table->integer('port_id')->unsigned()->nullable();
-			$table->integer('typ')->unsigned()->default(0);
 			$table->timestamps();
-
-			$table->foreign('port_id')
-				->references('id')->on('porty')
-				->onDelete('cascade');
-
-			$table->index('pos_x');
-			$table->index('pos_y');
 		});
 	}
 
