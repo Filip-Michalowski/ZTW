@@ -8,6 +8,6 @@ class Mapa extends Model {
 
 	public function port() {
 		//@if (isset($mapa->port->atrybut))
-		return $this->hasOne('App\Port');
+		return $this->belongsTo('App\Port');
 	}
 }

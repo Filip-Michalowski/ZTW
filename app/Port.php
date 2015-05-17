@@ -9,6 +9,6 @@ class Port extends Model {
 	protected $fillable = ['nazwa','gracz_id'];
 
 	public function mapa() {
-		return $this->belongsTo('App\Mapa');
+		return $this->hasOne('App\Mapa');
 	}
 }

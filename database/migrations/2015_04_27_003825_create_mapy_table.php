@@ -18,6 +18,8 @@ class CreateMapyTable extends Migration {
 			$table->integer('pos_x');
 			$table->integer('pos_y');
 			$table->integer('port_id')->unsigned()->nullable();
+			//typ == 0 - woda
+			//typ == 1 - wyspa
 			$table->integer('typ')->unsigned()->default(0);
 			$table->timestamps();
 

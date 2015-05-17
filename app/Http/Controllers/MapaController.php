@@ -3,20 +3,29 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Mapa;
+use Auth;
 use Illuminate\Http\Request;
 
 class MapaController extends Controller {
 
 	public function index()
 	{
-		$mapy = Mapa::all();
+		//$mapy = Mapa::all();
 
-		$mapy_alt = Mapa::where('pos_x', '>', 0)
-			->where('pos_x', '<', 6)
-			->where('pos_y', '>', 0)
-			->where('pos_y', '<', 6)
+		$lower_bond = 2;
+		$upper_bond = $lower_bond + 6;
+
+		$mapy = Mapa::where('pos_x', '>=', $lower_bond)
+			->where('pos_x', '<=', $upper_bond)
+			->where('pos_y', '>=', $lower_bond)
+			->where('pos_y', '<=', $upper_bond)
+			->orderBy('pos_y','asc')
+			->orderBy('pos_x','asc')
+			->with('port')
 			->get();
 
-		return view('mapa.index',compact('mapy','mapy_alt'));
+		$gracz = Auth::user()->id;
+
+		return view('mapa.index',compact('mapy','lower_bond','upper_bond','gracz'));
 	}
 }
