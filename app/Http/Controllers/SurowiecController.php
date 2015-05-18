@@ -3,6 +3,10 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Surowiec;
+use App\Port;
+use App\Port_Surowce;
+use App\Budynek_Surowce;
+use Session;
 use Illuminate\Http\Request;
 
 class SurowiecController extends Controller {
@@ -14,8 +18,21 @@ class SurowiecController extends Controller {
 	 */
 	public function index()
 	{
+		//Stare:
+		/*$surowce = Surowiec::all();
+		return view('surowiec.index',compact('surowce'));*/
+
+		$port_id = Session::get('id_akt');
+
 		$surowce = Surowiec::all();
-		return view('surowiec.index',compact('surowce'));
+		
+		$port_surowce = Surowiec::join('port_surowce','surowce.id','=', 'port_surowce.surowiec_id', 'left outer')
+			->where('port_surowce.port_id','=', $port_id)
+			->orWhere('port_surowce.port_id','=', null)
+			->orderBy('id')
+			->get();
+
+		return view('surowiec.index',compact('surowce','port_surowce','port_id'));		
 	}
 
 	/**
@@ -63,12 +80,19 @@ class SurowiecController extends Controller {
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  int  $id
+	 * @param  int  $port_id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($port_id)
 	{
-		//
+		//gdzie $id to id portu
+
+		$ps = Port_Surowce::where()
+			->get();
+
+		foreach ($variable as $key) {
+			# code...
+		}
 	}
 
 	/**

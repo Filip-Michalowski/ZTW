@@ -11,4 +11,8 @@ class Port extends Model {
 	public function mapa() {
 		return $this->hasOne('App\Mapa');
 	}
+
+	public function surowce() {
+		return $this->hasMany('App\Port_Surowce');
+	}
 }

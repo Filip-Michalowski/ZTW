@@ -17,6 +17,9 @@ class CreatePortSurowceTable extends Migration {
 			$table->integer('port_id')->unsigned();
 			$table->integer('surowiec_id')->unsigned();
 			$table->integer('ilosc');
+
+			$table->integer('rate');
+
 			$table->rememberToken();
 			$table->timestamps();
 

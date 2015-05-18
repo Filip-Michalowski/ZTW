@@ -11,13 +11,26 @@
         <div class="clear"></div>
         <div class="items">
           <table>
-			<tr><td>Surowiec</td><td>Wydobycie</td><td>Wydobycie na godz.</td></tr>
-			@foreach($surowce as $sur)
-			<tr><td>{{$sur -> typ}}</td><td></td><td></td></tr>
-			@endforeach
-		</table>
+            <tr><td>Surowiec</td><td>Zapas</td><td>Wydobycie na godz.</td></tr>
+            @foreach($port_surowce as $sur)
+            <tr>
+                <td>{{$sur -> typ}}</td>
+
+                {{--PHP traktuje 0 jako null, zatem bierzemy wartość, która nie jest nullem--}}
+                @if($sur->updated_at != null)
+                    <td>{{$sur -> ilosc + (time() - strtotime($sur->updated_at))/60 * $sur -> rate }}</td>
+                    <td>{{$sur -> rate}}</td>
+                @else
+                    <td>0</td>
+                    <td>0</td>
+                @endif
+            </tr>
+            @endforeach
+        </table>
 
         </div>
+
+        {{-- uaktualniane: {{$sur->updated_at}} teraz jest: {{date('H:i:s m/d/Y',time())}} --}}
         <!-- .wrap --> 
     
     <!-- End Portfolio -->
