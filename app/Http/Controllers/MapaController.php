@@ -15,14 +15,6 @@ class MapaController extends Controller {
 
 	public function index()
 	{
-<<<<<<< HEAD
-		$mapy = Mapa::all();
-		return view('mapa.index',compact('mapy'));
-	}
-
-	
-
-=======
 		if(Session::has('lower_bond_x')) {
 			$lower_bond_x = Session::get('lower_bond_x',0);
 			$lower_bond_y = Session::get('lower_bond_y',0);
@@ -140,5 +132,4 @@ class MapaController extends Controller {
 
 		return Redirect::to('/mapa');
 	}
->>>>>>> origin/mapy_eksperymentalna
 }

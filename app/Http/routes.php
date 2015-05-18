@@ -13,8 +13,6 @@
 
 // Route::get('/', 'WelcomeController@index');
 
-<<<<<<< HEAD
-=======
 /*
 //Podgląd kwerend SQL
 Event::listen('illuminate.query', function($sql)
@@ -23,7 +21,6 @@ Event::listen('illuminate.query', function($sql)
 );
 */
 
->>>>>>> origin/mapy_eksperymentalna
 Route::get('/', 'HomeController@index');
 // Route::get('/klan', 'KlanController@index');
 // Route::get('/budynek','BudynekController@index');

@@ -5,14 +5,6 @@
 	<div class="line"></div>
 	
 	<div class="items">
-<<<<<<< HEAD
-			<table>
-				<tr><td>Obszar</td><td>Pozycja X</td><td>Pozycja Y</td><td> Gracz</td><td> Akcja</td></tr>
-				@foreach($mapy as $map)
-				<tr><td>{{$map -> id}}</td><td></td><td></td><td>-</td><td></td></tr>
-				@endforeach
-			</table>
-=======
 			<table style="border-collapse: collapse; border-spacing: 0; width: 0; margin: 0 auto;">
 				<colgroup>
 					<col span="1">
@@ -80,7 +72,6 @@
 				<li>upper_bond_y = {{$upper_bond_y}}</li>
 				<li>{{Cache::get('id_akt')}}</li>
 			</ul>
->>>>>>> origin/mapy_eksperymentalna
 	</div>
 	
 	
