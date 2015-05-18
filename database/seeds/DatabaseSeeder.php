@@ -14,11 +14,16 @@ class DatabaseSeeder extends Seeder {
 	{
 		Model::unguard();
 		
+		DB::table('surowce')->delete();
+		DB::table('jednostki')->delete();
+		DB::table('mapy')->delete();
+		DB::table('porty')->delete();
 		DB::table('users')->delete();
 
 		// $this->call('UserTableSeeder');
 		$uzytkownik = array(
             ['id' => 1, 'name' => 'user', 'email' => 'user@user.com', 'password' => '$2y$10$Srva1Vlwgf9Rjsb7ndcSHuVmpFOQbSNv6WLhuCXNPUK9kO6Xn8Jsa', 'created_at' => new DateTime, 'updated_at' => new DateTime],
+            ['id' => 2, 'name' => 'opponent', 'email' => 'opponent@user.com', 'password' => '$2y$10$Srva1Vlwgf9Rjsb7ndcSHuVmpFOQbSNv6WLhuCXNPUK9kO6Xn8Jsa', 'created_at' => new DateTime, 'updated_at' => new DateTime]
         );
 
         $port = array(
@@ -60,10 +65,24 @@ class DatabaseSeeder extends Seeder {
 				$mapy[] = $pole;
 			}
 		}
+
+		$jednostki = array(
+			['id' => 1, 'nazwa' => 'Chuderlak', 'koszt' => 50],
+			['id' => 2, 'nazwa' => 'Bukanier', 'koszt' => 120],
+			['id' => 3, 'nazwa' => 'Treser papug', 'koszt' => 200]
+		);
+
+		$surowce = array(
+			['id' => 1, 'typ' => 'bling'],
+			['id' => 2, 'typ' => 'grog'],
+			['id' => 3, 'typ' => 'papugi'],
+		);
 		
 		DB::table('users')->insert($uzytkownik);
-		DB::table('porty')->insert($port);				
+		DB::table('porty')->insert($port);
 		DB::table('mapy')->insert($mapy);
+		DB::table('jednostki')->insert($jednostki);
+		DB::table('surowce')->insert($surowce);
 
 	}
 
