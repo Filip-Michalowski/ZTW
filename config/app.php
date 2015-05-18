@@ -195,4 +195,16 @@ return [
 
 	],
 
+	 /*
+    |--------------------------------------------------------------------------
+    | Session Files Lifetime
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the number of minutes after which old sessions in
+    | storage will be seen as 'garbage' and cleaned up. Garbage collection may
+    | occur during session start, depending on the lottery. The default is 24.
+    |
+    */
+
+    'files_lifetime' => 24*60,
 ];

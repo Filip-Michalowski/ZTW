@@ -14,7 +14,8 @@
 
 				<tr>
 					<td rowspan="{{$upper_bond_y - $lower_bond_y + 1 + 2}}" style="padding: 0; height: 100%;">
-						<a href="{{ action('MapaController@left') }}" style="display: inline-block; padding: 370px 8px 0 2px; width: 100%; height: 100%;">&lArr;</a>
+						<a href="{{ action('MapaController@left') }}" style="display: inline-block; padding: 370px 8px 0 2px;
+						 width: 100%; height: 100%;">&lArr;</a>
 					</td>
 					<td colspan="{{$upper_bond_x - $lower_bond_x + 1}}" style="padding: 0;">
 						<a href="{{ action('MapaController@up') }}" style="display: inline-block; padding: 2px 50% 8px 50%; width: 100%; height: 100%;">&uArr;</a>

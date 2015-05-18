@@ -45,8 +45,11 @@ class HomeController extends Controller {
 		$gracz_porty = Port::where('gracz_id','=',$id)
 		->get();
 
-		/*vvv*///Dodałem tę linię, bo w mapie muszę użyć tego klucza
-		Cache::forever('id_akt',$gracz_porty->first()->id);
+		/*vvv*///Zmieniłem Cache na Session: inaczej wszystkie
+		//Cache::forever('id_akt',$gracz_porty->first()->id);
+		if(!Session::has('id_akt')) {
+			Session::put('id_akt',$gracz_porty->first()->id);
+		}
 		/*^^^*/
 
 		//$_SESSION['porty'] = $gracz_porty;
@@ -55,8 +58,8 @@ class HomeController extends Controller {
 
 	public function get_id_port($id)
 	{
-		//Czy na pewno to powinno być cache?
-		Cache::forever('id_akt',$id);
+		//Znowuż
+		Session::put('id_akt',$id);
 		//return Redirect::action('HomeController@index');
 		return Redirect::action('HomeController@index');//działa
 	}

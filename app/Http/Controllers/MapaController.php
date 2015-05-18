@@ -15,8 +15,12 @@ class MapaController extends Controller {
 
 	public function index()
 	{
-		$lower_bond_x = Session::get('lower_bond_x',0);
-		$lower_bond_y = Session::get('lower_bond_y',0);
+		if(Session::has('lower_bond_x')) {
+			$lower_bond_x = Session::get('lower_bond_x',0);
+			$lower_bond_y = Session::get('lower_bond_y',0);
+		} else {
+			return Redirect::to('/mapa/center');
+		}
 		
 		if(is_null($lower_bond_x) && is_null($lower_bond_y)) {
 			$lower_bond_x = 0;
@@ -110,13 +114,20 @@ class MapaController extends Controller {
 	}
 
 	public function center() {
-		$id_portu = Cache::get('id_akt');
+		if(Session::has('id_akt')) {
+			$id_portu = Session::get('id_akt');
+		} else {
+			$id = Auth::user()->id;
+			$id_portu = Port::where('gracz_id','=',$id)->first()->id;
+
+			Session::put('id_akt',$id_portu);
+		}
 		$port = Port::where('id','=',$id_portu)->with('mapa')->first();
 
-		$new_x = $port -> mapa -> pos_x - 3;
+		$lower_bond_x = $port -> mapa -> pos_x - 3;
 		$lower_bond_y = $port -> mapa -> pos_y - 3;
 
-		Session::put('lower_bond_x', $new_x);
+		Session::put('lower_bond_x', $lower_bond_x);
 		Session::put('lower_bond_y', $lower_bond_y);
 
 		return Redirect::to('/mapa');

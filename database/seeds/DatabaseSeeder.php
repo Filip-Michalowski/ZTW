@@ -25,12 +25,8 @@ class DatabaseSeeder extends Seeder {
         	['id' => 1, 'nazwa' => 'Helheim', 'gracz_id' => 1],
         	['id' => 2, 'nazwa' => 'Valhalla', 'gracz_id' => 2]
     	);
-    	/*$mapy = array (
-    		['id' => 1, 'pos_x' => 2, 'pos_y' => 2, 'port_id' => 1],
-    		['id' => 2, 'pos_x' => 8, 'pos_y' => 4, 'port_id' => 2],
-    		['id' => 3, 'pos_x' => 5, 'pos_y' => 3, 'port_id' => null]
-		);*/
-		$mapy = array();
+    	
+    	$mapy = array();
 
 		for($x = 0; $x < 50; $x++) {
 			for($y = 0; $y < 50; $y++) {
@@ -54,7 +50,7 @@ class DatabaseSeeder extends Seeder {
 				} else {
 					//echo "rand<br/>";
 					$szansa = rand(1,1000);
-					if($szansa <= 15) {
+					if($szansa <= 55) {
 						$pole['typ'] = 1;
 					} else {
 						$pole['typ'] = 0;
