@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Surowiec;
 use App\Port;
 use App\Port_Surowce;
+use App\Port_Budynki;
 use App\Budynek_Surowce;
 use Session;
 use Illuminate\Http\Request;
@@ -87,11 +88,55 @@ class SurowiecController extends Controller {
 	{
 		//gdzie $id to id portu
 
-		$ps = Port_Surowce::where()
+		$port_budynki = Port_Budynki::where('port_id','=',$port_id)
+			->join('budynek_surowce','budynek_surowce.budynek_id','=','port_budynki.budynek_id')
 			->get();
 
-		foreach ($variable as $key) {
+		/*foreach ($port_budynki as $pb) {
 			# code...
+			echo $pb->budynek_id.'<br/>';
+		}*/
+
+		//echo '<br/>';
+
+		$port_surowce = Port_Surowce::where('port_id','=',$port_id)
+			->get();
+
+		/*foreach ($port_surowce as $pb) {
+			# code...
+			echo $pb->surowiec_id.'<br/>';
+		}*/
+
+		//echo('the Dolphin<br/><br/>');
+
+		$updated_at = time();
+
+		//Do przyszłej optymalizacji...?
+		foreach ($port_surowce as $ps) {
+			$tally = 0;
+			foreach ($port_budynki as $pb) {
+				//echo '-- '.$pb->budynek_id.'<br/>';
+				if($pb->surowiec_id == $ps->surowiec_id) {
+					$tally += $pb->rate;
+				}
+			}
+			//Obliczenie nowego zapasu
+			$ilosc = $ps->ilosc
+		 		+ ( $updated_at - strtotime($ps->updated_at) )
+			 	/60
+	 		 	* $ps->rate;
+			//echo 'surowiec #'.$ps->surowiec_id.'='.$ilosc.'<br/>';
+
+			Port_Surowce::where('port_id','=',$ps->port_id)
+				->where('surowiec_id','=',$ps->surowiec_id)
+				->update([
+					'ilosc' => $ilosc,
+					'updated_at' => $updated_at
+				]);
+
+			/*$ps->updated_at = $updated_at;
+			$ps->ilosc = $ilosc;
+			$ps->save();*/			
 		}
 	}
 

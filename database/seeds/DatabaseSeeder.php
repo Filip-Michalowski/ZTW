@@ -116,17 +116,17 @@ class DatabaseSeeder extends Seeder {
 		);
 
 		$port_surowce = array(
-			['port_id' => 1, 'surowiec_id' => 1, 'ilosc' => 100,
+			['port_id' => 1, 'surowiec_id' => 1, 'ilosc' => 100, 'rate' => 1,
 			 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),],
-		 	['port_id' => 1, 'surowiec_id' => 2, 'ilosc' => 0,
+		 	['port_id' => 1, 'surowiec_id' => 2, 'ilosc' => 0, 'rate' => 0,
 			 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),],
-		 	['port_id' => 1, 'surowiec_id' => 3, 'ilosc' => 0,
+		 	['port_id' => 1, 'surowiec_id' => 3, 'ilosc' => 0, 'rate' => 0,
 			 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),],
-			['port_id' => 2, 'surowiec_id' => 1, 'ilosc' => 100,
+			['port_id' => 2, 'surowiec_id' => 1, 'ilosc' => 100, 'rate' => 1,
 			 'created_at' => Carbon::now(),'updated_at' => Carbon::now(),],
-		 	['port_id' => 2, 'surowiec_id' => 2, 'ilosc' => 0,
+		 	['port_id' => 2, 'surowiec_id' => 2, 'ilosc' => 0, 'rate' => 0,
 			 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),],
-		 	['port_id' => 2, 'surowiec_id' => 3, 'ilosc' => 0,
+		 	['port_id' => 2, 'surowiec_id' => 3, 'ilosc' => 0, 'rate' => 0,
 			 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),],
 		);
 		

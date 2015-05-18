@@ -56,7 +56,8 @@ Route::get('/mapa/up', ['middleware' => 'auth', 'uses' => 'MapaController@up']);
 Route::get('/mapa/down', ['middleware' => 'auth', 'uses' => 'MapaController@down']);
 Route::get('/mapa/center', ['middleware' => 'auth', 'uses' => 'MapaController@center']);
 
-
+//debug
+Route::get('/surowiec/{port_id}', ['middleware' => 'auth', 'uses' => 'SurowiecController@update']);
 
 
 //wcześniejsza pozycja blokuje wszystkie inne routy oparte o HomeController i niezawierające znaku '{'
