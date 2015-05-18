@@ -3,6 +3,7 @@
 use App\User;
 use Validator;
 use App\Port;
+use App\Mapa;
 use \DB;
 use Illuminate\Contracts\Auth\Registrar as RegistrarContract;
 
@@ -16,11 +17,23 @@ class Registrar implements RegistrarContract {
 	 */
 	public function validator(array $data)
 	{
-		return Validator::make($data, [
+		Validator::extend('wolne_miejsce', function($attribute, $value, $parameters)
+		{
+			$mapy = Mapa::where('typ','>','0')->where('port_id','=',null)->count();
+			return ($mapy > 0);
+		});
+
+		$validator = Validator::make($data, [
 			'name' => 'required|max:255',
 			'email' => 'required|email|max:255|unique:users',
 			'password' => 'required|confirmed|min:6',
+			'nazwa' => 'required|max:60|unique:porty',
+			'nazwa' => 'wolne_miejsce'
+		], [
+			'wolne_miejsce' => 'Wszystkie wyspy są zajęte.'
 		]);
+
+		return $validator;
 	}
 
 	/**
@@ -30,8 +43,7 @@ class Registrar implements RegistrarContract {
 	 * @return User
 	 */
 	public function create(array $data)
-	{
-			
+	{			
 		$user = User::create([
 			'name' => $data['name'],
 			'email' => $data['email'],
@@ -42,10 +54,21 @@ class Registrar implements RegistrarContract {
 	 	// 	['nazwa'=>'nowa']
 		 // 	);
 		$port = Port::create([
-			'nazwa' => $data['name_port'],
+			'nazwa' => $data['nazwa'],
 			'gracz_id' => $user->id
 		]);
-			return $user;
+
+		$liczba = Mapa::where('typ','>','0')->where('port_id','=',null)->count();
+		
+		$los = rand(0,($liczba-1));
+
+		$mapa = Mapa::where('typ','>','0')->where('port_id','=',null)->orderByRaw("RAND()")->first();
+
+		$mapa->port_id = $port->id;
+
+		$mapa->save();
+
+		return $user;
 	}
 
 }

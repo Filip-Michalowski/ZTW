@@ -13,6 +13,17 @@
 
 // Route::get('/', 'WelcomeController@index');
 
+<<<<<<< HEAD
+=======
+/*
+//Podgląd kwerend SQL
+Event::listen('illuminate.query', function($sql)
+	{?>app/routes.php<?php
+		var_dump($sql);}
+);
+*/
+
+>>>>>>> origin/mapy_eksperymentalna
 Route::get('/', 'HomeController@index');
 // Route::get('/klan', 'KlanController@index');
 // Route::get('/budynek','BudynekController@index');
@@ -27,7 +38,7 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
-Route::get('surowiec', ['middleware' => 'auth', 'uses' => 'SurowiecController@index']);
+Route::get('/surowiec', ['middleware' => 'auth', 'uses' => 'SurowiecController@index']);
 Route::get('/mapa',['middleware' => 'auth', 'uses' => 'MapaController@index']);
 Route::get('/klan', ['middleware' => 'auth', 'uses' => 'KlanController@index']);
 Route::get('/budynek',['middleware' => 'auth', 'uses' => 'BudynekController@index']);
@@ -36,6 +47,20 @@ Route::get('/poczta',['middleware' => 'auth', 'uses' => 'PocztaController@index'
 Route::get('/poczta/create',['middleware' => 'auth', 'uses' => 'PocztaController@create']);
 Route::get('/klan/create',['middleware' => 'auth', 'uses' => 'KlanController@index']);
 
-Route::get('//{nazwa}',['middleware' => 'auth', 'uses' => 'HomeController@get_id_port']);
 Route::get('/budynek/{nazwa}',['middleware' => 'auth', 'uses' => 'BudynekController@update']);
 Route::get('/jednostka/{nazwa}',['middleware' => 'auth', 'uses' => 'JednostkaController@werbuj']);
+
+Route::get('/logout',['middleware' => 'auth', 'uses' => 'HomeController@actual_logout']);
+
+//Tymczasowe rozwiązanie do czasu zaimplementowania AJAXa
+Route::get('/mapa/left', ['middleware' => 'auth', 'uses' => 'MapaController@left']);
+Route::get('/mapa/right', ['middleware' => 'auth', 'uses' => 'MapaController@right']);
+Route::get('/mapa/up', ['middleware' => 'auth', 'uses' => 'MapaController@up']);
+Route::get('/mapa/down', ['middleware' => 'auth', 'uses' => 'MapaController@down']);
+Route::get('/mapa/center', ['middleware' => 'auth', 'uses' => 'MapaController@center']);
+
+
+
+
+//wcześniejsza pozycja blokuje wszystkie inne routy oparte o HomeController i niezawierające znaku '{'
+Route::get('/{nazwa}',['middleware' => 'auth', 'uses' => 'HomeController@get_id_port']);

@@ -22,15 +22,15 @@
 		
 		 
 	<!-- Begin Menu -->
-  @include('menu')
-  <!-- End Menu -->
+  	@include('menu')
+  	<!-- End Menu -->
    
 	</div>
 	<!-- End Sidebar -->
 	
 	<!-- Begin Content -->
 	<div id="content">
-  @yield('content')
+ 	@yield('content')
 	</div>
 	<!-- End Content -->
 	

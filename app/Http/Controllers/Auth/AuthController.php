@@ -35,5 +35,4 @@ class AuthController extends Controller {
 		// $_SESSION['user']= $this;
 		$this->middleware('guest', ['except' => 'getLogout']);
 	}
-
 }

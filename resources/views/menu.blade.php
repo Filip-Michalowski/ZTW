@@ -7,6 +7,6 @@
 		    <li><a href="{{ action('KlanController@index') }}">Klan</a></li>
 		    <li><a href="{{ action('MapaController@index') }}">Mapa</a></li>
         <li><a href="{{ action('PocztaController@index') }}">Poczta</a></li>
-        <li><a href="{{ url('/auth/logout') }}">Wyloguj</a></li>
+        <li><a href="{{ action('HomeController@actual_logout') }}">Wyloguj</a></li>
       </ul>
     </div>

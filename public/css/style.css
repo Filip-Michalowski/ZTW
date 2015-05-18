@@ -235,14 +235,14 @@ pre {
 }
 
 #wrapper {
-	width: 990px;
+	width: 1090px;
 	margin: 0 auto;
 	overflow: hidden;
 	margin-left:0px;
 }
 
 #content {
-	width: 700px;
+	width: 800px;
 	float: right;
 	padding: 40px 0 20px 0;
 }

@@ -1,4 +1,5 @@
 <?php namespace App\Http\Controllers;
+
 use App\Gracz_Porty;
 use App\User;
 use App\Port;
@@ -6,7 +7,9 @@ use Auth;
 use Cookie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use \Cache;
+use Session;
+use Cache;
+
 class HomeController extends Controller {
 
 	/*
@@ -26,8 +29,7 @@ class HomeController extends Controller {
 	 * @return void
 	 */
 	public function __construct()
-	{
-		
+	{		
 		$this->middleware('auth');
 	}
 
@@ -37,20 +39,33 @@ class HomeController extends Controller {
 	 * @return Response
 	 */
 	public function index()
-
 	{
 		//session_start();
 		$id = Auth::user()->id;
 		$gracz_porty = Port::where('gracz_id','=',$id)
 		->get();
+
+		/*vvv*///Zmieniłem Cache na Session: inaczej wszystkie
+		//Cache::forever('id_akt',$gracz_porty->first()->id);
+		if(!Session::has('id_akt')) {
+			Session::put('id_akt',$gracz_porty->first()->id);
+		}
+		/*^^^*/
+
 		//$_SESSION['porty'] = $gracz_porty;
 		return view('przeglad.index',compact ('gracz_porty'));
 	}
 
 	public function get_id_port($id)
 	{
-		Cache::forever('id_akt',$id);
-		return Redirect::action('HomeController@index');
+		//Znowuż
+		Session::put('id_akt',$id);
+		//return Redirect::action('HomeController@index');
+		return Redirect::action('HomeController@index');//działa
 	}
 
+	public function actual_logout() {//nie działa
+		Session::flush();
+		return Redirect::to('/auth/logout');
+	}
 }
