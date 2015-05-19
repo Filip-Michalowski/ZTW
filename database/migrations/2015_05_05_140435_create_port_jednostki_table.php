@@ -16,13 +16,17 @@ class CreatePortJednostkiTable extends Migration {
 			{
 			$table->integer('port_id')->unsigned();
 			$table->integer('jednostka_id')->unsigned();
+
+			$table->primary(['port_id','jednostka_id']);
+
 			$table->integer('ilosc');
 			$table->rememberToken();
 			$table->timestamps();
 
 			$table->foreign('port_id')
 				  ->references('id')
-				  ->on('porty');
+				  ->on('porty')
+				  ->onDelete('cascade');
 
 			$table->foreign('jednostka_id')
 				  ->references('id')

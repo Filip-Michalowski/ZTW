@@ -14,6 +14,10 @@ class CreateMapyTable extends Migration {
 	{
 		Schema::create('mapy', function(Blueprint $table)
 		{
+			$table->integer('id');
+
+			$table->unique('id');
+
 			$table->integer('pos_x');
 			$table->integer('pos_y');
 
@@ -23,7 +27,8 @@ class CreateMapyTable extends Migration {
 
 			$table->foreign('port_id')
 				  ->references('id')
-				  ->on('porty');
+				  ->on('porty')
+				  ->onDelete('set null');
 
 			//typ == 0 - woda
 			//typ == 1 - wyspa

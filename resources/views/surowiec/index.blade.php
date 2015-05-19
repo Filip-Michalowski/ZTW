@@ -11,18 +11,29 @@
         <div class="clear"></div>
         <div class="items">
           <table>
-            <tr><td>Surowiec</td><td>Zapas</td><td>Wydobycie na godz.</td></tr>
+            <tr><td>Surowiec</td><td style="text-align: right;">Zapas</td><td>Wydobycie na godzinę</td></tr>
             @foreach($port_surowce as $sur)
             <tr>
                 <td>{{$sur -> typ}}</td>
 
                 {{--PHP traktuje 0 jako null, zatem bierzemy wartość, która nie jest nullem--}}
                 @if($sur->updated_at != null)
-                    <td>{{$sur -> ilosc + (time() - strtotime($sur->updated_at))/60 * $sur -> rate }}</td>
-                    <td>{{$sur -> rate}}</td>
+                    <td style="text-align: right; 
+                    @if(floor( $sur -> ilosc + (time() - strtotime($sur->updated_at))/60 * $sur -> rate ) >= $sur -> magazyn)
+                        color: #ee1111;">
+                        {{$sur -> magazyn}}
+                        /
+                        {{$sur -> magazyn}}
+                    @else
+                        ">
+                        {{floor( $sur -> ilosc + (time() - strtotime($sur->updated_at))/60 * $sur -> rate )}}
+                        /
+                        {{$sur -> magazyn}}</td>
+                    @endif
+                    <td>{{$sur -> rate * 60}}</td>
                 @else
-                    <td>0</td>
-                    <td>0</td>
+                    <td style="text-align: right;">port_id: {{$port_id}}</td>
+                    <td>BŁĄĄĄĄĄĄĄĄĄĄĄD trzeba wszystkie wiersze port_surowce tworzyć przy tworzeniu portu</td>
                 @endif
             </tr>
             @endforeach

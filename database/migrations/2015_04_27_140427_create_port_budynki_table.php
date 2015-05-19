@@ -16,13 +16,14 @@ class CreatePortBudynkiTable extends Migration {
 		{
 			$table->integer('port_id')->unsigned();
 			$table->integer('budynek_id')->unsigned();
-			$table->integer('poziom');
+			$table->integer('poziom')->default(0);
 			$table->rememberToken();
 			$table->timestamps();
 
 			$table->foreign('port_id')
 				  ->references('id')
-				  ->on('porty');
+				  ->on('porty')
+				  ->onDelete('cascade');
 
 			$table->foreign('budynek_id')
 				  ->references('id')

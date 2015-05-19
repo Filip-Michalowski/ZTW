@@ -16,9 +16,13 @@ class JednostkaController extends Controller {
 		//$ind = unserialize($_COOKIE['id_akt']);
 		$ind = Session::get('id_akt');
 		$jednostki = Jednostka::all();
-		$port_jednostki = Port_Jednostki::leftjoin('jednostki',function($join){
+		
+		//$port_jednostki = Port_Jednostki::where('port_id','=',$ind)->get();
+
+		$port_jednostki = Port_Jednostki::rightjoin('jednostki',function($join){
 			$join->on('port_jednostki.jednostka_id','=','jednostki.id');})->where('port_id','=', $ind)
 		->get();
+		
 		return view('jednostka.index', compact('jednostki','port_jednostki'));
 	}
 

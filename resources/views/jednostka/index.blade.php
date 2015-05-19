@@ -8,10 +8,22 @@
 	<div class="items">
 			<table>
 				<tr><td></td><td>Nazwa</td><td>Ilość</td><td>Koszt</td><td>Akcja</td></tr>
-				
-				@foreach ($port_jednostki as $poj)
-				<tr><td></td><td>{{ $poj->nazwa }}</td><td>{{ $poj->ilosc }}</td><td>{{ $poj->koszt }}</td><td><a href="{{ action('JednostkaController@werbuj', [$poj->id]) }}">Werbuj</a></td></tr>
+				@foreach($jednostki as $poj)
+				{{--<tr><td></td><td>{{ $poj->nazwa }}</td><td></td><td>{{ $poj->koszt }}</td><td><a href="#">Werbuj</a></td></tr>--}}
 				@endforeach
+				@if($port_jednostki == null)
+					<tr>
+						<td colspan="5" style="text-align: center;">
+						Twój port jest równie bezbronny, co pijana papuga!
+						<br/><b>Ani jednej jednostki.</b>
+						</td>
+					</tr>
+
+				@else				
+					@foreach ($port_jednostki as $poj)
+					<tr><td></td><td>{{ $poj->nazwa }}</td><td>{{ $poj->ilosc }}</td><td>{{ $poj->koszt }}</td><td><a href="{{ action('JednostkaController@werbuj', [$poj->id]) }}">Werbuj</a></td></tr>
+					@endforeach
+				@endif
 					
 			</table>
 	</div>

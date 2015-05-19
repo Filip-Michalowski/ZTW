@@ -21,7 +21,8 @@ class CreatePortTable extends Migration {
 
 			$table->foreign('gracz_id')
 				  ->references('id')
-				  ->on('users');
+				  ->on('users')
+				  ->onDelete('cascade');
 		});
 	}
 

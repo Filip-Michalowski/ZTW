@@ -47,7 +47,7 @@ class HomeController extends Controller {
 
 		/*vvv*///Zmieniłem Cache na Session: inaczej wszystkie
 		//Cache::forever('id_akt',$gracz_porty->first()->id);
-		if(!Session::has('id_akt')) {
+		if(!Session::has('id_akt') || Session::get('id_akt') == 'home') {
 			Session::put('id_akt',$gracz_porty->first()->id);
 		}
 		/*^^^*/

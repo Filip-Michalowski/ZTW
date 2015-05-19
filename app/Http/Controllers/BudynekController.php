@@ -26,7 +26,7 @@ class BudynekController extends Controller {
 		return view('budynek.index', compact('port_budynki'));
 	}
 
-	public  function update($id){
+	public function update($id){
 		$ind = Session::get('id_akt');
 
 		/**///DODAĆ TO

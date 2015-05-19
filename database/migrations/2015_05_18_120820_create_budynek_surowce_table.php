@@ -26,7 +26,10 @@ class CreateBudynekSurowceTable extends Migration {
 			$table->primary(['budynek_id', 'surowiec_id']);
 
 			//Pozytywny i negatywny przyzrost na minutę
-			$table->integer('przyrost');
+			$table->decimal('rate',8,2)->default(0);
+
+			//Wielkość magazynu
+			$table->integer('magazyn')->default(0);
 
 			//Dla przyszłych rozwiązań
 			$table->string('formula')->default('+');

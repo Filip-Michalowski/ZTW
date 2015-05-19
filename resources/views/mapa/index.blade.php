@@ -33,21 +33,21 @@
 					<td style="margin: 0; padding: 0;">
 					@if($map -> typ == 0)
 						<a title="Morze ({{$map -> pos_x}},{{$map -> pos_y}})">
-							<img src="../../isle_empty.png" alt="empty" style="padding: 0; margin: 0; border: 1px dashed #2faff8;">
+							<img src={{url('images/isle_empty.png')}} alt="empty" style="padding: 0; margin: 0; border: 1px dashed #2faff8;">
 						</a>
 					@elseif($map -> typ == 1)
 						@if(isset($map -> port))
 							@if($map -> port -> gracz_id == $gracz)
 							<a href="#manage_placeholder" title="{{$map -> port -> nazwa}} ({{$map -> pos_x}},{{$map -> pos_y}})">
-							<img src="../../isle_populated.png" alt="populated" style="padding: -1px; margin: 0; border: 1px dashed #16ff01;">
+							<img src={{url('images/isle_populated.png')}} alt="populated" style="padding: -1px; margin: 0; border: 1px dashed #16ff01;">
 							@else
 							<a href="#atak_placeholder" title="{{$map -> port -> nazwa}} ({{$map -> pos_x}},{{$map -> pos_y}})">
-							<img src="../../isle_populated.png" alt="populated" style="padding: 0; margin: 0; border: 1px dashed #ee6e22;">
+							<img src={{url('images/isle_populated.png')}} alt="populated" style="padding: 0; margin: 0; border: 1px dashed #ee6e22;">
 							@endif
 						</a>
 						@else
 						<a href="#atak_placeholder" title="Bezludna wyspa ({{$map -> pos_x}},{{$map -> pos_y}})">
-							<img src="../../isle_lush.png" alt="lush" style="padding: 0; margin: 0;  border: 1px dashed #2faff8;">
+							<img src={{url('images/isle_lush.png')}} alt="lush" style="padding: 0; margin: 0;  border: 1px dashed #2faff8;">
 						</a>
 						@endif
 					@endif

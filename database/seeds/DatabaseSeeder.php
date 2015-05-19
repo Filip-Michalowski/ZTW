@@ -48,6 +48,7 @@ class DatabaseSeeder extends Seeder {
 		for($x = 0; $x < 50; $x++) {
 			for($y = 0; $y < 50; $y++) {
 				$pole = array('pos_x' => $x, 'pos_y' => $y);
+				$pole['id'] = 50*$y + $x;
 				//echo( $pole['id']." " );
 				if($x == 2 && $y == 2) {
 					//echo "2,2<br/>";
@@ -94,39 +95,64 @@ class DatabaseSeeder extends Seeder {
 		$budynki = array(
 			['id' => 1, 'nazwa' => 'Kantyna', 'koszt' => '20'],
 			['id' => 2, 'nazwa' => 'Papugarnia', 'koszt' => '40'],
+			['id' => 3, 'nazwa' => 'Magazyn', 'koszt' => '40'],
 		);
 
 		$budynek_surowce = array(
-			['budynek_id' => 1, 'surowiec_id' => 1, 'przyrost' => 2],
-			['budynek_id' => 1, 'surowiec_id' => 2, 'przyrost' => 1],
-			['budynek_id' => 2, 'surowiec_id' => 3, 'przyrost' => 1],
+			['budynek_id' => 1, 'surowiec_id' => 1, 'rate' => 2],
+			['budynek_id' => 1, 'surowiec_id' => 2, 'rate' => 1],
+			['budynek_id' => 2, 'surowiec_id' => 3, 'rate' => 1],
+		);
+
+		$budynek_surowce_mag = array(
+			['budynek_id' => 3, 'surowiec_id' => 1, 'magazyn' => 200],
+			['budynek_id' => 3, 'surowiec_id' => 2, 'magazyn' => 200],
+			['budynek_id' => 3, 'surowiec_id' => 3, 'magazyn' => 200],
+			['budynek_id' => 3, 'surowiec_id' => 4, 'magazyn' => 200],
 		);
 
 		$budynek_koszty = array(
 			['budynek_id' => 1, 'surowiec_id' => 1, 'koszt' => 10],
 			['budynek_id' => 2, 'surowiec_id' => 1, 'koszt' => 20],
 			['budynek_id' => 2, 'surowiec_id' => 2, 'koszt' => 10],
+			['budynek_id' => 3, 'surowiec_id' => 1, 'koszt' => 150],
+			['budynek_id' => 3, 'surowiec_id' => 2, 'koszt' => 150],
+			['budynek_id' => 3, 'surowiec_id' => 3, 'koszt' => 150],
 		);
 
 		$port_budynki = array(
 			['port_id' => 1, 'budynek_id' => 1, 'poziom' => 0],
 			['port_id' => 1, 'budynek_id' => 2, 'poziom' => 0],
+			['port_id' => 1, 'budynek_id' => 3, 'poziom' => 0],
 			['port_id' => 2, 'budynek_id' => 1, 'poziom' => 0],
 			['port_id' => 2, 'budynek_id' => 2, 'poziom' => 0],
+			['port_id' => 2, 'budynek_id' => 3, 'poziom' => 0],
 		);
 
 		$port_surowce = array(
 			['port_id' => 1, 'surowiec_id' => 1, 'ilosc' => 100, 'rate' => 1,
+			 'magazyn' => 200,
 			 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),],
 		 	['port_id' => 1, 'surowiec_id' => 2, 'ilosc' => 0, 'rate' => 0,
+			 'magazyn' => 200,
 			 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),],
 		 	['port_id' => 1, 'surowiec_id' => 3, 'ilosc' => 0, 'rate' => 0,
+			 'magazyn' => 200,
+			 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),],
+			['port_id' => 1, 'surowiec_id' => 4, 'ilosc' => 0, 'rate' => 0,
+			 'magazyn' => 200,
 			 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),],
 			['port_id' => 2, 'surowiec_id' => 1, 'ilosc' => 100, 'rate' => 1,
+			 'magazyn' => 200,
 			 'created_at' => Carbon::now(),'updated_at' => Carbon::now(),],
 		 	['port_id' => 2, 'surowiec_id' => 2, 'ilosc' => 0, 'rate' => 0,
+			 'magazyn' => 200,
 			 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),],
 		 	['port_id' => 2, 'surowiec_id' => 3, 'ilosc' => 0, 'rate' => 0,
+			 'magazyn' => 200,
+			 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),],
+			['port_id' => 2, 'surowiec_id' => 4, 'ilosc' => 0, 'rate' => 0,
+			 'magazyn' => 200,
 			 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),],
 		);
 		
@@ -137,6 +163,7 @@ class DatabaseSeeder extends Seeder {
 		DB::table('surowce')->insert($surowce);
 		DB::table('budynki')->insert($budynki);
 		DB::table('budynek_surowce')->insert($budynek_surowce);
+		DB::table('budynek_surowce')->insert($budynek_surowce_mag);
 		DB::table('budynek_koszty')->insert($budynek_koszty);
 		DB::table('port_budynki')->insert($port_budynki);
 		DB::table('port_surowce')->insert($port_surowce);

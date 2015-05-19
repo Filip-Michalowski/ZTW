@@ -13,23 +13,16 @@
 
 // Route::get('/', 'WelcomeController@index');
 
-///*
-//Podgląd kwerend SQL
+
+//Podgląd kwerend SQL - usuń /* by włączyć
 /*Event::listen('illuminate.query', function($sql)
 	{?>app/routes.php<?php
 		var_dump($sql);}
 );
 //*/
 
+
 Route::get('/', 'HomeController@index');
-// Route::get('/klan', 'KlanController@index');
-// Route::get('/budynek','BudynekController@index');
-// Route::get('/jednostka','JednostkaController@index');
-// Route::get('/poczta','PocztaController@index');
-// Route::get('/poczta/create','PocztaController@create');
-// Route::get('/klan/create','KlanController@create');
-//Route::get('/mapa','MapaController@index');
-//Route::get('/surowiec','SurowiecController@index');
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
@@ -56,7 +49,7 @@ Route::get('/mapa/up', ['middleware' => 'auth', 'uses' => 'MapaController@up']);
 Route::get('/mapa/down', ['middleware' => 'auth', 'uses' => 'MapaController@down']);
 Route::get('/mapa/center', ['middleware' => 'auth', 'uses' => 'MapaController@center']);
 
-//debug
+//DEBUG
 Route::get('/surowiec/{port_id}', ['middleware' => 'auth', 'uses' => 'SurowiecController@update']);
 
 
