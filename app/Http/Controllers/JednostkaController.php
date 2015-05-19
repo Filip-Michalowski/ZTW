@@ -20,7 +20,9 @@ class JednostkaController extends Controller {
 		//$port_jednostki = Port_Jednostki::where('port_id','=',$ind)->get();
 
 		$port_jednostki = Port_Jednostki::rightjoin('jednostki',function($join){
-			$join->on('port_jednostki.jednostka_id','=','jednostki.id');})->where('port_id','=', $ind)
+			$join->on('port_jednostki.jednostka_id','=','jednostki.id');})
+		->where('port_id','=', $ind)
+		->orWhere('port_id','=', null)
 		->get();
 		
 		return view('jednostka.index', compact('jednostki','port_jednostki'));

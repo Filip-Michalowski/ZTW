@@ -11,7 +11,7 @@
 				@foreach($jednostki as $poj)
 				{{--<tr><td></td><td>{{ $poj->nazwa }}</td><td></td><td>{{ $poj->koszt }}</td><td><a href="#">Werbuj</a></td></tr>--}}
 				@endforeach
-				@if($port_jednostki == null)
+				@if($port_jednostki->count() == 0)
 					<tr>
 						<td colspan="5" style="text-align: center;">
 						Twój port jest równie bezbronny, co pijana papuga!
@@ -21,7 +21,13 @@
 
 				@else				
 					@foreach ($port_jednostki as $poj)
-					<tr><td></td><td>{{ $poj->nazwa }}</td><td>{{ $poj->ilosc }}</td><td>{{ $poj->koszt }}</td><td><a href="{{ action('JednostkaController@werbuj', [$poj->id]) }}">Werbuj</a></td></tr>
+					<tr><td></td><td>{{ $poj->nazwa }}</td>
+						@if($poj->ilosc == null)
+						<td>0</td>
+						@else
+						<td>{{ $poj->ilosc }}</td>
+						@endif
+					<td>{{ $poj->koszt }}</td><td><a href="{{ action('JednostkaController@werbuj', [$poj->id]) }}">Werbuj</a></td></tr>
 					@endforeach
 				@endif
 					
