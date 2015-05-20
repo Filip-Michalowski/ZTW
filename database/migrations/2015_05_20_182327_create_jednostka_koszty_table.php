@@ -18,12 +18,14 @@ class CreateJednostkaKosztyTable extends Migration {
 			$table->integer('jednostka_id')->unsigned();
 			$table->foreign('jednostka_id')
 				  ->references('id')
-				  ->on('jednostki');
+				  ->on('jednostki')
+				  ->onDelete('cascade');
 
 			$table->integer('surowiec_id')->unsigned();
 			$table->foreign('surowiec_id')
 				  ->references('id')
-				  ->on('surowce');
+				  ->on('surowce')
+				  ->onDelete('cascade');
 
 		  	$table->primary(['jednostka_id','surowiec_id']);
 

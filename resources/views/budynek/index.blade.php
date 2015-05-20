@@ -4,13 +4,29 @@
 @section('content')
 	<h1 class="title">Budynki</h1>
 	<div class="line"></div>
-	<div class="intro"></div>
+	<div class="intro">
+			@if($errors->any())
+				@foreach($errors->all() as $e)
+				<h4>{{$e}}</h4>
+				@endforeach
+			@endif
+	</div>
 	
 	<div class="items">
 			<table>
 				<tr><td></td><td>Nazwa budynku</td><td>Poziom</td><td>Koszt</td><td>Akcja</td></tr>
 				@foreach ($port_budynki as $bud)
-				<tr><td></td><td> {{$bud ->nazwa }}</td><td> {{$bud ->poziom }}</td><td>{{$bud ->koszt * ($bud->poziom+1)}}</td><td><a href="{{ action('BudynekController@update', [$bud->id]) }}">Buduj</a></td></tr>
+				<tr>
+				<td></td>
+				<td>{{$bud->nazwa}}</td>
+				<td>{{$bud->poziom}}</td>
+				<td>
+						@foreach($bud->koszty as $koszt)
+						{{$koszt->koszt * ($bud->poziom + 1)}} {{$koszt->surowiec->typ}} 
+						@endforeach
+				</td>
+				<td><a href="{{ action('BudynekController@update', [$bud->id]) }}">Buduj</a></td>
+				</tr>
 				@endforeach
 			</table>
 	</div>

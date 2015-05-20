@@ -16,6 +16,9 @@ class CreatePortBudynkiTable extends Migration {
 		{
 			$table->integer('port_id')->unsigned();
 			$table->integer('budynek_id')->unsigned();
+
+			$table->primary(['port_id','budynek_id']);
+
 			$table->integer('poziom')->default(0);
 			$table->rememberToken();
 			$table->timestamps();
@@ -27,7 +30,8 @@ class CreatePortBudynkiTable extends Migration {
 
 			$table->foreign('budynek_id')
 				  ->references('id')
-				  ->on('budynki');
+				  ->on('budynki')
+				  ->onDelete('cascade');
 		});
 	}
 

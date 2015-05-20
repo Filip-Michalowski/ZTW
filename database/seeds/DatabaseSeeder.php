@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use App\Surowiec;
 use Carbon\Carbon;
 
 class DatabaseSeeder extends Seeder {
@@ -21,6 +22,7 @@ class DatabaseSeeder extends Seeder {
 		DB::table('budynek_surowce')->delete();
 		DB::table('budynki')->delete();
 		DB::table('surowce')->delete();
+		DB::table('jednostka_koszty')->delete();
 		DB::table('jednostki')->delete();
 		DB::table('mapy')->delete();
 		DB::table('porty')->delete();
@@ -32,7 +34,7 @@ class DatabaseSeeder extends Seeder {
             ['id' => 2, 'name' => 'opponent', 'email' => 'opponent@user.com', 'password' => '$2y$10$Srva1Vlwgf9Rjsb7ndcSHuVmpFOQbSNv6WLhuCXNPUK9kO6Xn8Jsa', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]
         );
 
-        $port = array(
+        $porty = array(
         	['id' => 1, 'nazwa' => 'Helheim', 'gracz_id' => 1],
         	['id' => 2, 'nazwa' => 'Valhalla', 'gracz_id' => 2]
     	);
@@ -80,9 +82,10 @@ class DatabaseSeeder extends Seeder {
 		}
 
 		$jednostki = array(
-			['id' => 1, 'nazwa' => 'Chuderlak', 'koszt' => 50],
-			['id' => 2, 'nazwa' => 'Bukanier', 'koszt' => 120],
-			['id' => 3, 'nazwa' => 'Treser papug', 'koszt' => 200]
+			['id' => 1, 'nazwa' => 'Chuderlak'],
+			['id' => 2, 'nazwa' => 'Bukanier'],
+			['id' => 3, 'nazwa' => 'Treser papug'],
+			['id' => 4, 'nazwa' => 'Cyber-Pirat'],
 		);
 
 		$surowce = array(
@@ -91,6 +94,38 @@ class DatabaseSeeder extends Seeder {
 			['id' => 3, 'typ' => 'papugi'],
 			['id' => 4, 'typ' => 'pustaki'],
 		);
+
+		$jednostka_koszty = array(
+			['jednostka_id' => 1, 'surowiec_id' => 1, 'koszt' => 50],
+			['jednostka_id' => 1, 'surowiec_id' => 2, 'koszt' => 20],
+			['jednostka_id' => 2, 'surowiec_id' => 1, 'koszt' => 40],
+			['jednostka_id' => 2, 'surowiec_id' => 2, 'koszt' => 20],
+			['jednostka_id' => 2, 'surowiec_id' => 4, 'koszt' => 10],
+			['jednostka_id' => 3, 'surowiec_id' => 1, 'koszt' => 100],
+			['jednostka_id' => 3, 'surowiec_id' => 3, 'koszt' => 15],
+			['jednostka_id' => 4, 'surowiec_id' => 1, 'koszt' => 50],
+			['jednostka_id' => 4, 'surowiec_id' => 2, 'koszt' => 50],
+			['jednostka_id' => 4, 'surowiec_id' => 3, 'koszt' => 50],
+			['jednostka_id' => 4, 'surowiec_id' => 4, 'koszt' => 50],
+		);
+
+		$port_jednostki = array();
+
+		foreach($porty as $por) {
+			foreach($jednostki as $jed) {
+				if($jed['id'] < 3) {
+					$port_jednostki[] = ['port_id' => $por['id'],
+					 'jednostka_id' => $jed['id'],
+					  'ilosc' => 0, 'produkowana' => true];
+				} else {
+					$port_jednostki[] = ['port_id' => $por['id'],
+					 'jednostka_id' => $jed['id'],
+					  'ilosc' => 0, 'produkowana' => false];
+				}
+			}
+		}
+
+		//['port_id' => 1, 'jednostka_id' => 1, 'ilosc' => 0, 'produkowana' => true]
 
 		$budynki = array(
 			['id' => 1, 'nazwa' => 'Kantyna', 'koszt' => '20'],
@@ -157,16 +192,22 @@ class DatabaseSeeder extends Seeder {
 		);
 		
 		DB::table('users')->insert($uzytkownik);
-		DB::table('porty')->insert($port);
+		DB::table('porty')->insert($porty);
 		DB::table('mapy')->insert($mapy);
 		DB::table('jednostki')->insert($jednostki);
 		DB::table('surowce')->insert($surowce);
+		DB::table('jednostka_koszty')->insert($jednostka_koszty);
+		DB::table('port_jednostki')->insert($port_jednostki);
 		DB::table('budynki')->insert($budynki);
 		DB::table('budynek_surowce')->insert($budynek_surowce);
 		DB::table('budynek_surowce')->insert($budynek_surowce_mag);
 		DB::table('budynek_koszty')->insert($budynek_koszty);
 		DB::table('port_budynki')->insert($port_budynki);
 		DB::table('port_surowce')->insert($port_surowce);
+
+		foreach($porty as $p) {
+			Surowiec::refresh($p['id']);
+		}
 	}
 
 }

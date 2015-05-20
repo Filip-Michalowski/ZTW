@@ -28,12 +28,10 @@ class Port extends Model {
 			$ps->surowiec_id = $sur->id;
 
 			if($sur->id == 1) {
-				$ps->rate = 1;
-			} else {
-				$ps->rate = 0;
-			}
-
-			$ps->magazyn = 200;
+				$ps->ilosc = 100;
+			} else if($sur->id == 2) {
+				$ps->ilosc = 3;
+			} 
 
 			$ps->save();
 		}
@@ -48,6 +46,20 @@ class Port extends Model {
 			$pb->budynek_id = $bud->id;
 
 			$pb->save();
+		}
+
+		Surowiec::refresh($port->id);
+
+		//Przypisuje wszystkie jednostki
+		$jednostki = Jednostka::get();
+
+		foreach($jednostki as $jed) {
+			$pj = new Port_Jednostki;
+
+			$pj->port_id = $port->id;
+			$pj->jednostka_id = $jed->id;
+
+			$pj->save();
 		}
 	}
 

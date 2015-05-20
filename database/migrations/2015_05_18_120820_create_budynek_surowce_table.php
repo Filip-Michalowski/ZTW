@@ -17,11 +17,13 @@ class CreateBudynekSurowceTable extends Migration {
 			$table->integer('budynek_id')->unsigned();
 			$table->foreign('budynek_id')
 				  ->references('id')
-				  ->on('budynki');
+				  ->on('budynki')
+				  ->onDelete('cascade');
 			$table->integer('surowiec_id')->unsigned();
 			$table->foreign('surowiec_id')
 				  ->references('id')
-				  ->on('surowce');
+				  ->on('surowce')
+				  ->onDelete('cascade');
 
 			$table->primary(['budynek_id', 'surowiec_id']);
 

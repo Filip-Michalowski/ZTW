@@ -30,7 +30,7 @@
                         /
                         {{$sur -> magazyn}}</td>
                     @endif
-                    <td>{{$sur -> rate * 60}}</td>
+                    <td>{{round($sur -> rate * 60)}}</td>
                 @else
                     <td style="text-align: right;">port_id: {{$port_id}}</td>
                     <td>BŁĄĄĄĄĄĄĄĄĄĄĄD trzeba wszystkie wiersze port_surowce tworzyć przy tworzeniu portu</td>

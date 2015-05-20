@@ -16,7 +16,6 @@ class CreateJednostkiTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('nazwa');
-			$table->integer('koszt');
 			$table->timestamps();
 		});
 	}

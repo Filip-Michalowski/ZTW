@@ -19,7 +19,9 @@ class CreatePortJednostkiTable extends Migration {
 
 			$table->primary(['port_id','jednostka_id']);
 
-			$table->integer('ilosc');
+			$table->integer('ilosc')->default(0);
+			$table->boolean('produkowana')->default(true);
+			
 			$table->rememberToken();
 			$table->timestamps();
 
@@ -30,7 +32,8 @@ class CreatePortJednostkiTable extends Migration {
 
 			$table->foreign('jednostka_id')
 				  ->references('id')
-				  ->on('jednostki');
+				  ->on('jednostki')
+				  ->onDelete('cascade');
 			});
 	}
 

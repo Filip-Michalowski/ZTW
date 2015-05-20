@@ -30,11 +30,13 @@ class CreatePortSurowceTable extends Migration {
 
 			$table->foreign('port_id')
 				  ->references('id')
-				  ->on('porty');
+				  ->on('porty')
+				  ->onDelete('cascade');
 
 			$table->foreign('surowiec_id')
 				  ->references('id')
-				  ->on('surowce');
+				  ->on('surowce')
+				  ->onDelete('cascade');
 			});
 	}
 

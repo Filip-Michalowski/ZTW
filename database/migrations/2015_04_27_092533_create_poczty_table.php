@@ -16,6 +16,7 @@ class CreatePocztyTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('temat');
+			$table->longText('tresc');
 			$table->timestamps();
 		});
 	}

@@ -6,7 +6,7 @@ class Budynek extends Model {
 
 	protected $table = 'budynki';
 
-	public function koszt() {
+	public function koszty() {
 		return $this->hasMany('App\Budynek_Koszty');
 	}
 

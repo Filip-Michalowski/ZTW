@@ -9,4 +9,8 @@ class Jednostka_Koszty extends Model {
 	public function jednostka() {
 		return $this->belongsTo('App\Jednostka');
 	}
+
+	public function surowiec() {
+		return $this->belongsTo('App\Surowiec');
+	}
 }

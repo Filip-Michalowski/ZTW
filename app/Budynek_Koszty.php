@@ -9,4 +9,8 @@ class Budynek_Koszty extends Model {
 	public function budynek() {
 		return $this->belongsTo('App\Budynek');
 	}
+
+	public function surowiec() {
+		return $this->belongsTo('App\Surowiec');
+	}
 }

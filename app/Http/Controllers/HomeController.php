@@ -3,6 +3,7 @@
 use App\Gracz_Porty;
 use App\User;
 use App\Port;
+use App\Surowiec;
 use Auth;
 use Cookie;
 use Illuminate\Http\Request;
