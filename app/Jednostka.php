@@ -6,4 +6,7 @@ class Jednostka extends Model {
 
 	protected $table = 'jednostki';
 
+	public function koszty() {
+		return $this->hasMany('App\Jednostka_Koszty');
+	}
 }
