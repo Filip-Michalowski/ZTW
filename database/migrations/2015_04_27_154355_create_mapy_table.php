@@ -14,8 +14,8 @@ class CreateMapyTable extends Migration {
 	{
 		Schema::create('mapy', function(Blueprint $table)
 		{
+			//laravel wymaga istnienia takiego pola, by móc użyć jednej z wbudowanych funkcji.
 			$table->integer('id');
-
 			$table->unique('id');
 
 			$table->integer('pos_x');

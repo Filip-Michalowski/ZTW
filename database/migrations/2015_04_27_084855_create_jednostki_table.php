@@ -16,6 +16,9 @@ class CreateJednostkiTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('nazwa');
+			$table->integer('atak')->default(10);
+			$table->integer('obrona')->default(10);
+			$table->integer('plecak')->default(20);
 			$table->timestamps();
 		});
 	}
