@@ -44,6 +44,8 @@ class JednostkaController extends Controller {
 
 		$sur = Port_Surowce::where('port_id',$ind)->get();
 
+		$stac_na = true;
+		
 		foreach($poj->koszty as $koszt) {
 			if($koszt->koszt > $sur[$koszt->surowiec_id - 1]->ilosc) {
 				$stac_na = false;

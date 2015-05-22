@@ -31,6 +31,8 @@ class CreateAtakJednostkiTable extends Migration {
 			$table->integer('ilosc_wyjscie')->unsigned();
 			$table->integer('ilosc_powrot')->unsigned()->nullable();
 
+			$table->boolean('czy_obronca')->default(0);
+
 			//NOTKA: W ramach optymalizacji dać także sumaryczną wartość ataku?
 
 			$table->timestamps();

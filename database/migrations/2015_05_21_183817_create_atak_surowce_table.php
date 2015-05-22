@@ -14,6 +14,8 @@ class CreateAtakSurowceTable extends Migration {
 	{
 		Schema::create('atak_surowce', function(Blueprint $table)
 		{
+			//Tworzone w razie potrzeby
+			
 			$table->integer('atak_id')->unsigned();
 			$table->foreign('atak_id')
 				->references('id')

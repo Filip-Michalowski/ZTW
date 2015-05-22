@@ -15,9 +15,21 @@ class CreateAtakTable extends Migration {
 		Schema::create('ataki', function(Blueprint $table)
 		{
 			$table->increments('id');
-			//$table->dateTime('dataWyjscia');
+
+			$table->integer('atakujacy_gracz_id')->unsigned()->nullable();
+			$table->foreign('atakujacy_gracz_id')
+				->references('id')
+				->on('users')
+				->onDelete('set null');
+
+			$table->integer('atakujacy_port_id')->unsigned()->nullable();
+			$table->foreign('atakujacy_port_id')
+				->references('id')
+				->on('porty')
+				->onDelete('set null');
+
 			$table->dateTime('dataBojki');
-			$table->dateTime('dataPowrotu');
+			$table->dateTime('dataPowrotu')->nullable();
 
 			/*
 			utwo-
@@ -37,7 +49,7 @@ class CreateAtakTable extends Migration {
 				->on('mapy');
 
 			//Na przyszłość?: zdarzenia losowe dla wysp bezludnych
-			$table->integer('wydarzenie')->unsigned()->nullable():
+			$table->integer('wydarzenie')->unsigned()->nullable();
 
 
 			$table->timestamps();

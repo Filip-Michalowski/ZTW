@@ -54,7 +54,7 @@ class BudynekController extends Controller {
 
 		if($stac_na) {
 			foreach($pob->koszty as $koszt) {
-				Surowiec::inout($ind,$koszt->surowiec_id,(-1) * $koszt->koszt);
+				Surowiec::inout($ind,$koszt->surowiec_id,(-1) * ($pob->poziom + 1) * $koszt->koszt);
 			}
 			Port_Budynki::where('budynek_id', $id)-> where('port_id', $ind)->increment('poziom');
 			Surowiec::refresh($ind);

@@ -134,9 +134,9 @@ class DatabaseSeeder extends Seeder {
 		);
 
 		$budynek_surowce = array(
-			['budynek_id' => 1, 'surowiec_id' => 1, 'rate' => 2],
-			['budynek_id' => 1, 'surowiec_id' => 2, 'rate' => 1],
-			['budynek_id' => 2, 'surowiec_id' => 3, 'rate' => 1],
+			['budynek_id' => 1, 'surowiec_id' => 1, 'rate' => 0.2],
+			['budynek_id' => 1, 'surowiec_id' => 2, 'rate' => 0.1],
+			['budynek_id' => 2, 'surowiec_id' => 3, 'rate' => 0.1],
 		);
 
 		$budynek_surowce_mag = array(
