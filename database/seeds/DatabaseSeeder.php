@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder {
 	{
 		Model::unguard();
 		
+		DB::table('atak_jednostki')->delete();
+		DB::table('ataki')->delete();
 		DB::table('port_surowce')->delete();
 		DB::table('port_budynki')->delete();
 		DB::table('budynek_koszty')->delete();
@@ -114,9 +116,10 @@ class DatabaseSeeder extends Seeder {
 		foreach($porty as $por) {
 			foreach($jednostki as $jed) {
 				if($jed['id'] < 3) {
+					//////////////////////////////////////////////////////////////////////Ilość 
 					$port_jednostki[] = ['port_id' => $por['id'],
 					 'jednostka_id' => $jed['id'],
-					  'ilosc' => 0, 'produkowana' => true];
+					  'ilosc' => 50, 'produkowana' => true];
 				} else {
 					$port_jednostki[] = ['port_id' => $por['id'],
 					 'jednostka_id' => $jed['id'],
@@ -190,6 +193,20 @@ class DatabaseSeeder extends Seeder {
 			 'magazyn' => 200,
 			 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),],
 		);
+
+		$ataki = array(
+			['id' => 1, 'atakujacy_gracz_id' => 2, 'atakujacy_port_id' => 2,
+			 'dataBojki' => Carbon::now(),
+			 'dataPowrotu' => Carbon::now(),
+			 'status' => 0,
+			 'cel_x' => 2,
+			 'cel_y' => 2]
+		);
+
+		$atak_jednostki = array(
+			['atak_id' => 1, 'jednostka_id' => 1, 'ilosc_wyjscie' => 300],
+			['atak_id' => 1, 'jednostka_id' => 3, 'ilosc_wyjscie' => 100],
+		);
 		
 		DB::table('users')->insert($uzytkownik);
 		DB::table('porty')->insert($porty);
@@ -204,6 +221,8 @@ class DatabaseSeeder extends Seeder {
 		DB::table('budynek_koszty')->insert($budynek_koszty);
 		DB::table('port_budynki')->insert($port_budynki);
 		DB::table('port_surowce')->insert($port_surowce);
+		DB::table('ataki')->insert($ataki);
+		DB::table('atak_jednostki')->insert($atak_jednostki);
 
 		foreach($porty as $p) {
 			Surowiec::refresh($p['id']);

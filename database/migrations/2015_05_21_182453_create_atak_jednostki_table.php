@@ -26,12 +26,12 @@ class CreateAtakJednostkiTable extends Migration {
 				  ->on('jednostki')
 				  ->onDelete('cascade');
 
-			$table->primary(['atak_id', 'jednostka_id']);
+			$table->boolean('czy_obronca')->default(0);
+
+			$table->primary(['atak_id', 'jednostka_id','czy_obronca']);
 
 			$table->integer('ilosc_wyjscie')->unsigned();
-			$table->integer('ilosc_powrot')->unsigned()->nullable();
-
-			$table->boolean('czy_obronca')->default(0);
+			$table->integer('ilosc_powrot')->unsigned()->nullable()->default(null);
 
 			//NOTKA: W ramach optymalizacji dać także sumaryczną wartość ataku?
 
