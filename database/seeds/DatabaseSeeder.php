@@ -84,10 +84,10 @@ class DatabaseSeeder extends Seeder {
 		}
 
 		$jednostki = array(
-			['id' => 1, 'nazwa' => 'Chuderlak'],
-			['id' => 2, 'nazwa' => 'Bukanier'],
-			['id' => 3, 'nazwa' => 'Treser papug'],
-			['id' => 4, 'nazwa' => 'Cyber-Pirat'],
+			['id' => 1, 'nazwa' => 'Chuderlak', 'plecak' => 3],
+			['id' => 2, 'nazwa' => 'Bukanier', 'plecak' => 1],
+			['id' => 3, 'nazwa' => 'Treser papug', 'plecak' => 1],
+			['id' => 4, 'nazwa' => 'Cyber-Pirat', 'plecak' => 10],
 		);
 
 		$surowce = array(
@@ -159,22 +159,22 @@ class DatabaseSeeder extends Seeder {
 		);
 
 		$port_budynki = array(
-			['port_id' => 1, 'budynek_id' => 1, 'poziom' => 0],
-			['port_id' => 1, 'budynek_id' => 2, 'poziom' => 0],
-			['port_id' => 1, 'budynek_id' => 3, 'poziom' => 0],
+			['port_id' => 1, 'budynek_id' => 1, 'poziom' => 3],
+			['port_id' => 1, 'budynek_id' => 2, 'poziom' => 4],
+			['port_id' => 1, 'budynek_id' => 3, 'poziom' => 10],
 			['port_id' => 2, 'budynek_id' => 1, 'poziom' => 0],
 			['port_id' => 2, 'budynek_id' => 2, 'poziom' => 0],
 			['port_id' => 2, 'budynek_id' => 3, 'poziom' => 0],
 		);
 
 		$port_surowce = array(
-			['port_id' => 1, 'surowiec_id' => 1, 'ilosc' => 100, 'rate' => 1,
+			['port_id' => 1, 'surowiec_id' => 1, 'ilosc' => 800, 'rate' => 1,
 			 'magazyn' => 200,
 			 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),],
-		 	['port_id' => 1, 'surowiec_id' => 2, 'ilosc' => 0, 'rate' => 0,
+		 	['port_id' => 1, 'surowiec_id' => 2, 'ilosc' => 100, 'rate' => 0,
 			 'magazyn' => 200,
 			 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),],
-		 	['port_id' => 1, 'surowiec_id' => 3, 'ilosc' => 0, 'rate' => 0,
+		 	['port_id' => 1, 'surowiec_id' => 3, 'ilosc' => 8000, 'rate' => 0,
 			 'magazyn' => 200,
 			 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),],
 			['port_id' => 1, 'surowiec_id' => 4, 'ilosc' => 0, 'rate' => 0,
@@ -195,17 +195,40 @@ class DatabaseSeeder extends Seeder {
 		);
 
 		$ataki = array(
+			/* Atak wygrywający z Valhalli na Helheim */
 			['id' => 1, 'atakujacy_gracz_id' => 2, 'atakujacy_port_id' => 2,
 			 'dataBojki' => Carbon::now(),
 			 'dataPowrotu' => Carbon::now(),
 			 'status' => 0,
 			 'cel_x' => 2,
-			 'cel_y' => 2]
+			 'cel_y' => 2],
+			/* Atak przegrywający z Helheimu na Valhalle */
+			['id' => 2, 'atakujacy_gracz_id' => 1, 'atakujacy_port_id' => 1,
+			 'dataBojki' => Carbon::now()->addMinutes(1),
+			 'dataPowrotu' => Carbon::now()->addMinutes(1),
+			 'status' => 0,
+			 'cel_x' => 8,
+			 'cel_y' => 4],
+			/* Pokojowy przemarsz z Helheimu do Helheimu */
+			['id' => 3, 'atakujacy_gracz_id' => 1, 'atakujacy_port_id' => 1,
+			 'dataBojki' => Carbon::now()->addMinutes(3),
+			 'dataPowrotu' => Carbon::now()->addMinutes(3),
+			 'status' => 0,
+			 'cel_x' => 2,
+			 'cel_y' => 2],
+			
 		);
 
 		$atak_jednostki = array(
+			/* Atak wygrywający z Valhalli na Helheim */
 			['atak_id' => 1, 'jednostka_id' => 1, 'ilosc_wyjscie' => 300],
 			['atak_id' => 1, 'jednostka_id' => 3, 'ilosc_wyjscie' => 100],
+			/* Atak przegrywający z Helheimu na Valhalle */
+			['atak_id' => 2, 'jednostka_id' => 1, 'ilosc_wyjscie' => 50],
+			/* Pokojowy przemarsz z Helheimu do Helheimu */
+			['atak_id' => 3, 'jednostka_id' => 1, 'ilosc_wyjscie' => 1000],
+			['atak_id' => 3, 'jednostka_id' => 4, 'ilosc_wyjscie' => 1],
+			
 		);
 		
 		DB::table('users')->insert($uzytkownik);

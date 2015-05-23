@@ -1,13 +1,4 @@
 <?php
-/*
-OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE 
-OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE 
-OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE 
-OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE 
-OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE 
-OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE 
-OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE 
-*/
 	$host="127.0.0.1"; //replace with database hostname 
 	$username="root"; //replace with database username 
 	$password=""; //replace with database password 
@@ -16,19 +7,19 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 	$con=mysql_connect("$host", "$username", "$password")or die("cannot connect"); 
 	mysql_select_db("$db_name")or die("cannot select DB");
 	
-	for($i = 0; $i<6; $i++) {
-		echo 'OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE<br/>';
-	}
 	
 	/*
 		WA¯NE!
 		Tymczasowo ingore_user_abort jest ustawione na 'false', a time_limit na 0.
 		Podczas implementacji czêœci serwerowej trzeba bêdzie zmodyfikowaæ te wartoœci,
 		gdy¿ bêd¹ one obs³ugiwane CRONem.
+		(Notka dla siebie: dodaæ wtedy modu³ do wczytywania)
 	*/
 	//ignore_user_abort(true);
 	ignore_user_abort(false);
 	set_time_limit(0);
+	
+	echo 'FULLY OPERATIONAL<br/>';
 	
 	demon();
 	
@@ -55,7 +46,7 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 		//Licznik rozpoczêtych pêtli, na przysz³oœæ:
 		//0 - pierwszy rozruch, trzeba wczytaæ niedokoñczone
 		//3600/7200/86.400 - d³ugo chodzi? Refresh.
-		$rutabaga = 3;
+		$rutabaga = 300;
 		
 		$sql = "SELECT * FROM ataki WHERE status = 1 OR status = 2";
 		$result = mysql_query($sql);
@@ -67,7 +58,7 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 				else
 					$queue->insert($row,$row['dataPowrotu']);
 			}
-		}
+		}		
 		
 		while ( ! $stop ) {
 			$rutabaga--;
@@ -85,29 +76,17 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 					$row['status']=1;
 					
 					$queue->insert($row,$row['dataBojki']);
-					echo 'data bójki: '.$row['dataBojki'];
-					echo '<br/>';
-					echo "id: ".$row['id'];
-					echo '<br/>';
-					
 				}
 			}
 			
 			$czas = time();
-			echo $czas.'<br/>';
 			
 			//Czêœæ w³aœciwa
 			$zrobione = false;
 			
 			while(! $zrobione && ! $queue->isEmpty()) {
 				$czubek = $queue->top();
-				if($czubek != null) {
-					echo '<br/><br/> CZUBEK: status='.$czubek['status'].', dataBojki: '.$czubek['dataBojki']
-						.', dataPowrotu'.$czubek['dataPowrotu'].'<br/>';
-				} else {
-					echo '<br/>$czubek jest null';
-				}
-			
+				
 				if($czubek['status'] == 1 && strtotime($czubek['dataBojki']) <= $czas) {
 					//Atak, kolonizacja i relokacja
 					$atak = $queue->extract();
@@ -121,25 +100,17 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 						//Bezludna wyspa (bez portu)
 					} else {
 						$sql = "SELECT * FROM porty WHERE id=".$cel['port_id'];
-						echo '<br/>'.$sql;
 						$result = mysql_query($sql);
 						$cel_port = mysql_fetch_assoc($result);
 						
 						$sql = "SELECT * FROM port_jednostki AS sj JOIN jednostki AS j
 							ON (sj.jednostka_id = j.id)
 							WHERE port_id=".$cel['port_id']." ORDER BY jednostka_id ASC";
-						echo '<br/>'.$sql;
 						$result = mysql_query($sql);
 						$cel_jednostki = array();
 						while($row=mysql_fetch_assoc($result)){
 							$cel_jednostki[] = $row;
-							echo '<br/>'.$row['jednostka_id'];
 						}
-						
-						echo '<br/>Cel jednostki: '.$cel_jednostki[1]['jednostka_id'];
-						$xxlik = 1;
-						echo '<br/>Cel jednostki: '.$cel_jednostki[$xxlik]['jednostka_id'];
-						
 						
 						//Zak³adamy, ¿e istnieje co najmniej 1 jednostka w ataku
 						//Istnienie ataku bez jednostek jest b³êdem!
@@ -148,7 +119,6 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 							ON (aj.jednostka_id = j.id)
 							WHERE atak_id=".$atak['id']." AND czy_obronca = 0
 							ORDER BY jednostka_id ASC";
-						echo '<br/>'.$sql;
 						$result = mysql_query($sql);
 						$atak_jednostki = array();
 						while($row=mysql_fetch_assoc($result)) {
@@ -171,7 +141,6 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 								$brak = true;
 								
 								while($brak && $i >= 0) {
-									echo '<br/>$i: '.$i;
 									if($cel_jednostki[$i]['jednostka_id'] == $aj['jednostka_id']) {
 										$atak_jednostki[$klucz]['ilosc_wyjscie'] += $cel_jednostki[$i]['ilosc'];
 										$brak = false;
@@ -190,7 +159,54 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 								$sql .= "(".$cel['port_id'].", ".$aj['jednostka_id'].", ".$atak_jednostki[$klucz]['ilosc_wyjscie'].")";
 							}
 							
-							//UPDATE jednostek w porcie 
+							$sql .= " ON DUPLICATE KEY UPDATE ilosc=VALUES(ilosc);";
+							$result = mysql_query($sql);
+							
+							//SUROWCE
+							$sql = "SELECT * FROM port_surowce WHERE port_id=".$cel['port_id'];
+							$result = mysql_query($sql);
+							$home_surowce = array();
+							while($row=mysql_fetch_assoc($result)) {
+								$home_surowce[] = $row;
+							}
+							
+							$sql = "SELECT * FROM atak_surowce WHERE atak_id=".$atak['id'];
+							$result = mysql_query($sql);
+							$atak_surowce = array();
+							while($row=mysql_fetch_assoc($result)) {
+								$atak_surowce[] = $row;
+							}
+							
+							$sql = "INSERT INTO port_surowce (port_id, surowiec_id, ilosc, updated_at)
+								VALUES ";
+							
+							$first = true;
+							
+							foreach($atak_surowce as $klucz => $aj) {
+								$i = count($home_surowce) - 1;
+								$brak = true;
+								
+								while($brak && $i >= 0) {
+									if($home_surowce[$i]['surowiec_id'] == $aj['surowiec_id']) {
+										$atak_surowce[$klucz]['ilosc'] += $home_surowce[$i]['ilosc'];
+										$atak_surowce[$klucz]['ilosc'] = min($atak_surowce[$klucz]['ilosc'], $home_surowce[$i]['magazyn']);
+										$brak = false;
+									}
+									else {
+										$i--;
+									}
+								}
+								
+								if($first) {
+									$first = false;
+								} else {
+									$sql .= ", ";
+								}
+								
+								$sql .= "(".$atak['atakujacy_port_id'].", ".$aj['surowiec_id'].", ".$atak_surowce[$klucz]['ilosc']
+									.", '".date('Y-m-d H:i:s',$czas)."')";
+							}
+							
 							$sql .= " ON DUPLICATE KEY UPDATE ilosc=VALUES(ilosc);";
 							$result = mysql_query($sql);
 							
@@ -233,9 +249,7 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 								}
 						
 								$atak_straty = pow(($cel_sila/$atak_sila), 1.5);
-								echo '<br/> straty ataku: '.$atak_straty;
 								$cel_straty = 1.0 - $atak_straty;
-								echo '<br/> straty cel: '.$cel_straty;
 								
 								//Pocz¹tek transakcji
 								$sql_transact = "START TRANSACTION; ";
@@ -258,21 +272,12 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 								
 								//Straty dla atakuj¹cego - AKTUALIZUJESZ ilosc_powrot
 								foreach($atak_jednostki as $klucz => $aj) {
-									echo '<br/>ilosc_wyjscie '.$aj['ilosc_wyjscie'];
-									echo '<br/>round($aj[ilosc_wyjscie] * $atak_straty) '.round($aj['ilosc_wyjscie'] * $atak_straty);
 									$ilosc_powrot = $aj['ilosc_wyjscie'] - round($aj['ilosc_wyjscie'] * $atak_straty);
 									$atak_jednostki[$klucz]['ilosc_powrot'] = $ilosc_powrot;
-									echo '<br/>$ilosc_powrot = '.$ilosc_powrot;
-									echo '<br/>$aj[ilosc_powrot] = '.$aj['ilosc_powrot'];
 									
 									$sql_transact = "UPDATE atak_jednostki SET ilosc_powrot=".$ilosc_powrot." WHERE atak_id=".$aj['atak_id']
 										." AND jednostka_id=".$aj['jednostka_id']." AND czy_obronca=0";
-									echo "<br/>Aktualizacja wracaj¹cych: ".$sql_transact;
 									mysql_query($sql_transact);
-								}
-								
-								/**!***/foreach($atak_jednostki as $aj) {
-									echo '<br/>Poza pierwsz¹ pêtl¹: $aj[ilosc_powrot] = '.$aj['ilosc_powrot'];
 								}
 								
 								//Grabie¿ - skomplikowane
@@ -283,8 +288,6 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 								$wolne_miejsce = 0;								
 								foreach($atak_jednostki as $aj) {
 									$wolne_miejsce += $aj['plecak'] * $aj['ilosc_powrot'];
-									echo "<br/>Przyrostowo: wolne miejsce: ".$wolne_miejsce." ( aj[plecak] = ".$aj['plecak']
-									.", aj[ilosc_powrot] = ".$aj['ilosc_powrot'].") ";
 								}
 								
 								//Pêtla rozk³adania surowców
@@ -363,11 +366,10 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 									} else {
 										$first = false;
 									}
-									$sql_transact .= "(".$cel['port_id'].", ".$sur['surowiec_id'].", ".$sur['ilosc'].", ".$czas.")";
+									$sql_transact .= "(".$cel['port_id'].", ".$sur['surowiec_id'].", ".$sur['ilosc'].", '".date('Y-m-d H:i:s',$czas)."')";
 								}
 								$sql_transact .= " ON DUPLICATE KEY UPDATE ilosc=VALUES(ilosc), updated_at=VALUES(updated_at)";
 								mysql_query($sql_transact);
-								echo '<br/><br/>UPDATE budynków:<br/>'.$sql_transact;
 								
 								//Koniec transakcji
 								$sql_transact = "COMMIT;";
@@ -378,12 +380,6 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 						//Atakuj¹cy przegrywa i wraca z niczym
 								$cel_straty = pow(($atak_sila/$cel_sila), 1.5);
 								$atak_straty = 1.0 - $cel_straty;
-								
-								echo '<br/>Pora¿ka atakuj¹cego! (Coœ jest nie tak?)';
-								echo '<br/>';
-								echo 'Si³a ataku: '.$atak_sila;
-								echo '<br/>';
-								echo 'Si³a obrony: '.$cel_sila;
 								
 								//Pocz¹tek transakcji
 								$sql_transact = "START TRANSACTION; ";
@@ -406,16 +402,11 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 								
 								//Straty dla atakuj¹cego - AKTUALIZUJESZ ilosc_powrot
 								foreach($atak_jednostki as $klucz => $aj) {
-									echo '<br/>ilosc_wyjscie '.$aj['ilosc_wyjscie'];
-									echo '<br/>round($aj[ilosc_wyjscie] * $atak_straty) '.round($aj['ilosc_wyjscie'] * $atak_straty);
 									$ilosc_powrot = $aj['ilosc_wyjscie'] - round($aj['ilosc_wyjscie'] * $atak_straty);
 									$atak_jednostki[$klucz]['ilosc_powrot'] = $ilosc_powrot;
-									echo '<br/>$ilosc_powrot = '.$ilosc_powrot;
-									echo '<br/>$aj[ilosc_powrot] = '.$aj['ilosc_powrot'];
 									
 									$sql_transact = "UPDATE atak_jednostki SET ilosc_powrot=".$ilosc_powrot." WHERE atak_id=".$aj['atak_id']
 										." AND jednostka_id=".$aj['jednostka_id']." AND czy_obronca=0";
-									echo "<br/>Aktualizacja wracaj¹cych: ".$sql_transact;
 									mysql_query($sql_transact);
 								}
 								
@@ -426,7 +417,6 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 								
 							} else {
 						//95% strat po obu stronach - MASAKRA
-								echo 'MASAKERAW. The MASAKERAW.';
 								$cel_straty = 0.95;
 								$atak_straty = 0.95;
 								
@@ -451,16 +441,11 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 								
 								//Straty dla atakuj¹cego - AKTUALIZUJESZ ilosc_powrot
 								foreach($atak_jednostki as $klucz => $aj) {
-									echo '<br/>ilosc_wyjscie '.$aj['ilosc_wyjscie'];
-									echo '<br/>round($aj[ilosc_wyjscie] * $atak_straty) '.round($aj['ilosc_wyjscie'] * $atak_straty);
 									$ilosc_powrot = $aj['ilosc_wyjscie'] - round($aj['ilosc_wyjscie'] * $atak_straty);
 									$atak_jednostki[$klucz]['ilosc_powrot'] = $ilosc_powrot;
-									echo '<br/>$ilosc_powrot = '.$ilosc_powrot;
-									echo '<br/>$aj[ilosc_powrot] = '.$aj['ilosc_powrot'];
 									
 									$sql_transact = "UPDATE atak_jednostki SET ilosc_powrot=".$ilosc_powrot." WHERE atak_id=".$aj['atak_id']
 										." AND jednostka_id=".$aj['jednostka_id']." AND czy_obronca=0";
-									echo "<br/>Aktualizacja wracaj¹cych: ".$sql_transact;
 									mysql_query($sql_transact);
 								}
 								
@@ -483,15 +468,15 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 					//Powrót
 					$atak = $queue->extract();
 					
+					
+					//JEDNOSTKI
 					$sql = "SELECT * FROM port_jednostki AS sj JOIN jednostki AS j
 						ON (sj.jednostka_id = j.id)
 						WHERE port_id=".$atak['atakujacy_port_id']." ORDER BY jednostka_id ASC";
-					echo '<br/>'.$sql;
 					$result = mysql_query($sql);
 					$home_jednostki = array();
 					while($row=mysql_fetch_assoc($result)){
 						$home_jednostki[] = $row;
-						echo '<br/>'.$row['jednostka_id'];
 					}
 					
 					$sql = "SELECT *
@@ -499,34 +484,24 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 						ON (aj.jednostka_id = j.id)
 						WHERE atak_id=".$atak['id']." AND czy_obronca = 0
 						ORDER BY jednostka_id ASC";
-					echo '<br/>'.$sql;
 					$result = mysql_query($sql);
 					$atak_jednostki = array();
 					while($row=mysql_fetch_assoc($result)) {
 						$atak_jednostki[] = $row;
 					}
 					
-					//Pocz¹tek INSERT INTO ... ON DUPLICATE KEY UPDATE ...
-					//UWAGA - zwiêksza wartoœæ AUTO_INCREMENT, zatem NIE U¯YWAÆ TEGO W TABELACH Z AUTO_INCREMENT!!!
 					$sql = "INSERT INTO port_jednostki (port_id, jednostka_id, ilosc)
 						VALUES ";
 					
 					$first = true;
 					
 					foreach($atak_jednostki as $klucz => $aj) {
-						echo '<br/>Pêtla dla jednostki id'.$aj['jednostka_id'];
 						$i = count($home_jednostki) - 1;
 						$brak = true;
 						
 						while($brak && $i >= 0) {
-							echo '<br/>$i: '.$i;
 							if($home_jednostki[$i]['jednostka_id'] == $aj['jednostka_id']) {
-								echo '<br/>id jednostki: '.$aj['jednostka_id'];
-								echo '<br/>Powrót krótka nazwa przed: '.$aj['ilosc_powrot'];
-								echo '<br/>Home jednostki przed: '.$home_jednostki[$i]['ilosc'];
 								$atak_jednostki[$klucz]['ilosc_powrot'] += $home_jednostki[$i]['ilosc'];
-								echo '<br/>Powrót d³uga nazwa: '.$atak_jednostki[$klucz]['ilosc_powrot'];
-								echo '<br/>Powrót krótka nazwa: '.$aj['ilosc_powrot'];
 								$brak = false;
 							}
 							else {
@@ -543,9 +518,57 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 						$sql .= "(".$atak['atakujacy_port_id'].", ".$aj['jednostka_id'].", ".$atak_jednostki[$klucz]['ilosc_powrot'].")";
 					}
 					
-					//UPDATE jednostek w porcie 
 					$sql .= " ON DUPLICATE KEY UPDATE ilosc=VALUES(ilosc);";
 					$result = mysql_query($sql);
+					
+					
+					//SUROWCE
+					$sql = "SELECT * FROM port_surowce WHERE port_id=".$atak['atakujacy_port_id'];
+					$result = mysql_query($sql);
+					$home_surowce = array();
+					while($row=mysql_fetch_assoc($result)) {
+						$home_surowce[] = $row;
+					}
+					
+					$sql = "SELECT * FROM atak_surowce WHERE atak_id=".$atak['id'];
+					$result = mysql_query($sql);
+					$atak_surowce = array();
+					while($row=mysql_fetch_assoc($result)) {
+						$atak_surowce[] = $row;
+					}
+					
+					$sql = "INSERT INTO port_surowce (port_id, surowiec_id, ilosc, updated_at)
+						VALUES ";
+					
+					$first = true;
+					
+					foreach($atak_surowce as $klucz => $aj) {
+						$i = count($home_surowce) - 1;
+						$brak = true;
+						
+						while($brak && $i >= 0) {
+							if($home_surowce[$i]['surowiec_id'] == $aj['surowiec_id']) {
+								$atak_surowce[$klucz]['ilosc'] += $home_surowce[$i]['ilosc'];
+								$atak_surowce[$klucz]['ilosc'] = min($atak_surowce[$klucz]['ilosc'], $home_surowce[$i]['magazyn']);
+								$brak = false;
+							}
+							else {
+								$i--;
+							}
+						}
+						
+						if($first) {
+							$first = false;
+						} else {
+							$sql .= ", ";
+						}
+						
+						$sql .= "(".$atak['atakujacy_port_id'].", ".$aj['surowiec_id'].", ".$atak_surowce[$klucz]['ilosc']
+							.", '".date('Y-m-d H:i:s',$czas)."')";
+					}
+					
+					$sql .= " ON DUPLICATE KEY UPDATE ilosc=VALUES(ilosc);";
+					$result = mysql_query($sql);;
 					
 					//Zmiana statusu ataku na wracaj¹cy
 					$atak['status'] = 3;
@@ -556,11 +579,8 @@ OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE OBSOLETE
 				}
 			}
 			
-			echo '<br/><hr/>';
-			/***!**/if( $rutabaga <= 0 ) {
-				/***!*****/$stop = true;
-				/****!****/echo '<br/>Czas dzia³ania pêtli: '.(time() - $czas);
-			}
+			if($rutabaga <= 0)
+				$stop = true;
 		}
 	}
 	
