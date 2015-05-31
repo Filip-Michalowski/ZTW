@@ -82,22 +82,27 @@ class AtkController extends Controller {
 		->first();
 		$port_cel = Port::where('id','=',$wyspa->port_id)
 		->first();
+		$port_cel_id = null;
 		$obronca = null;
 		if($port_cel != null) {
 			$obronca = $port_cel->gracz_id;
+			$port_cel_id = $port_cel->id;
 		}
-
-
-
+		$wydarzenie = null;
+		if($request->input('colonization') == 1) {
+			$wydarzenie = $request->input('newport');
+		}
+		
 		$ataki = Atak::create([
 			'atakujacy_gracz_id' =>  Auth::user()->id,
 			'broniacy_gracz_id' => $obronca,
 			'atakujacy_port_id' => $ind,
-			'broniacy_port_id' => $port_cel,
-			'dataBojki'=> $czas1,
-			'dataPowrotu'=> $czas2,
-			'cel_x'=> $x_param,
-			'cel_y'=> $y_param,
+			'broniacy_port_id' => $port_cel_id,
+			'dataBojki' => $czas1,
+			'dataPowrotu' => $czas2,
+			'cel_x' => $x_param,
+			'cel_y' => $y_param,
+			'wydarzenie' => $wydarzenie,
 		]);
 		
 		
@@ -121,15 +126,15 @@ class AtkController extends Controller {
 			}
 		}
 
-		if(!(empty($request->input('major_general')))) {
+		if($request->input('colonization') == 1) {
 			$atakJednostki = Atak_Jednostki::create([
 				'atak_id' => $ataki->id,
 				'jednostka_id' => 100,
-				'ilosc_wyjscie' => $request->input('major_general')
+				'ilosc_wyjscie' => $request->input('major-general')
 					]);
 
-			$iloscObecna = $port_jednostki[100]->ilosc;
-			$odejmij=$iloscObecna-$request->input('major_general');
+			$iloscObecna = $port_jednostki[$i]->ilosc;
+			$odejmij=$iloscObecna-$request->input('major-general');
 			
 			Port_Jednostki::where('port_id','=',$ind)
 				->where('jednostka_id','=',100)

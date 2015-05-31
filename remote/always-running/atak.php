@@ -54,7 +54,7 @@
 		
 		while ( ! $stop ) {
 			$rutabaga++;
-		
+			
 			sleep($sleep); // Sleep for one second
 			
 			//Dodanie nowych ataków do kolejki
@@ -88,9 +88,94 @@
 					$result = mysqli_query($con,$sql);
 					$cel = mysqli_fetch_assoc($result);
 					
-					if($cel == null) {
+					if($cel['port_id'] == null) {
 						//TODO - kolonizacja
 						//Bezludna wyspa (bez portu)
+						
+						$sql = "INSERT INTO porty (nazwa, gracz_id)
+						VALUES (
+						'".$atak['wydarzenie']."'
+						, ".$atak['atakujacy_gracz_id']."
+						)";
+						mysqli_query($con,$sql);
+						$newport_id = mysqli_insert_id($con);
+						
+						$sql = "UPDATE mapy SET port_id=".$newport_id."
+						WHERE pos_x=".$atak['cel_x']." AND pos_y=".$atak['cel_y'];
+						mysqli_query($con,$sql);
+						
+						$sql = "SELECT *
+							FROM atak_jednostki AS aj JOIN jednostki AS j
+							ON (aj.jednostka_id = j.id)
+							WHERE atak_id=".$atak['id']." AND czy_obronca = 0
+							ORDER BY jednostka_id ASC";
+						$result = mysqli_query($con,$sql);
+						$atak_jednostki = array();
+						while($row=mysqli_fetch_assoc($result)){
+							$atak_jednostki[($row['jednostka_id'])] = $row['ilosc_wyjscie'];
+						}
+						
+						$sql = "SELECT id FROM jednostki";
+						$result = mysqli_query($con,$sql);
+												
+						$first = true;
+						$bulk_sql = "INSERT INTO port_jednostki (port_id, jednostka_id, ilosc) VALUES ";
+						while($row=mysqli_fetch_assoc($result)){
+							if($first)
+								$first = false;
+							else
+								$bulk_sql .= ",";
+							$bulk_sql .= "(".$newport_id.",".$row['id'].",";
+							
+							if($row['id'] != 100 && isset( $atak_jednostki[$row['id']] )) {
+								$bulk_sql .= $atak_jednostki[$row['id']];
+							} else {
+								$bulk_sql .= 0;
+							}
+							$bulk_sql .= ")";
+						}
+						mysqli_query($con,$bulk_sql);
+						
+						$sql = "SELECT id FROM budynki";
+						$result = mysqli_query($con,$sql);
+						
+						$first = true;
+						$bulk_sql = "INSERT INTO port_budynki (port_id, budynek_id) VALUES ";
+						while($row=mysqli_fetch_assoc($result)){
+							if($first)
+								$first = false;
+							else
+								$bulk_sql .= ",";
+							$bulk_sql .= "(".$newport_id.",".$row['id'].")";
+						}
+						mysqli_query($con,$bulk_sql);
+						
+						$sql = "SELECT id FROM surowce";
+						$result = mysqli_query($con,$sql);
+						
+						$first = true;
+						$bulk_sql = "INSERT INTO port_surowce (port_id, surowiec_id, ilosc, rate, updated_at) VALUES ";
+						while($row=mysqli_fetch_assoc($result)){
+							if($first)
+								$first = false;
+							else
+								$bulk_sql .= ",";
+							
+							$bulk_sql .= "(".$newport_id.",".$row['id'].",";
+							if($row['id'] == 1)
+								$bulk_sql .= "100,0.4,";
+							else if($row['id'] == 2)
+								$bulk_sql .= "3,0,";
+							else
+								$bulk_sql .= "0,0,";
+							$bulk_sql .= "'".date('Y-m-d H:i:s',time())."')";
+						}
+						mysqli_query($con,$bulk_sql);
+						
+						//Zg³oszenie koñca przetwarzania tego ataku
+							$atak['status'] = 5;
+							$sql = "UPDATE ataki SET status=5 WHERE id=".$atak['id'];
+							mysqli_query($con,$sql);						
 					} else {
 						$sql = "SELECT * FROM porty WHERE id=".$cel['port_id'];
 						$result = mysqli_query($con,$sql);
@@ -204,8 +289,8 @@
 							$result = mysqli_query($con,$sql);
 							
 							//Zg³oszenie koñca przetwarzania tego ataku
-							$atak['status'] = 3;
-							$sql = "UPDATE ataki SET status=3 WHERE id=".$atak['id'];
+							$atak['status'] = 4;
+							$sql = "UPDATE ataki SET status=4 WHERE id=".$atak['id'];
 							mysqli_query($con,$sql);
 						} else {
 							//Atak
@@ -572,11 +657,13 @@
 				}
 			}
 			
-			if($czas - $czas_startu >= 3594)
+			if($czas - $czas_startu >= 3)//(3599-$sleep))
+			{
 				$stop = true;
+				echo 'Liczba petli: '.$rutabaga;
+			}
 		}
 	}
-	echo 'Liczba petli: '.$rutabaga;
 	
 	mysqli_close($con);
 	exit();

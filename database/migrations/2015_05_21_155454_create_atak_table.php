@@ -65,7 +65,7 @@ class CreateAtakTable extends Migration {
 				->onDelete('no action');
 
 			//Na przyszłość?: zdarzenia losowe dla wysp bezludnych
-			$table->integer('wydarzenie')->unsigned()->nullable();
+			$table->string('wydarzenie')->nullable();
 
 			$table->timestamps();
 		});

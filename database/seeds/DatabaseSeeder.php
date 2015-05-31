@@ -128,11 +128,11 @@ class DatabaseSeeder extends Seeder {
 				} else if($jed['id'] == 100) {
 					$port_jednostki[] = ['port_id' => $por['id'],
 					 'jednostka_id' => $jed['id'],
-					  'ilosc' => 2, 'produkowana' => false];
+					  'ilosc' => 2, 'produkowana' => true];
 				} else {
 					$port_jednostki[] = ['port_id' => $por['id'],
 					 'jednostka_id' => $jed['id'],
-					  'ilosc' => 0, 'produkowana' => false];
+					  'ilosc' => 0, 'produkowana' => true];
 				}
 			}
 		}
@@ -206,6 +206,7 @@ class DatabaseSeeder extends Seeder {
 		$ataki = array(
 			/* Atak wygrywający z Valhalli na Helheim */
 			['id' => 1, 'atakujacy_gracz_id' => 2, 'atakujacy_port_id' => 2,
+			 'broniacy_gracz_id' => 1, 'broniacy_port_id' => 1,
 			 'dataBojki' => Carbon::now()->addMinutes(1),
 			 'dataPowrotu' => Carbon::now()->addMinutes(2),
 			 'status' => 0,
@@ -213,6 +214,7 @@ class DatabaseSeeder extends Seeder {
 			 'cel_y' => 2],
 			/* Atak przegrywający z Helheimu na Valhalle */
 			['id' => 2, 'atakujacy_gracz_id' => 1, 'atakujacy_port_id' => 1,
+			 'broniacy_gracz_id' => 2, 'broniacy_port_id' => 2,
 			 'dataBojki' => Carbon::now()->addMinutes(2),
 			 'dataPowrotu' => Carbon::now()->addMinutes(3),
 			 'status' => 0,
@@ -220,6 +222,7 @@ class DatabaseSeeder extends Seeder {
 			 'cel_y' => 4],
 			/* Pokojowy przemarsz z Helheimu do Helheimu */
 			['id' => 3, 'atakujacy_gracz_id' => 1, 'atakujacy_port_id' => 1,
+			 'broniacy_gracz_id' => 1, 'broniacy_port_id' => 1,
 			 'dataBojki' => Carbon::now()->addMinutes(4),
 			 'dataPowrotu' => Carbon::now()->addMinutes(5),
 			 'status' => 0,
