@@ -84,10 +84,11 @@ class DatabaseSeeder extends Seeder {
 		}
 
 		$jednostki = array(
-			['id' => 1, 'nazwa' => 'Chuderlak', 'plecak' => 3],
-			['id' => 2, 'nazwa' => 'Bukanier', 'plecak' => 1],
-			['id' => 3, 'nazwa' => 'Treser papug', 'plecak' => 1],
-			['id' => 4, 'nazwa' => 'Cyber-Pirat', 'plecak' => 10],
+			['id' => 1, 'nazwa' => 'Chuderlak', 'plecak' => 3, 'atak' => 10, 'obrona' => 10],
+			['id' => 2, 'nazwa' => 'Bukanier', 'plecak' => 1, 'atak' => 13, 'obrona' => 20],
+			['id' => 3, 'nazwa' => 'Treser papug', 'plecak' => 1, 'atak' => 40, 'obrona' => 4],
+			['id' => 4, 'nazwa' => 'Cyber-Pirat', 'plecak' => 10, 'atak' => 100, 'obrona' => 100],
+			['id' => 100, 'nazwa' => 'Major-Generał', 'plecak' => 0, 'atak' => 1, 'obrona' => 11],
 		);
 
 		$surowce = array(
@@ -109,6 +110,10 @@ class DatabaseSeeder extends Seeder {
 			['jednostka_id' => 4, 'surowiec_id' => 2, 'koszt' => 50],
 			['jednostka_id' => 4, 'surowiec_id' => 3, 'koszt' => 50],
 			['jednostka_id' => 4, 'surowiec_id' => 4, 'koszt' => 50],
+			['jednostka_id' => 100, 'surowiec_id' => 1, 'koszt' => 2000],
+			['jednostka_id' => 100, 'surowiec_id' => 2, 'koszt' => 1000],
+			['jednostka_id' => 100, 'surowiec_id' => 3, 'koszt' => 500],
+			['jednostka_id' => 100, 'surowiec_id' => 4, 'koszt' => 300],
 		);
 
 		$port_jednostki = array();
@@ -120,6 +125,10 @@ class DatabaseSeeder extends Seeder {
 					$port_jednostki[] = ['port_id' => $por['id'],
 					 'jednostka_id' => $jed['id'],
 					  'ilosc' => 50, 'produkowana' => true];
+				} else if($jed['id'] == 100) {
+					$port_jednostki[] = ['port_id' => $por['id'],
+					 'jednostka_id' => $jed['id'],
+					  'ilosc' => 2, 'produkowana' => false];
 				} else {
 					$port_jednostki[] = ['port_id' => $por['id'],
 					 'jednostka_id' => $jed['id'],
@@ -246,6 +255,9 @@ class DatabaseSeeder extends Seeder {
 		DB::table('port_surowce')->insert($port_surowce);
 		DB::table('ataki')->insert($ataki);
 		DB::table('atak_jednostki')->insert($atak_jednostki);
+
+		$statement = "ALTER TABLE jednostki AUTO_INCREMENT = 5;";
+		DB::unprepared($statement);
 
 		foreach($porty as $p) {
 			Surowiec::refresh($p['id']);

@@ -31,11 +31,20 @@ class AtRequest extends Request {
 	 */
 	public function rules()
 	{
-    foreach($this->request->get('name') as $key => $val)
-	{
-    $rules['name.'.$key] = 'integer';
-    }
-	return $rules;
+	    foreach($this->request->get('amount') as $key => $val)
+		{
+			echo $key;
+	    	$rules['amount.'.$key] = 'integer';
+	    }
+
+	    if($this->request->get('colonization')) {
+		    $rules['newport'] = 'required|unique:porty,nazwa';
+		    $rules['major-general'] = 'required|integer|min:1|max:1';
+		} else {
+			//
+		}
+
+		return $rules;
 	}
 
 }

@@ -22,11 +22,24 @@ class CreateAtakTable extends Migration {
 				->on('users')
 				->onDelete('set null');
 
+			$table->integer('broniacy_gracz_id')->unsigned()->nullable();
+			$table->foreign('broniacy_gracz_id')
+				->references('id')
+				->on('users')
+				->onDelete('set null');
+
 			$table->integer('atakujacy_port_id')->unsigned()->nullable();
 			$table->foreign('atakujacy_port_id')
 				->references('id')
 				->on('porty')
 				->onDelete('set null');
+
+			$table->integer('broniacy_port_id')->unsigned()->nullable();
+			$table->foreign('broniacy_port_id')
+				->references('id')
+				->on('porty')
+				->onDelete('set null');
+
 
 			$table->dateTime('dataBojki');
 			$table->dateTime('dataPowrotu')->nullable();
@@ -38,6 +51,8 @@ class CreateAtakTable extends Migration {
 			wyjście | wczytanie | bójka | powrót | całkowicie przeprocesowany
 					|		    |       |		 |
 					0		    1       2		 3
+			4 - dołączenie
+			5 - kolonizacja
 			*/
 			$table->integer('status')->default(0);
 
@@ -46,11 +61,11 @@ class CreateAtakTable extends Migration {
 			
 			$table->foreign(['cel_x','cel_y'])
 				->references(['pos_x','pos_y'])
-				->on('mapy');
+				->on('mapy')
+				->onDelete('no action');
 
 			//Na przyszłość?: zdarzenia losowe dla wysp bezludnych
 			$table->integer('wydarzenie')->unsigned()->nullable();
-
 
 			$table->timestamps();
 		});
