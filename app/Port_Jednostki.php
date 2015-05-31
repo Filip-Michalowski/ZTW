@@ -13,4 +13,6 @@ class Port_Jednostki extends Model {
 	public function port() {
 		return $this->belongsTo('App\Port');
 	}
+	
+	
 }

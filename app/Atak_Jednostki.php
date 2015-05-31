@@ -4,7 +4,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Atak_Jednostki extends Model {
 
-	protected $table('atak_jednostki');
+	protected $table = 'atak_jednostki';
+	
+	protected $fillable = ['atak_id',
+			'jednostka_id',
+			'ilosc_wyjscie'];
 
 	public function atak() {
 		return $this->belongsTo('App\Atak');

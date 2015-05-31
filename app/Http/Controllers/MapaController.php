@@ -132,4 +132,6 @@ class MapaController extends Controller {
 
 		return Redirect::to('/mapa');
 	}
+	
+
 }

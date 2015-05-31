@@ -4,7 +4,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Atak extends Model {
 
-	protected $table('ataki');
+	protected $table='ataki';
+	
+	protected $fillable = ['atakujacy_gracz_id',
+			'atakujacy_port_id',
+			'dataBojki',
+			'dataPowrotu',
+			'cel_x',
+			'cel_y'];
 
 	public function jednostki() {
 		return $this->hasMany('App\Atak_Jednostki');

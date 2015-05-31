@@ -62,4 +62,5 @@ class JednostkaController extends Controller {
 			return Redirect::action('JednostkaController@index')->withErrors('W porcie jest za mało surowców, by móc zwerbować '.$poj->nazwa.'.');
 		}
 	}
+
 }
