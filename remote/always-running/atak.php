@@ -15,11 +15,8 @@
 		gdy¿ bêd¹ one obs³ugiwane CRONem.
 		(Notka dla siebie: dodaæ wtedy modu³ do wczytywania)
 	*/
-	//ignore_user_abort(true);
-	ignore_user_abort(false);
+	ignore_user_abort(true);
 	set_time_limit(0);
-	
-	echo 'FULLY OPERATIONAL<br/>';
 	
 	demon();
 	
@@ -40,13 +37,14 @@
 		//Biblioteka Spl jest dostêpna dla php >= 5.3, ale nie ma to znaczenia, bo laravel wymaga >= 5.4
 		$queue = new KolejkaPriorytetowa();
 		
-		//Warunek stopu: na przysz³oœæ, do implementacji periodycznego odœwie¿ania.
+		//Warunek stopu: za³¹czany, gdy $czas == $czas_startu.
 		$stop = false;
 		
-		//Licznik rozpoczêtych pêtli, na przysz³oœæ:
-		//0 - pierwszy rozruch, trzeba wczytaæ niedokoñczone
-		//3600/7200/86.400 - d³ugo chodzi? Refresh.
-		$rutabaga = 300;
+		//
+		$czas_startu = time();
+		
+		//Obecny czas
+		$czas = 0;
 		
 		$sql = "SELECT * FROM ataki WHERE status = 1 OR status = 2";
 		$result = mysql_query($sql);
@@ -61,7 +59,6 @@
 		}		
 		
 		while ( ! $stop ) {
-			$rutabaga--;
 			sleep(1); // Sleep for one second
 			
 			//Dodanie nowych ataków do kolejki
@@ -579,7 +576,7 @@
 				}
 			}
 			
-			if($rutabaga <= 0)
+			if($czas - $czas_startu >= 3598)
 				$stop = true;
 		}
 	}

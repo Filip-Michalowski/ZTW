@@ -197,22 +197,22 @@ class DatabaseSeeder extends Seeder {
 		$ataki = array(
 			/* Atak wygrywający z Valhalli na Helheim */
 			['id' => 1, 'atakujacy_gracz_id' => 2, 'atakujacy_port_id' => 2,
-			 'dataBojki' => Carbon::now(),
-			 'dataPowrotu' => Carbon::now(),
+			 'dataBojki' => Carbon::now()->addMinutes(1),
+			 'dataPowrotu' => Carbon::now()->addMinutes(2),
 			 'status' => 0,
 			 'cel_x' => 2,
 			 'cel_y' => 2],
 			/* Atak przegrywający z Helheimu na Valhalle */
 			['id' => 2, 'atakujacy_gracz_id' => 1, 'atakujacy_port_id' => 1,
-			 'dataBojki' => Carbon::now()->addMinutes(1),
-			 'dataPowrotu' => Carbon::now()->addMinutes(1),
+			 'dataBojki' => Carbon::now()->addMinutes(2),
+			 'dataPowrotu' => Carbon::now()->addMinutes(3),
 			 'status' => 0,
 			 'cel_x' => 8,
 			 'cel_y' => 4],
 			/* Pokojowy przemarsz z Helheimu do Helheimu */
 			['id' => 3, 'atakujacy_gracz_id' => 1, 'atakujacy_port_id' => 1,
-			 'dataBojki' => Carbon::now()->addMinutes(3),
-			 'dataPowrotu' => Carbon::now()->addMinutes(3),
+			 'dataBojki' => Carbon::now()->addMinutes(4),
+			 'dataPowrotu' => Carbon::now()->addMinutes(5),
 			 'status' => 0,
 			 'cel_x' => 2,
 			 'cel_y' => 2],
