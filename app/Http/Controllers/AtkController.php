@@ -67,7 +67,7 @@ class AtkController extends Controller {
 			return Redirect::back()->withErrors('Musisz wysłać przynajmniej jedną jednostkę, aby przeprowadzić atak');
 		}
 		
-		
+		$czas0 = Carbon::now();
 		$czas1 = Carbon::now()-> addMinutes(30);
 		$czas2 = Carbon::now()-> addMinutes(60);
 	
@@ -88,6 +88,21 @@ class AtkController extends Controller {
 			'jednostka_id' => $x+1,
 			'ilosc_wyjscie' => $name[$x]
 				]);
+			}
+		}
+		
+		for($x=0; $x<$i; $x++){
+			if(!(empty($name[$x]))){
+				
+            $iloscObecna=$port_jednostki[$x]->ilosc;	
+			$odejmij=$iloscObecna-$name[$x];		
+			
+			Port_Jednostki::where('port_id','=',$ind)
+				->where('jednostka_id','=',$x+1)
+				->update([
+					'ilosc' => $odejmij,
+					'updated_at' => date($czas0)
+			]);
 			}
 		}
 	
