@@ -3,18 +3,25 @@
 @section('content')
 	<h1 class="title">Podsumowanie ataku #{{$atak->atak_id}}</h1>
 	<div class="line"></div>
-	<div class="intro">Atak na 
-    @if($nasi)
-        <span class="ally">{{$atak->b_nazwa}}</span>
+	<div class="intro">
+    @if($atak->atakujacy_gracz_id != $atak->broniacy_gracz_id)
+    Atak na
+        @if($nasi)
+            <span class="ally">{{$atak->b_nazwa}}</span>
+        @else
+            <span class="foe">{{$atak->b_nazwa}}</span>
+        @endif
+        (z 
+        @if(!$nasi)
+            <span class="ally">{{$atak->a_nazwa}}</span>)
+        @else
+            <span class="foe">{{$atak->a_nazwa}}</span>)
+        @endif
     @else
-        <span class="foe">{{$atak->b_nazwa}}</span>
+    Posiłki do <span class="ally">{{$atak->b_nazwa}}</span> (z <span class="ally">{{$atak->a_nazwa}}</span>)
     @endif
-    (z 
-    @if(!$nasi)
-        <span class="ally">{{$atak->a_nazwa}}</span>)
-    @else
-        <span class="foe">{{$atak->a_nazwa}}</span>)
-    @endif
+    
+   
     </div>
 
     <!-- Begin Portfolio -->
@@ -29,7 +36,9 @@
         
         <table>
             <caption class="ally">Jednostki własne
-            @if($atak->status != 0 && $atak->status != 1)
+            @if($atak->atakujacy_gracz_id == $atak->broniacy_gracz_id)
+            wysłane w posiłkach
+            @elseif($atak->status != 0 && $atak->status != 1)
             po bitwie
             @else
             przed bitwą
@@ -42,7 +51,7 @@
                     @if($sa->ilosc_wyjscie == null)
                         <span class="neutral">0</span>
                     @else                        
-                        @if($atak->status != 0 && $atak->status != 1)
+                        @if($atak->status != 0 && $atak->status != 1 && $atak->status != 4)
                         {{$sa->ilosc_powrot}} <span class="neutral">(-{{$sa->ilosc_wyjscie - $sa->ilosc_powrot}})</span>
                         @else
                         {{$sa->ilosc_wyjscie}}
@@ -53,7 +62,7 @@
             @endforeach            
         </table>
 
-        @if($atak->status != 0 && $atak->status != 1)
+        @if($atak->status != 0 && $atak->status != 1 && $atak->status != 4)
         <table>
             <caption class="foe">Jednostki przeciwnika po bitwie</caption>
             @foreach($straty_foe as $sa)

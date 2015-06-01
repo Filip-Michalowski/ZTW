@@ -57,7 +57,7 @@
                 @endif
                 </td>
                 <td>
-                @if($at->status == 0 || $at->status == 1 || $at->status == 2 || $at->status == 3)
+                @if($at->status <= 4)
                     <a href="{{url('/atak')}}/{{$at->atak_id}}">Szczegóły</a>
                 @endif
                 </td>

@@ -80,7 +80,7 @@ class AtkController extends Controller {
 		//0 - gracz atakował i zyskał surowce
 		//1 - gracz został napadnięty i stracił surowce
 		$nasi = 0;
-		if($atak->broniacy_gracz_id == $id) {
+		if($atak->broniacy_gracz_id == $id && $atak->broniacy_gracz_id != $atak->atakujacy_gracz_id) {
 			$nasi = 1;
 		} else {
 			$nasi = 0;
