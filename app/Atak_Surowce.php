@@ -4,7 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Atak_Surowce extends Model {
 
-	protected $table('atak_surowce');
+	protected $table = 'atak_surowce';
 
 	public function atak() {
 		return $this->belongsTo('App\Atak');

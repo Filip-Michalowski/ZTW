@@ -15,11 +15,111 @@ use \Cache;
 use App\Http\Requests\AtRequest;
 use Carbon\Carbon;
 use App\Atak_Jednostki;
+use App\Atak_Surowce;
 use App\Atak;
 use Auth;
+use DB;
 
 class AtkController extends Controller {
 
+	public function index() {
+		$id = Auth::user()->id;
+
+		/*
+		$ataki_wlasne = DB::table('ataki')
+			->join('porty','atakujacy_port_id','=','porty.id')
+			->where('atakujacy_gracz_id','=',$id);
+
+		$ataki = DB::table('ataki')
+			->join('porty','broniacy_port_id','=','porty.id')
+			->where('broniacy_gracz_id','=',$id)
+			->union($ataki_wlasne)
+			->get();*/
+
+		$ataki = DB::table('ataki')
+			->join('porty as ap','atakujacy_port_id','=','ap.id')
+			->leftJoin('porty as bp','broniacy_port_id','=','bp.id')
+			->where('atakujacy_gracz_id','=',$id)
+			->orWhere('broniacy_gracz_id','=',$id)
+			->selectRaw("ataki.id as atak_id,
+				atakujacy_gracz_id,
+				atakujacy_port_id,
+				broniacy_gracz_id,
+				broniacy_port_id,
+				wydarzenie,
+				status,
+				dataBojki,
+				dataPowrotu,
+				ap.nazwa as a_nazwa,
+				bp.nazwa as b_nazwa")
+			->orderBy("dataBojki", "DESC")
+			->get();
+
+		return view('atak.index', compact('ataki','id'));
+	}
+
+	public function deets($atak_id) {
+		$id = Auth::user()->id;
+		$atak = DB::table('ataki')
+			->join('porty as ap','atakujacy_port_id','=','ap.id')
+			->leftJoin('porty as bp','broniacy_port_id','=','bp.id')
+			->where('ataki.id','=',$atak_id)
+			->selectRaw("ataki.id as atak_id,
+				atakujacy_gracz_id,
+				atakujacy_port_id,
+				broniacy_gracz_id,
+				broniacy_port_id,
+				wydarzenie,
+				status,
+				dataBojki,
+				dataPowrotu,
+				ap.nazwa as a_nazwa,
+				bp.nazwa as b_nazwa")
+			->first();
+
+		//0 - gracz atakował i zyskał surowce
+		//1 - gracz został napadnięty i stracił surowce
+		$nasi = 0;
+		if($atak->broniacy_gracz_id == $id) {
+			$nasi = 1;
+		} else {
+			$nasi = 0;
+		}
+		
+		$straty_ally = DB::table('jednostki as j')
+			->leftJoin(DB::raw('(select * 
+                             from atak_jednostki
+                             where atak_id = '.$atak_id
+							.' AND czy_obronca='.$nasi.') as aj '),
+							function($join)
+							{
+							    $join->on('j.id', '=', 'aj.jednostka_id');
+							})
+			->get();
+
+		$straty_foe = DB::table('jednostki as j')
+			->leftJoin(DB::raw('(select * 
+                             from atak_jednostki
+                             where atak_id = '.$atak_id
+							.' AND czy_obronca!='.$nasi.') as aj '),
+							function($join)
+							{
+							    $join->on('j.id', '=', 'aj.jednostka_id');
+							})
+			->get();
+
+		$surowce = DB::table('surowce as s')
+			->leftJoin(DB::raw('(select * 
+                             from atak_surowce
+                             where atak_id = '.$atak_id.') as ats'),
+							function($join)
+							{
+							    $join->on('s.id', '=', 'ats.surowiec_id');
+							})
+			->get();
+
+		return view('atak.deets', compact('atak', 'straty_ally', 'straty_foe', 'surowce', 'nasi'));
+	}
  
 	public function getIndex($varx, $vary)
 	{

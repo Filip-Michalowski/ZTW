@@ -30,7 +30,7 @@
         <div id="footer">
 		<h3>Wydarzenia</h3>
 			<p>Najważniejsze wydarzenia dotyczące Twoich wiosek!</p>
-			<a href="#" class="button">Ataki</a>
+			<a href="{{url('/ataki')}}" class="button">Ataki</a>
 			<a href="#" class="button">Wywiad</a>
       
       <br />

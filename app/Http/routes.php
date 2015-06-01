@@ -38,6 +38,8 @@ Route::get('/jednostka',['middleware' => 'auth', 'uses' => 'JednostkaController@
 Route::get('/poczta',['middleware' => 'auth', 'uses' => 'PocztaController@index']);
 Route::get('/poczta/create',['middleware' => 'auth', 'uses' => 'PocztaController@create']);
 Route::get('/klan/create',['middleware' => 'auth', 'uses' => 'KlanController@index']);
+Route::get('/ataki',['middleware' => 'auth', 'uses' => 'AtkController@index']);
+Route::get('/atak/{atak_id}',['middleware' => 'auth', 'uses' => 'AtkController@deets']);
  
 
 Route::get('/budynek/{nazwa}',['middleware' => 'auth', 'uses' => 'BudynekController@update']);
