@@ -1,5 +1,12 @@
 <?php
-	include('database.php');
+	$host="127.0.0.1"; //replace with database hostname 
+	$username="root"; //replace with database username 
+	$password=""; //replace with database password 
+	$db_name="laravel"; //replace with database name 
+
+	$con=mysql_connect("$host", "$username", "$password")or die("cannot connect"); 
+	mysql_select_db("$db_name")or die("cannot select DB");
+	
 	
 	/*
 		WA¯NE!
@@ -8,10 +15,13 @@
 		gdy¿ bêd¹ one obs³ugiwane CRONem.
 		(Notka dla siebie: dodaæ wtedy modu³ do wczytywania)
 	*/
-	ignore_user_abort(true);
-	//set_time_limit(0);//wy³¹czone na serwerze ze wzglêdów bezpieczeñstwa
+	//ignore_user_abort(true);
+	ignore_user_abort(false);
+	set_time_limit(0);
 	
-	demon($sleep,$con);
+	echo 'FULLY OPERATIONAL<br/>';
+	
+	demon();
 	
 	class KolejkaPriorytetowa extends SplPriorityQueue {
 		public function compare($priority1, $priority2) 
@@ -24,47 +34,44 @@
 		}
 	}
 	
-	function demon($sleep,$con) {
+	function demon() {
 		//Kolejka priorytetowa
 		//Daty wczeœniejsze maj¹ ni¿szy priorytet
 		//Biblioteka Spl jest dostêpna dla php >= 5.3, ale nie ma to znaczenia, bo laravel wymaga >= 5.4
 		$queue = new KolejkaPriorytetowa();
 		
-		//Warunek stopu: za³¹czany, gdy $czas == $czas_startu.
+		//Warunek stopu: na przysz³oœæ, do implementacji periodycznego odœwie¿ania.
 		$stop = false;
 		
-		//
-		$czas_startu = time();
-		
-		//Obecny czas
-		$czas = 0;
+		//Licznik rozpoczêtych pêtli, na przysz³oœæ:
+		//0 - pierwszy rozruch, trzeba wczytaæ niedokoñczone
+		//3600/7200/86.400 - d³ugo chodzi? Refresh.
+		$rutabaga = 300;
 		
 		$sql = "SELECT * FROM ataki WHERE status = 1 OR status = 2";
-		$result = mysqli_query($con,$sql);
+		$result = mysql_query($sql);
 		
-		if(mysqli_num_rows($result)) {
-			while($row=mysqli_fetch_assoc($result)){
+		if(mysql_num_rows($result)) {
+			while($row=mysql_fetch_assoc($result)){
 				if($row['status']==1)
 					$queue->insert($row,$row['dataBojki']);
 				else
 					$queue->insert($row,$row['dataPowrotu']);
 			}
 		}		
-		$rutabaga = 0;
 		
 		while ( ! $stop ) {
-			$rutabaga++;
-			
-			sleep($sleep); // Sleep for one second
+			$rutabaga--;
+			sleep(1); // Sleep for one second
 			
 			//Dodanie nowych ataków do kolejki
 			$sql = "SELECT * FROM ataki WHERE status = 0";
-			$result = mysqli_query($con,$sql);
+			$result = mysql_query($sql);
 			
-			if(mysqli_num_rows($result)) {
-				while($row=mysqli_fetch_assoc($result)){
+			if(mysql_num_rows($result)) {
+				while($row=mysql_fetch_assoc($result)){
 					$sql = "UPDATE ataki SET status = 1 WHERE id =".$row['id'];
-					mysqli_query($con,$sql);
+					mysql_query($sql);
 					
 					$row['status']=1;
 					
@@ -85,108 +92,23 @@
 					$atak = $queue->extract();
 					
 					$sql = "SELECT port_id FROM mapy WHERE pos_x=".$atak['cel_x']." AND pos_y=".$atak['cel_y'];
-					$result = mysqli_query($con,$sql);
-					$cel = mysqli_fetch_assoc($result);
+					$result = mysql_query($sql);
+					$cel = mysql_fetch_assoc($result);
 					
-					if($cel['port_id'] == null) {
+					if($cel == null) {
 						//TODO - kolonizacja
 						//Bezludna wyspa (bez portu)
-						
-						$sql = "INSERT INTO porty (nazwa, gracz_id)
-						VALUES (
-						'".$atak['wydarzenie']."'
-						, ".$atak['atakujacy_gracz_id']."
-						)";
-						mysqli_query($con,$sql);
-						$newport_id = mysqli_insert_id($con);
-						
-						$sql = "UPDATE mapy SET port_id=".$newport_id."
-						WHERE pos_x=".$atak['cel_x']." AND pos_y=".$atak['cel_y'];
-						mysqli_query($con,$sql);
-						
-						$sql = "SELECT *
-							FROM atak_jednostki AS aj JOIN jednostki AS j
-							ON (aj.jednostka_id = j.id)
-							WHERE atak_id=".$atak['id']." AND czy_obronca = 0
-							ORDER BY jednostka_id ASC";
-						$result = mysqli_query($con,$sql);
-						$atak_jednostki = array();
-						while($row=mysqli_fetch_assoc($result)){
-							$atak_jednostki[($row['jednostka_id'])] = $row['ilosc_wyjscie'];
-						}
-						
-						$sql = "SELECT id FROM jednostki";
-						$result = mysqli_query($con,$sql);
-												
-						$first = true;
-						$bulk_sql = "INSERT INTO port_jednostki (port_id, jednostka_id, ilosc) VALUES ";
-						while($row=mysqli_fetch_assoc($result)){
-							if($first)
-								$first = false;
-							else
-								$bulk_sql .= ",";
-							$bulk_sql .= "(".$newport_id.",".$row['id'].",";
-							
-							if($row['id'] != 100 && isset( $atak_jednostki[$row['id']] )) {
-								$bulk_sql .= $atak_jednostki[$row['id']];
-							} else {
-								$bulk_sql .= 0;
-							}
-							$bulk_sql .= ")";
-						}
-						mysqli_query($con,$bulk_sql);
-						
-						$sql = "SELECT id FROM budynki";
-						$result = mysqli_query($con,$sql);
-						
-						$first = true;
-						$bulk_sql = "INSERT INTO port_budynki (port_id, budynek_id) VALUES ";
-						while($row=mysqli_fetch_assoc($result)){
-							if($first)
-								$first = false;
-							else
-								$bulk_sql .= ",";
-							$bulk_sql .= "(".$newport_id.",".$row['id'].")";
-						}
-						mysqli_query($con,$bulk_sql);
-						
-						$sql = "SELECT id FROM surowce";
-						$result = mysqli_query($con,$sql);
-						
-						$first = true;
-						$bulk_sql = "INSERT INTO port_surowce (port_id, surowiec_id, ilosc, rate, updated_at) VALUES ";
-						while($row=mysqli_fetch_assoc($result)){
-							if($first)
-								$first = false;
-							else
-								$bulk_sql .= ",";
-							
-							$bulk_sql .= "(".$newport_id.",".$row['id'].",";
-							if($row['id'] == 1)
-								$bulk_sql .= "100,0.4,";
-							else if($row['id'] == 2)
-								$bulk_sql .= "3,0,";
-							else
-								$bulk_sql .= "0,0,";
-							$bulk_sql .= "'".date('Y-m-d H:i:s',time())."')";
-						}
-						mysqli_query($con,$bulk_sql);
-						
-						//Zg³oszenie koñca przetwarzania tego ataku
-							$atak['status'] = 5;
-							$sql = "UPDATE ataki SET status=5 WHERE id=".$atak['id'];
-							mysqli_query($con,$sql);						
 					} else {
 						$sql = "SELECT * FROM porty WHERE id=".$cel['port_id'];
-						$result = mysqli_query($con,$sql);
-						$cel_port = mysqli_fetch_assoc($result);
+						$result = mysql_query($sql);
+						$cel_port = mysql_fetch_assoc($result);
 						
 						$sql = "SELECT * FROM port_jednostki AS sj JOIN jednostki AS j
 							ON (sj.jednostka_id = j.id)
 							WHERE port_id=".$cel['port_id']." ORDER BY jednostka_id ASC";
-						$result = mysqli_query($con,$sql);
+						$result = mysql_query($sql);
 						$cel_jednostki = array();
-						while($row=mysqli_fetch_assoc($result)){
+						while($row=mysql_fetch_assoc($result)){
 							$cel_jednostki[] = $row;
 						}
 						
@@ -197,9 +119,9 @@
 							ON (aj.jednostka_id = j.id)
 							WHERE atak_id=".$atak['id']." AND czy_obronca = 0
 							ORDER BY jednostka_id ASC";
-						$result = mysqli_query($con,$sql);
+						$result = mysql_query($sql);
 						$atak_jednostki = array();
-						while($row=mysqli_fetch_assoc($result)) {
+						while($row=mysql_fetch_assoc($result)) {
 							$atak_jednostki[] = $row;
 						}
 						
@@ -238,20 +160,20 @@
 							}
 							
 							$sql .= " ON DUPLICATE KEY UPDATE ilosc=VALUES(ilosc);";
-							$result = mysqli_query($con,$sql);
+							$result = mysql_query($sql);
 							
 							//SUROWCE
 							$sql = "SELECT * FROM port_surowce WHERE port_id=".$cel['port_id'];
-							$result = mysqli_query($con,$sql);
+							$result = mysql_query($sql);
 							$home_surowce = array();
-							while($row=mysqli_fetch_assoc($result)) {
+							while($row=mysql_fetch_assoc($result)) {
 								$home_surowce[] = $row;
 							}
 							
 							$sql = "SELECT * FROM atak_surowce WHERE atak_id=".$atak['id'];
-							$result = mysqli_query($con,$sql);
+							$result = mysql_query($sql);
 							$atak_surowce = array();
-							while($row=mysqli_fetch_assoc($result)) {
+							while($row=mysql_fetch_assoc($result)) {
 								$atak_surowce[] = $row;
 							}
 							
@@ -286,12 +208,12 @@
 							}
 							
 							$sql .= " ON DUPLICATE KEY UPDATE ilosc=VALUES(ilosc);";
-							$result = mysqli_query($con,$sql);
+							$result = mysql_query($sql);
 							
 							//Zg³oszenie koñca przetwarzania tego ataku
-							$atak['status'] = 4;
-							$sql = "UPDATE ataki SET status=4 WHERE id=".$atak['id'];
-							mysqli_query($con,$sql);
+							$atak['status'] = 3;
+							$sql = "UPDATE ataki SET status=3 WHERE id=".$atak['id'];
+							mysql_query($sql);
 						} else {
 							//Atak
 							//Cudzy (wrogi) port
@@ -316,9 +238,9 @@
 							if($cel_sila < $atak_sila) {
 						//Atakuj¹cy wygrywa i kradnie surowce
 								$sql = "SELECT * FROM port_surowce WHERE port_id=".$cel['port_id'];
-								$result = mysqli_query($con,$sql);
+								$result = mysql_query($sql);
 								$surowce = array();
-								while($row=mysqli_fetch_assoc($result)){
+								while($row=mysql_fetch_assoc($result)){
 									//Odczyt i wyliczenie surowców
 									$row['ilosc'] += round(($czas - strtotime($row['updated_at'])) / 60 * $row['rate']);
 									$row['ilosc'] = min($row['ilosc'],$row['magazyn']);
@@ -331,7 +253,7 @@
 								
 								//Pocz¹tek transakcji
 								$sql_transact = "START TRANSACTION; ";
-								mysqli_query($con,$sql_transact);
+								mysql_query($sql_transact);
 								
 								//Straty dla portu
 								foreach($cel_jednostki as $cj) {
@@ -341,11 +263,11 @@
 									$cj['ilosc'] -= round($cel_straty * $cj['ilosc']);
 									
 									$sql_transact .= $cj['ilosc']."); ";
-									mysqli_query($con,$sql_transact);
+									mysql_query($sql_transact);
 									
 									$sql_transact = "UPDATE port_jednostki SET ilosc = ".$cj['ilosc']
 										." WHERE port_id=".$cel['port_id']." AND jednostka_id=".$cj['jednostka_id']."; ";
-									mysqli_query($con,$sql_transact);
+									mysql_query($sql_transact);
 								}
 								
 								//Straty dla atakuj¹cego - AKTUALIZUJESZ ilosc_powrot
@@ -355,7 +277,7 @@
 									
 									$sql_transact = "UPDATE atak_jednostki SET ilosc_powrot=".$ilosc_powrot." WHERE atak_id=".$aj['atak_id']
 										." AND jednostka_id=".$aj['jednostka_id']." AND czy_obronca=0";
-									mysqli_query($con,$sql_transact);
+									mysql_query($sql_transact);
 								}
 								
 								//Grabie¿ - skomplikowane
@@ -432,7 +354,7 @@
 									}
 									$sql_transact .= "(".$atak['id'].", ".$plecak['surowiec_id'].", ".$plecak['ilosc'].")";
 								}
-								mysqli_query($con,$sql_transact);
+								mysql_query($sql_transact);
 								
 								//Zapis zmian surowców
 								//Port - zrabowane
@@ -447,11 +369,11 @@
 									$sql_transact .= "(".$cel['port_id'].", ".$sur['surowiec_id'].", ".$sur['ilosc'].", '".date('Y-m-d H:i:s',$czas)."')";
 								}
 								$sql_transact .= " ON DUPLICATE KEY UPDATE ilosc=VALUES(ilosc), updated_at=VALUES(updated_at)";
-								mysqli_query($con,$sql_transact);
+								mysql_query($sql_transact);
 								
 								//Koniec transakcji
 								$sql_transact = "COMMIT;";
-								mysqli_query($con,$sql_transact);
+								mysql_query($sql_transact);
 								
 								
 							} else if($cel_sila > $atak_sila) {
@@ -461,7 +383,7 @@
 								
 								//Pocz¹tek transakcji
 								$sql_transact = "START TRANSACTION; ";
-								mysqli_query($con,$sql_transact);
+								mysql_query($sql_transact);
 								
 								//Straty dla portu
 								foreach($cel_jednostki as $cj) {
@@ -471,11 +393,11 @@
 									$cj['ilosc'] -= round($cel_straty * $cj['ilosc']);
 									
 									$sql_transact .= $cj['ilosc']."); ";
-									mysqli_query($con,$sql_transact);
+									mysql_query($sql_transact);
 									
 									$sql_transact = "UPDATE port_jednostki SET ilosc = ".$cj['ilosc']
 										." WHERE port_id=".$cel['port_id']." AND jednostka_id=".$cj['jednostka_id']."; ";
-									mysqli_query($con,$sql_transact);
+									mysql_query($sql_transact);
 								}
 								
 								//Straty dla atakuj¹cego - AKTUALIZUJESZ ilosc_powrot
@@ -485,12 +407,12 @@
 									
 									$sql_transact = "UPDATE atak_jednostki SET ilosc_powrot=".$ilosc_powrot." WHERE atak_id=".$aj['atak_id']
 										." AND jednostka_id=".$aj['jednostka_id']." AND czy_obronca=0";
-									mysqli_query($con,$sql_transact);
+									mysql_query($sql_transact);
 								}
 								
 								//Koniec transakcji
 								$sql_transact = "COMMIT;";
-								mysqli_query($con,$sql_transact);
+								mysql_query($sql_transact);
 								
 								
 							} else {
@@ -500,7 +422,7 @@
 								
 								//Pocz¹tek transakcji
 								$sql_transact = "START TRANSACTION; ";
-								mysqli_query($con,$sql_transact);
+								mysql_query($sql_transact);
 								
 								//Straty dla portu
 								foreach($cel_jednostki as $cj) {
@@ -510,11 +432,11 @@
 									$cj['ilosc'] -= round($cel_straty * $cj['ilosc']);
 									
 									$sql_transact .= $cj['ilosc']."); ";
-									mysqli_query($con,$sql_transact);
+									mysql_query($sql_transact);
 									
 									$sql_transact = "UPDATE port_jednostki SET ilosc = ".$cj['ilosc']
 										." WHERE port_id=".$cel['port_id']." AND jednostka_id=".$cj['jednostka_id']."; ";
-									mysqli_query($con,$sql_transact);
+									mysql_query($sql_transact);
 								}
 								
 								//Straty dla atakuj¹cego - AKTUALIZUJESZ ilosc_powrot
@@ -524,12 +446,12 @@
 									
 									$sql_transact = "UPDATE atak_jednostki SET ilosc_powrot=".$ilosc_powrot." WHERE atak_id=".$aj['atak_id']
 										." AND jednostka_id=".$aj['jednostka_id']." AND czy_obronca=0";
-									mysqli_query($con,$sql_transact);
+									mysql_query($sql_transact);
 								}
 								
 								//Koniec transakcji
 								$sql_transact = "COMMIT;";
-								mysqli_query($con,$sql_transact);
+								mysql_query($sql_transact);
 								
 								
 							}
@@ -537,7 +459,7 @@
 							//Zmiana statusu ataku na wracaj¹cy
 							$atak['status'] = 2;
 							$sql = "UPDATE ataki SET status=2 WHERE id=".$atak['id'];
-							mysqli_query($con,$sql);
+							mysql_query($sql);
 							
 							$queue->insert($atak,$atak['dataPowrotu']);
 						}
@@ -551,9 +473,9 @@
 					$sql = "SELECT * FROM port_jednostki AS sj JOIN jednostki AS j
 						ON (sj.jednostka_id = j.id)
 						WHERE port_id=".$atak['atakujacy_port_id']." ORDER BY jednostka_id ASC";
-					$result = mysqli_query($con,$sql);
+					$result = mysql_query($sql);
 					$home_jednostki = array();
-					while($row=mysqli_fetch_assoc($result)){
+					while($row=mysql_fetch_assoc($result)){
 						$home_jednostki[] = $row;
 					}
 					
@@ -562,9 +484,9 @@
 						ON (aj.jednostka_id = j.id)
 						WHERE atak_id=".$atak['id']." AND czy_obronca = 0
 						ORDER BY jednostka_id ASC";
-					$result = mysqli_query($con,$sql);
+					$result = mysql_query($sql);
 					$atak_jednostki = array();
-					while($row=mysqli_fetch_assoc($result)) {
+					while($row=mysql_fetch_assoc($result)) {
 						$atak_jednostki[] = $row;
 					}
 					
@@ -597,21 +519,21 @@
 					}
 					
 					$sql .= " ON DUPLICATE KEY UPDATE ilosc=VALUES(ilosc);";
-					$result = mysqli_query($con,$sql);
+					$result = mysql_query($sql);
 					
 					
 					//SUROWCE
 					$sql = "SELECT * FROM port_surowce WHERE port_id=".$atak['atakujacy_port_id'];
-					$result = mysqli_query($con,$sql);
+					$result = mysql_query($sql);
 					$home_surowce = array();
-					while($row=mysqli_fetch_assoc($result)) {
+					while($row=mysql_fetch_assoc($result)) {
 						$home_surowce[] = $row;
 					}
 					
 					$sql = "SELECT * FROM atak_surowce WHERE atak_id=".$atak['id'];
-					$result = mysqli_query($con,$sql);
+					$result = mysql_query($sql);
 					$atak_surowce = array();
-					while($row=mysqli_fetch_assoc($result)) {
+					while($row=mysql_fetch_assoc($result)) {
 						$atak_surowce[] = $row;
 					}
 					
@@ -646,25 +568,22 @@
 					}
 					
 					$sql .= " ON DUPLICATE KEY UPDATE ilosc=VALUES(ilosc);";
-					$result = mysqli_query($con,$sql);;
+					$result = mysql_query($sql);;
 					
 					//Zmiana statusu ataku na wracaj¹cy
 					$atak['status'] = 3;
 					$sql = "UPDATE ataki SET status=3 WHERE id=".$atak['id'];
-					mysqli_query($con,$sql);
+					mysql_query($sql);
 				} else {
 					$zrobione = true;
 				}
 			}
 			
-			if($czas - $czas_startu >= 3)//(3599-$sleep))
-			{
+			if($rutabaga <= 0)
 				$stop = true;
-				echo 'Liczba petli: '.$rutabaga;
-			}
 		}
 	}
 	
-	mysqli_close($con);
+	mysql_close($con);
 	exit();
 ?>

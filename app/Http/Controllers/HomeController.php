@@ -61,7 +61,6 @@ class HomeController extends Controller {
 	{
 		//Znowuż
 		Session::put('id_akt',$id);
-		Surowiec::refresh($id);
 		//return Redirect::action('HomeController@index');
 		return Redirect::action('HomeController@index');//działa
 	}

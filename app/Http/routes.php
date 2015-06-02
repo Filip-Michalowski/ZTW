@@ -30,17 +30,17 @@ Route::controllers([
 
 Route::get('/surowiec', ['middleware' => 'auth', 'uses' => 'SurowiecController@index']);
 Route::get('/mapa',['middleware' => 'auth', 'uses' => 'MapaController@index']);
-Route::get('/mapa/atform/{varx}/{vary}',['middleware' => 'auth', 'uses' => 'AtkController@getIndex']);
-Route::post('/mapa/atform/{varx}/{vary}',['middleware' => 'auth', 'uses' => 'AtkController@postIndex']);
 Route::get('/klan', ['middleware' => 'auth', 'uses' => 'KlanController@index']);
 Route::get('/budynek',['middleware' => 'auth', 'uses' => 'BudynekController@index']);
 Route::get('/jednostka',['middleware' => 'auth', 'uses' => 'JednostkaController@index']);
 Route::get('/poczta',['middleware' => 'auth', 'uses' => 'PocztaController@index']);
+Route::post('/poczta/store',['middleware' => 'auth', 'uses' => 'PocztaController@store']);
 Route::get('/poczta/create',['middleware' => 'auth', 'uses' => 'PocztaController@create']);
+Route::get('/poczta/read/{id}',['middleware' => 'auth', 'uses' => 'PocztaController@read']);
+Route::get('/poczta/delete/{id}',['middleware' => 'auth', 'uses' => 'PocztaController@delete']);
+
+
 Route::get('/klan/create',['middleware' => 'auth', 'uses' => 'KlanController@index']);
-Route::get('/ataki',['middleware' => 'auth', 'uses' => 'AtkController@index']);
-Route::get('/atak/{atak_id}',['middleware' => 'auth', 'uses' => 'AtkController@deets']);
- 
 
 Route::get('/budynek/{nazwa}',['middleware' => 'auth', 'uses' => 'BudynekController@update']);
 Route::get('/jednostka/{nazwa}',['middleware' => 'auth', 'uses' => 'JednostkaController@werbuj']);

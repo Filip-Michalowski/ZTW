@@ -8,9 +8,11 @@
 	
 	<div class="items">
 			<table>
-				<tr><td>Tytuł</td><td>Nadawca</td><td> akcja</td></tr>
+				<tr><td>Nadawca</td><td>Temat</td><td>Data</td><td>Akcja</td></tr>
 				@foreach ($poczty as $poczta)
-				<tr><td>{{ $poczta->temat }}</td><td></td><td><a href="#" class="button">Odczytaj</a><a href="#" class="button">Usuń</a></td></tr>
+					@if($poczta->odbiorca_id == $id)
+						<tr><td>{{ $poczta->nadawca }}</td><td>{{ $poczta->temat }}</td><td>{{ $poczta->data }}</td><td><a href="{{ action('PocztaController@read', [$poczta->id]) }}" class="button">Odczytaj</a><a href="{{ action('PocztaController@delete', [$poczta->id]) }}" class="button">Usuń</a></td></tr>
+					@endif
 				@endforeach
 			</table>
 	</div>

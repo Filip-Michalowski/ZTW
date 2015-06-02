@@ -89,15 +89,6 @@ return [
 		'attribute-name' => [
 			'rule-name' => 'custom-message',
 		],
-		'major-general' => [
-			'required' => 'You need a very model of a modern Major-General in order to establish a new colony.',
-			'min' => 'You need a very model of a modern Major-General in order to establish a new colony.',
-			'max' => 'Good lord, one Major-General is enough.',
-		],
-		'newport' => [
-			'required' => 'Arrr! Ye can\'t settle down a new port with no name, ye land rat!',
-			'unique' => 'Arrr! This port name be already taken.'
-		]
 	],
 
 	/*

@@ -15,9 +15,16 @@ class CreatePocztyTable extends Migration {
 		Schema::create('poczty', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->string('nadawca');
+			$table->integer('odbiorca_id')->unsigned();
 			$table->string('temat');
-			$table->longText('tresc');
-			$table->timestamps();
+			$table->text('tekst');
+			$table->timestamp('data')->default(date("Y-m-d H:i:s"));
+
+			$table->foreign('odbiorca_id')
+				  ->references('id')
+				  ->on('users')
+				  ->onDelete('cascade');
 		});
 	}
 

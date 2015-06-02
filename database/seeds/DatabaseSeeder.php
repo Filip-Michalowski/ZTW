@@ -84,11 +84,10 @@ class DatabaseSeeder extends Seeder {
 		}
 
 		$jednostki = array(
-			['id' => 1, 'nazwa' => 'Chuderlak', 'plecak' => 3, 'atak' => 10, 'obrona' => 10],
-			['id' => 2, 'nazwa' => 'Bukanier', 'plecak' => 1, 'atak' => 13, 'obrona' => 20],
-			['id' => 3, 'nazwa' => 'Treser papug', 'plecak' => 1, 'atak' => 40, 'obrona' => 4],
-			['id' => 4, 'nazwa' => 'Cyber-Pirat', 'plecak' => 10, 'atak' => 100, 'obrona' => 100],
-			['id' => 100, 'nazwa' => 'Major-Generał', 'plecak' => 0, 'atak' => 1, 'obrona' => 11],
+			['id' => 1, 'nazwa' => 'Chuderlak', 'plecak' => 3],
+			['id' => 2, 'nazwa' => 'Bukanier', 'plecak' => 1],
+			['id' => 3, 'nazwa' => 'Treser papug', 'plecak' => 1],
+			['id' => 4, 'nazwa' => 'Cyber-Pirat', 'plecak' => 10],
 		);
 
 		$surowce = array(
@@ -110,10 +109,6 @@ class DatabaseSeeder extends Seeder {
 			['jednostka_id' => 4, 'surowiec_id' => 2, 'koszt' => 50],
 			['jednostka_id' => 4, 'surowiec_id' => 3, 'koszt' => 50],
 			['jednostka_id' => 4, 'surowiec_id' => 4, 'koszt' => 50],
-			['jednostka_id' => 100, 'surowiec_id' => 1, 'koszt' => 2000],
-			['jednostka_id' => 100, 'surowiec_id' => 2, 'koszt' => 1000],
-			['jednostka_id' => 100, 'surowiec_id' => 3, 'koszt' => 500],
-			['jednostka_id' => 100, 'surowiec_id' => 4, 'koszt' => 300],
 		);
 
 		$port_jednostki = array();
@@ -125,14 +120,10 @@ class DatabaseSeeder extends Seeder {
 					$port_jednostki[] = ['port_id' => $por['id'],
 					 'jednostka_id' => $jed['id'],
 					  'ilosc' => 50, 'produkowana' => true];
-				} else if($jed['id'] == 100) {
-					$port_jednostki[] = ['port_id' => $por['id'],
-					 'jednostka_id' => $jed['id'],
-					  'ilosc' => 2, 'produkowana' => true];
 				} else {
 					$port_jednostki[] = ['port_id' => $por['id'],
 					 'jednostka_id' => $jed['id'],
-					  'ilosc' => 0, 'produkowana' => true];
+					  'ilosc' => 0, 'produkowana' => false];
 				}
 			}
 		}
@@ -206,25 +197,22 @@ class DatabaseSeeder extends Seeder {
 		$ataki = array(
 			/* Atak wygrywający z Valhalli na Helheim */
 			['id' => 1, 'atakujacy_gracz_id' => 2, 'atakujacy_port_id' => 2,
-			 'broniacy_gracz_id' => 1, 'broniacy_port_id' => 1,
-			 'dataBojki' => Carbon::now()->addMinutes(1),
-			 'dataPowrotu' => Carbon::now()->addMinutes(2),
+			 'dataBojki' => Carbon::now(),
+			 'dataPowrotu' => Carbon::now(),
 			 'status' => 0,
 			 'cel_x' => 2,
 			 'cel_y' => 2],
 			/* Atak przegrywający z Helheimu na Valhalle */
 			['id' => 2, 'atakujacy_gracz_id' => 1, 'atakujacy_port_id' => 1,
-			 'broniacy_gracz_id' => 2, 'broniacy_port_id' => 2,
-			 'dataBojki' => Carbon::now()->addMinutes(2),
-			 'dataPowrotu' => Carbon::now()->addMinutes(3),
+			 'dataBojki' => Carbon::now()->addMinutes(1),
+			 'dataPowrotu' => Carbon::now()->addMinutes(1),
 			 'status' => 0,
 			 'cel_x' => 8,
 			 'cel_y' => 4],
 			/* Pokojowy przemarsz z Helheimu do Helheimu */
 			['id' => 3, 'atakujacy_gracz_id' => 1, 'atakujacy_port_id' => 1,
-			 'broniacy_gracz_id' => 1, 'broniacy_port_id' => 1,
-			 'dataBojki' => Carbon::now()->addMinutes(4),
-			 'dataPowrotu' => Carbon::now()->addMinutes(5),
+			 'dataBojki' => Carbon::now()->addMinutes(3),
+			 'dataPowrotu' => Carbon::now()->addMinutes(3),
 			 'status' => 0,
 			 'cel_x' => 2,
 			 'cel_y' => 2],
@@ -258,9 +246,6 @@ class DatabaseSeeder extends Seeder {
 		DB::table('port_surowce')->insert($port_surowce);
 		DB::table('ataki')->insert($ataki);
 		DB::table('atak_jednostki')->insert($atak_jednostki);
-
-		$statement = "ALTER TABLE jednostki AUTO_INCREMENT = 5;";
-		DB::unprepared($statement);
 
 		foreach($porty as $p) {
 			Surowiec::refresh($p['id']);

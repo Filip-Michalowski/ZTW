@@ -6,4 +6,5 @@ class Poczta extends Model {
 
 	protected $table = 'poczty';
 
+	
 }

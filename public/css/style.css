@@ -491,17 +491,6 @@ pre {
 	font-family: Arial, Helvetica, sans-serif;
 }
 
-.forms fieldset .text-input2 {
-	color: #585858;
-	width: 50px;
-	height: 20px;
-	padding: 5px 10px;
-	font-size: 13px;
-	background-color: #f2f2f2;
-	border: 1px solid #dbdbdb;
-	font-family: Arial, Helvetica, sans-serif;
-}
-
 .forms fieldset .text-area {
 	color: #585858;
 	width: 578px;
@@ -616,27 +605,6 @@ pre {
 	overflow: hidden;
 	margin:0 auto;
 	text-align: center;
-}
-
-.ally {
-	color: #11aa00;
-}
-
-.ally a  {
-	color: #11aa00;
-	border-bottom: 1px dotted #688dad;
-}
-
-.foe {
-	color: #dd3300;
-}
-
-.neutral {
-	color: #aaaa99;
-}
-
-.nazwana {
-	width: 350px;
 }
 
 /*-----------------------------------------------------------------------------------*/
