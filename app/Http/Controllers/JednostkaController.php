@@ -59,7 +59,7 @@ class JednostkaController extends Controller {
 			Port_Jednostki::where('jednostka_id', $id)-> where('port_id', $ind)->increment('ilosc');
 			return Redirect::action('JednostkaController@index');
 		} else {
-			return Redirect::action('JednostkaController@index')->withErrors('W porcie jest za mało surowców, by móc zwerbować '.$poj->nazwa.'.');
+			return Redirect::action('JednostkaController@index')->withErrors(trans("validation.custom.jednostka.not_enough").trans("messages.".$poj->nazwa).'.');
 		}
 	}
 

@@ -1,6 +1,11 @@
 <?php namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App;
+use Session;
+use Cookie;
+use Config;
+use Crypt;
 
 class AppServiceProvider extends ServiceProvider {
 
@@ -11,7 +16,8 @@ class AppServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		//
+		$cookie_string = Crypt::decrypt(Cookie::get('lang'));
+		App::setLocale($cookie_string);
 	}
 
 	/**

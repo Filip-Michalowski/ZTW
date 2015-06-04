@@ -1,23 +1,24 @@
 @extends('main')
 
 @section('content')
-	<h1 class="title">Jednostki</h1>
+	<h1 class="title">{{trans("messages.units")}}</h1>
 	<div class="line"></div>
 	<div class="intro">
-			@if($errors->any())
-				@foreach($errors->all() as $e)
-				<h4>{{$e}}</h4>
-				@endforeach
+			@if (count($errors) > 0)
+				<div class="alert alert-danger">
+					<ul>
+						@foreach ($errors->all() as $error)
+							<li>{{ $error }}</li>
+						@endforeach
+					</ul>
+				</div>
 			@endif
 	</div>
 	
 	<div class="items">
 
 			<table>
-				<tr><td></td><td>Nazwa</td><td>Ilość</td><td>Koszt</td><td>Akcja</td></tr>
-				@foreach($jednostki as $poj)
-				{{--<tr><td></td><td>{{ $poj->nazwa }}</td><td></td><td>{{ $poj->koszt }}</td><td><a href="#">Werbuj</a></td></tr>--}}
-				@endforeach
+				<tr><td></td><td>{{trans("messages.unit_name")}}</td><td>{{trans("messages.amount")}}</td><td>{{trans("messages.cost")}}</td><td>{{trans("messages.action")}}</td></tr>
 				@if($port_jednostki->count() == 0)
 					<tr>
 						<td colspan="5" style="text-align: center;">
@@ -25,13 +26,12 @@
 						<br/>DEBUG: <b>Ani jednej jednostki.</b>
 						</td>
 					</tr>
-
 				@else				
 					@foreach ($port_jednostki as $poj)
 					<tr>
 					<td></td>
 
-					<td>{{ $poj->nazwa }}</td>
+					<td>{{ trans("messages.".$poj->nazwa) }}</td>
 						@if($poj->ilosc == null)
 						<td>0</td>
 						@else
@@ -39,14 +39,14 @@
 						@endif
 					<td>
 						@foreach($poj->koszty as $koszt)
-						{{$koszt->koszt}} {{$koszt->surowiec->typ}} 
+						{{$koszt->koszt}} {{trans("messages.".$koszt->surowiec->typ)}} 
 						@endforeach
 					</td>
 					<td>
 						@if($poj->produkowana)
-						<a href="{{ action('JednostkaController@werbuj', [$poj->id]) }}">Werbuj</a>
+						<a href="{{ action('JednostkaController@werbuj', [$poj->id]) }}">{{trans("messages.recruit")}}</a>
 						@else
-						<a href="{{ action('JednostkaController@werbuj', [$poj->id]) }}">Werbuj</a>
+						<a href="{{ action('JednostkaController@werbuj', [$poj->id]) }}">{{trans("messages.recruit")}}</a>
 						{{--Na przyszłość: do implementacji drzewa technologicznego--}}
 						{{--<span style="text-decoration: line-through;">Werbuj</span>--}}
 						@endif

@@ -33,8 +33,6 @@ class Registrar implements RegistrarContract {
 			'password' => 'required|confirmed|min:6',
 			'nazwa' => 'required|max:60|unique:porty',
 			'nazwa' => 'wolne_miejsce'
-		], [
-			'wolne_miejsce' => 'Wszystkie wyspy są zajęte.'
 		]);
 
 		return $validator;

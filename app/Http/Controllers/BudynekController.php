@@ -60,7 +60,7 @@ class BudynekController extends Controller {
 			Surowiec::refresh($ind);
 			return Redirect::action('BudynekController@index');
 		} else {
-			return Redirect::action('BudynekController@index')->withErrors('W porcie jest za mało surowców, by móc zbudować '.$pob->nazwa.'.');
+			return Redirect::action('BudynekController@index')->withErrors(trans("validation.custom.budynek.not_enough").trans("messages.".$pob->nazwa).'.');
 		}
 	}
 

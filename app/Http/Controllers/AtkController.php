@@ -25,17 +25,6 @@ class AtkController extends Controller {
 	public function index() {
 		$id = Auth::user()->id;
 
-		/*
-		$ataki_wlasne = DB::table('ataki')
-			->join('porty','atakujacy_port_id','=','porty.id')
-			->where('atakujacy_gracz_id','=',$id);
-
-		$ataki = DB::table('ataki')
-			->join('porty','broniacy_port_id','=','porty.id')
-			->where('broniacy_gracz_id','=',$id)
-			->union($ataki_wlasne)
-			->get();*/
-
 		$ataki = DB::table('ataki')
 			->join('porty as ap','atakujacy_port_id','=','ap.id')
 			->leftJoin('porty as bp','broniacy_port_id','=','bp.id')
@@ -47,6 +36,7 @@ class AtkController extends Controller {
 				broniacy_gracz_id,
 				broniacy_port_id,
 				wydarzenie,
+				new_port_id,
 				status,
 				dataBojki,
 				dataPowrotu,
@@ -70,6 +60,7 @@ class AtkController extends Controller {
 				broniacy_gracz_id,
 				broniacy_port_id,
 				wydarzenie,
+				new_port_id,
 				status,
 				dataBojki,
 				dataPowrotu,
@@ -162,7 +153,7 @@ class AtkController extends Controller {
 		for($x=0; $x<$i; $x++){
 			$ilosc=$port_jednostki[$x]->ilosc;
 			if($ilosc<$amount[$x]){
-				return Redirect::back()->withErrors('Nie możesz wysłać więcej jednostek niż posiadasz');
+				return Redirect::back()->withErrors(trans("validation.custom.atak_jednostki.max"));
 			}
 			if(!(empty($amount[$x]))){
 				$z++;
@@ -170,7 +161,7 @@ class AtkController extends Controller {
 		}
 		
 		if($z==0 && $request->input('colonization') == 0){
-			return Redirect::back()->withErrors('Musisz wysłać przynajmniej jedną jednostkę, aby przeprowadzić atak');
+			return Redirect::back()->withErrors(trans("validation.custom.atak_jednostki.min"));
 		}
 		
 		$czas0 = Carbon::now();

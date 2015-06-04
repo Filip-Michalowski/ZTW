@@ -1,31 +1,34 @@
-
 @extends('main')
 
 @section('content')
-	<h1 class="title">Budynki</h1>
+	<h1 class="title">{{trans("messages.buildings")}}</h1>
 	<div class="line"></div>
 	<div class="intro">
-			@if($errors->any())
-				@foreach($errors->all() as $e)
-				<h4>{{$e}}</h4>
-				@endforeach
+			@if (count($errors) > 0)
+				<div class="alert alert-danger">
+					<ul>
+						@foreach ($errors->all() as $error)
+							<li>{{ $error }}</li>
+						@endforeach
+					</ul>
+				</div>
 			@endif
 	</div>
 	
 	<div class="items">
 			<table>
-				<tr><td></td><td>Nazwa budynku</td><td>Poziom</td><td>Koszt</td><td>Akcja</td></tr>
+				<tr><td></td><td>{{trans("messages.building_name")}}</td><td>{{trans("messages.level")}}</td><td>{{trans("messages.cost")}}</td><td>{{trans("messages.action")}}</td></tr>
 				@foreach ($port_budynki as $bud)
 				<tr>
 				<td></td>
-				<td>{{$bud->nazwa}}</td>
+				<td>{{trans("messages.".$bud->nazwa)}}</td>
 				<td>{{$bud->poziom}}</td>
 				<td>
 						@foreach($bud->koszty as $koszt)
-						{{$koszt->koszt * ($bud->poziom + 1)}} {{$koszt->surowiec->typ}} 
+						{{$koszt->koszt * ($bud->poziom + 1)}} {{trans("messages.".$koszt->surowiec->typ)}} 
 						@endforeach
 				</td>
-				<td><a href="{{ action('BudynekController@update', [$bud->id]) }}">Buduj</a></td>
+				<td><a href="{{ action('BudynekController@update', [$bud->id]) }}">{{trans("messages.build")}}</a></td>
 				</tr>
 				@endforeach
 			</table>

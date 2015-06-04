@@ -28,6 +28,10 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
+Route::get('/en', 'JezykController@set_lang_en');
+Route::get('/pl', 'JezykController@set_lang_pl');
+
+
 Route::get('/surowiec', ['middleware' => 'auth', 'uses' => 'SurowiecController@index']);
 Route::get('/mapa',['middleware' => 'auth', 'uses' => 'MapaController@index']);
 Route::get('/mapa/atform/{varx}/{vary}',['middleware' => 'auth', 'uses' => 'AtkController@getIndex']);

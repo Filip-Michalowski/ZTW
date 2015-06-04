@@ -1,16 +1,16 @@
 @extends('main')
 
 @section('content')
-	<h1 class="title">Ataki</h1>
+	<h1 class="title">{{trans("messages.attacks")}}</h1>
 	<div class="line"></div>
-	<div class="intro">Ataki Twoje i na Ciebie.</div>
+	<div class="intro">{{trans("messages.attack_header")}}</div>
 
     <!-- Begin Portfolio -->
         <div class="clear"></div>
         
         <div class="items">
           <table>
-            <tr><td>Data wydarzenia</td><td>Atak z</td><td>Atak na</td><td>Stan</td><td></td></tr>
+            <tr><td>{{trans("messages.event_date")}}</td><td>{{trans("messages.attack_from")}}</td><td>{{trans("messages.attack_on")}}</td><td>{{trans("messages.status")}}</td><td></td></tr>
             @foreach($ataki as $at)
             @if(!($at->atakujacy_gracz_id != $id && $at->status < 2))
             <tr>
@@ -30,35 +30,36 @@
                         <span class="foe">{{$at->b_nazwa}}</span>
                     @endif                
                 @else
-                    <span class="neutral">bezludna wyspa</span>
+                    <span class="neutral">{{trans("messages.desert_island")}}</span>
                 @endif
                 </td>
                 <td>
                 @if($at->status == 0 || $at->status == 1)
-                    W drodze...
+                    {{trans("messages.omw_attack")}}
                 @elseif($at->status == 2)
                     @if($at->atakujacy_gracz_id == $id)
-                        Wracają z bitwy...
+                        {{trans("messages.omw_return")}}
                     @else
-                        Po bitwie.
+                        {{trans("messages.came_battle")}}
                     @endif
                 @elseif($at->status == 3)
                     @if($at->atakujacy_gracz_id == $id)
-                        Wrócili z łupami!
+                        {{trans("messages.came_back")}}
                     @else
-                        Po bitwie.
+                        {{trans("messages.came_battle")}}
                     @endif
                 @elseif($at->status == 4)
-                    Posiłki doszły.
+                    {{trans("messages.came_reinforcements")}}
                 @elseif($at->status == 5)
-                    Założono port <span class="ally">{{$at->wydarzenie}}</span>.
+                    {{trans("messages.founding_pre")}}
+                    <span class="ally"><a href="{{url('/')}}/{{$at->new_port_id}}">{{$at->wydarzenie}}</a></span>{{trans("messages.founding_post")}}
                 @else
                     ???
                 @endif
                 </td>
                 <td>
                 @if($at->status <= 4)
-                    <a href="{{url('/atak')}}/{{$at->atak_id}}">Szczegóły</a>
+                    <a href="{{url('/atak')}}/{{$at->atak_id}}">{{trans("messages.details")}}</a>
                 @endif
                 </td>
             </tr>

@@ -1,7 +1,7 @@
 @extends('main')
 
 @section('content')
-	<h1 class="title">Mapa</h1>
+	<h1 class="title">{{trans("messages.map")}}</h1>
 	<div class="line"></div>
 	
 	<div class="items">
@@ -33,7 +33,7 @@
 						{{ url('/mapa/atform')}}/{{$map->pos_x}}/{{$map->pos_y}}-->
 					<td style="margin: 0; padding: 0;">
 					@if($map -> typ == 0)
-						<a title="Morze ({{$map -> pos_x}},{{$map -> pos_y}})">
+						<a title="{{trans("messages.map_sea")}} ({{$map -> pos_x}},{{$map -> pos_y}})">
 							<img src={{url('images/isle_empty.png')}} alt="empty" style="padding: 0; margin: 0; border: 1px dashed #2faff8;">
 						</a>
 					@elseif($map -> typ == 1)
@@ -47,7 +47,7 @@
 							@endif
 						</a>
 						@else
-						<a href="{{  url('/mapa/atform')}}/{{$map->pos_x}}/{{$map->pos_y}}" title="Bezludna wyspa ({{$map -> pos_x}},{{$map -> pos_y}})">
+						<a href="{{  url('/mapa/atform')}}/{{$map->pos_x}}/{{$map->pos_y}}" title="{{trans("messages.map_desert")}} ({{$map -> pos_x}},{{$map -> pos_y}})">
 							<img src={{url('images/isle_lush.png')}} alt="lush" style="padding: 0; margin: 0;  border: 1px dashed #2faff8;">
 						</a>
 						@endif
@@ -66,20 +66,24 @@
 				</tr>
 			</table>
 
-			<ul>
+			{{--<ul>
 				<li>lower_bond_x = {{$lower_bond_x}}</li>
 				<li>upper_bond_x = {{$upper_bond_x}}</li>
 				<li>lower_bond_y = {{$lower_bond_y}}</li>
 				<li>upper_bond_y = {{$upper_bond_y}}</li>
 				<li>{{Cache::get('id_akt')}}</li>
-			</ul>
+			</ul>--}}
+
+			<p  style="text-align: center; margin: 30px auto 0 auto;">
+			<a href="{{ action('MapaController@center') }}" class="button">{{trans("messages.center_current")}}</a>
+			</p>
 	</div>
 	
 	
       
       
     <div id="footer">
-    <a href="{{ action('MapaController@center') }}" class="button" style="margin: 0 400px 0 auto;">Wycentruj na obecnej wiosce</a>    
+    
 	</div>
     <!-- End Footer -->
 @stop

@@ -1,24 +1,24 @@
 @extends('main')
 
 @section('content')
-	<h1 class="title">Podsumowanie ataku #{{$atak->atak_id}}</h1>
+	<h1 class="title">{{trans("messages.attack_summary")}} #{{$atak->atak_id}}</h1>
 	<div class="line"></div>
 	<div class="intro">
     @if($atak->atakujacy_gracz_id != $atak->broniacy_gracz_id)
-    Atak na
+    {{trans("messages.attack_on")}}
         @if($nasi)
             <span class="ally">{{$atak->b_nazwa}}</span>
         @else
             <span class="foe">{{$atak->b_nazwa}}</span>
         @endif
-        (z 
+        ({{trans("messages.from")}}
         @if(!$nasi)
             <span class="ally">{{$atak->a_nazwa}}</span>)
         @else
             <span class="foe">{{$atak->a_nazwa}}</span>)
         @endif
     @else
-    Posiłki do <span class="ally">{{$atak->b_nazwa}}</span> (z <span class="ally">{{$atak->a_nazwa}}</span>)
+    {{trans("messages.reinforcements")}} <span class="ally">{{$atak->b_nazwa}}</span> ({{trans("messages.from")}} <span class="ally">{{$atak->a_nazwa}}</span>)
     @endif
     
    
@@ -28,25 +28,25 @@
         <div class="clear"></div>
         
         <div class="items">
-        <p><b>Data bitwy:</b> {{$atak->dataBojki}}
+        <p><b>{{trans("messages.date_battle")}}</b> {{$atak->dataBojki}}
         @if(!$nasi)
-        <br/><b>Data powrotu:</b> {{$atak->dataPowrotu}}
+        <br/><b>{{trans("messages.date_return")}}</b> {{$atak->dataPowrotu}}
         @endif
         </p>
         
         <table>
-            <caption class="ally">Jednostki własne
+            <caption class="ally">{{trans("messages.units_own")}}
             @if($atak->atakujacy_gracz_id == $atak->broniacy_gracz_id)
-            wysłane w posiłkach
+            {{trans("messages.in_reinforcements")}}
             @elseif($atak->status != 0 && $atak->status != 1)
-            po bitwie
+            {{trans("messages.after_battle")}}
             @else
-            przed bitwą
+            {{trans("messages.before_battle")}}
             @endif
             </caption>
             @foreach($straty_ally as $sa)
             <tr>
-                <td class="nazwana">{{$sa->nazwa}}</td>
+                <td class="nazwana">{{trans("messages.".$sa->nazwa)}}</td>
                 <td>
                     @if($sa->ilosc_wyjscie == null)
                         <span class="neutral">0</span>
@@ -64,10 +64,10 @@
 
         @if($atak->status != 0 && $atak->status != 1 && $atak->status != 4)
         <table>
-            <caption class="foe">Jednostki przeciwnika po bitwie</caption>
+            <caption class="foe">{{trans("messages.units_foe")}} {{trans("messages.after_battle")}}</caption>
             @foreach($straty_foe as $sa)
             <tr>
-                <td class="nazwana">{{$sa->nazwa}}</td>
+                <td class="nazwana">{{trans("messages.".$sa->nazwa)}}</td>
                 <td>
                     @if($sa->ilosc_wyjscie == null)
                         <span class="neutral">0</span>
@@ -82,16 +82,16 @@
         <?php $zerosCount = 0; ?>
 
         <table>
-            <caption>Surowce
+            <caption>{{trans("messages.resources")}}
             @if(!$nasi)
-                <span class="ally">zrabowane</span>
+                <span class="ally">{{trans("messages.res_robbed")}}</span>
             @else
-                <span class="foe">utracone</span>
+                <span class="foe">{{trans("messages.res_lost")}}</span>
             @endif
             </caption>
             @foreach($surowce as $sa)
             <tr>
-                <td class="nazwana">{{$sa->typ}}</td>
+                <td class="nazwana">{{trans("messages.".$sa->typ)}}</td>
                 <td>
                 @if($sa->ilosc == 0)
                     <span class="neutral">0</span>
@@ -108,20 +108,20 @@
             @endforeach
             @if($zerosCount == count($surowce))
                 <tr>
-                <td colspan="3">Jednostki z
+                <td colspan="3">{{trans("messages.units_from")}}
                 @if(!$nasi)
                     <span class="ally">{{$atak->a_nazwa}}</span>
                 @else
                     <span class="foe">{{$atak->a_nazwa}}</span>
                 @endif
-                zostały odparte i nie zdołały wziąć żadnych surowców.
+                {{trans("messages.driven_back")}}
                 </td>
                 </tr>
             @endif
         </table>
         @endif
 
-        <a href="{{url('/ataki')}}" class="button">Powrót</a>
+        <a href="{{url('/ataki')}}" class="button">{{trans("messages.back")}}</a>
         </div>
     <!-- End Portfolio -->
    

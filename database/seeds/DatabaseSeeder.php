@@ -38,7 +38,8 @@ class DatabaseSeeder extends Seeder {
 
         $porty = array(
         	['id' => 1, 'nazwa' => 'Helheim', 'gracz_id' => 1],
-        	['id' => 2, 'nazwa' => 'Valhalla', 'gracz_id' => 2]
+        	['id' => 2, 'nazwa' => 'Valhalla', 'gracz_id' => 2],
+        	['id' => 3, 'nazwa' => 'Yggdrasil', 'gracz_id' => 1],
     	);
     	
     	$mapy = array();
@@ -64,6 +65,11 @@ class DatabaseSeeder extends Seeder {
 					//stała - wyspa opponent@user.com
 					$pole['port_id'] = 2;
 					$pole['typ'] = 1;
+				} else if($x == 5 && $y == 0) {
+					//echo "5,0<br/>";
+					//stała - nowa wyspa user@user.com
+					$pole['port_id'] = 3;
+					$pole['typ'] = 1;
 				} else if($x == 5 && $y == 3) {
 					//echo "5,3<br/>";
 					//stała - wyspa pusta pomiędzy dwoma wrogami
@@ -84,11 +90,11 @@ class DatabaseSeeder extends Seeder {
 		}
 
 		$jednostki = array(
-			['id' => 1, 'nazwa' => 'Chuderlak', 'plecak' => 3, 'atak' => 10, 'obrona' => 10],
-			['id' => 2, 'nazwa' => 'Bukanier', 'plecak' => 1, 'atak' => 13, 'obrona' => 20],
-			['id' => 3, 'nazwa' => 'Treser papug', 'plecak' => 1, 'atak' => 40, 'obrona' => 4],
-			['id' => 4, 'nazwa' => 'Cyber-Pirat', 'plecak' => 10, 'atak' => 100, 'obrona' => 100],
-			['id' => 100, 'nazwa' => 'Major-Generał', 'plecak' => 0, 'atak' => 1, 'obrona' => 11],
+			['id' => 1, 'nazwa' => 'chuderlak', 'plecak' => 3, 'atak' => 10, 'obrona' => 10],
+			['id' => 2, 'nazwa' => 'bukanier', 'plecak' => 1, 'atak' => 13, 'obrona' => 20],
+			['id' => 3, 'nazwa' => 'treser_papug', 'plecak' => 1, 'atak' => 40, 'obrona' => 4],
+			['id' => 4, 'nazwa' => 'cyber-pirat', 'plecak' => 10, 'atak' => 100, 'obrona' => 100],
+			['id' => 100, 'nazwa' => 'major-general', 'plecak' => 0, 'atak' => 1, 'obrona' => 11],
 		);
 
 		$surowce = array(
@@ -140,22 +146,24 @@ class DatabaseSeeder extends Seeder {
 		//['port_id' => 1, 'jednostka_id' => 1, 'ilosc' => 0, 'produkowana' => true]
 
 		$budynki = array(
-			['id' => 1, 'nazwa' => 'Kantyna', 'koszt' => '20'],
-			['id' => 2, 'nazwa' => 'Papugarnia', 'koszt' => '40'],
-			['id' => 3, 'nazwa' => 'Magazyn', 'koszt' => '40'],
+			['id' => 1, 'nazwa' => 'kantyna'],
+			['id' => 2, 'nazwa' => 'papugarnia'],
+			['id' => 3, 'nazwa' => 'magazyn'],
+			['id' => 4, 'nazwa' => 'cegielnia'],
 		);
 
 		$budynek_surowce = array(
 			['budynek_id' => 1, 'surowiec_id' => 1, 'rate' => 0.2],
 			['budynek_id' => 1, 'surowiec_id' => 2, 'rate' => 0.1],
 			['budynek_id' => 2, 'surowiec_id' => 3, 'rate' => 0.1],
+			['budynek_id' => 4, 'surowiec_id' => 4, 'rate' => 0.01],
 		);
 
 		$budynek_surowce_mag = array(
 			['budynek_id' => 3, 'surowiec_id' => 1, 'magazyn' => 200],
 			['budynek_id' => 3, 'surowiec_id' => 2, 'magazyn' => 200],
 			['budynek_id' => 3, 'surowiec_id' => 3, 'magazyn' => 200],
-			['budynek_id' => 3, 'surowiec_id' => 4, 'magazyn' => 200],
+			['budynek_id' => 3, 'surowiec_id' => 4, 'magazyn' => 50],
 		);
 
 		$budynek_koszty = array(
@@ -165,6 +173,9 @@ class DatabaseSeeder extends Seeder {
 			['budynek_id' => 3, 'surowiec_id' => 1, 'koszt' => 150],
 			['budynek_id' => 3, 'surowiec_id' => 2, 'koszt' => 150],
 			['budynek_id' => 3, 'surowiec_id' => 3, 'koszt' => 150],
+			['budynek_id' => 4, 'surowiec_id' => 1, 'koszt' => 500],
+			['budynek_id' => 4, 'surowiec_id' => 2, 'koszt' => 230],
+			['budynek_id' => 4, 'surowiec_id' => 3, 'koszt' => 10],
 		);
 
 		$port_budynki = array(
@@ -207,27 +218,63 @@ class DatabaseSeeder extends Seeder {
 			/* Atak wygrywający z Valhalli na Helheim */
 			['id' => 1, 'atakujacy_gracz_id' => 2, 'atakujacy_port_id' => 2,
 			 'broniacy_gracz_id' => 1, 'broniacy_port_id' => 1,
-			 'dataBojki' => Carbon::now()->addMinutes(1),
-			 'dataPowrotu' => Carbon::now()->addMinutes(2),
+			 'dataBojki' => Carbon::now(),
+			 'dataPowrotu' => Carbon::now(),
 			 'status' => 0,
 			 'cel_x' => 2,
-			 'cel_y' => 2],
-			/* Atak przegrywający z Helheimu na Valhalle */
+			 'cel_y' => 2,
+			 'wydarzenie' => null,
+			 'new_port_id' => null],
+			/* Atak przegrywający z Helheimsu na Valhalle */
 			['id' => 2, 'atakujacy_gracz_id' => 1, 'atakujacy_port_id' => 1,
 			 'broniacy_gracz_id' => 2, 'broniacy_port_id' => 2,
-			 'dataBojki' => Carbon::now()->addMinutes(2),
-			 'dataPowrotu' => Carbon::now()->addMinutes(3),
+			 'dataBojki' => Carbon::now(),
+			 'dataPowrotu' => Carbon::now(),
 			 'status' => 0,
 			 'cel_x' => 8,
-			 'cel_y' => 4],
+			 'cel_y' => 4,
+			 'wydarzenie' => null,
+			 'new_port_id' => null],
 			/* Pokojowy przemarsz z Helheimu do Helheimu */
 			['id' => 3, 'atakujacy_gracz_id' => 1, 'atakujacy_port_id' => 1,
 			 'broniacy_gracz_id' => 1, 'broniacy_port_id' => 1,
-			 'dataBojki' => Carbon::now()->addMinutes(4),
-			 'dataPowrotu' => Carbon::now()->addMinutes(5),
+			 'dataBojki' => Carbon::now(),
+			 'dataPowrotu' => Carbon::now(),
 			 'status' => 0,
 			 'cel_x' => 2,
-			 'cel_y' => 2],
+			 'cel_y' => 2,
+			 'wydarzenie' => null,
+			 'new_port_id' => null],
+			 /**/
+			 ['id' => 4, 'atakujacy_gracz_id' => 1, 'atakujacy_port_id' => 1,
+			 'broniacy_gracz_id' => 2, 'broniacy_port_id' => 2,
+			 'dataBojki' => Carbon::now()->subMinutes(4),
+			 'dataPowrotu' => Carbon::now()->addMinutes(5),
+			 'status' => 2,
+			 'cel_x' => 8,
+			 'cel_y' => 4,
+			 'wydarzenie' => null,
+			 'new_port_id' => null],
+			 /***/
+			 ['id' => 5, 'atakujacy_gracz_id' => 1, 'atakujacy_port_id' => 1,
+			 'broniacy_gracz_id' => 2, 'broniacy_port_id' => 2,
+			 'dataBojki' => Carbon::now()->addMinutes(24),
+			 'dataPowrotu' => Carbon::now()->addMinutes(45),
+			 'status' => 0,
+			 'cel_x' => 8,
+			 'cel_y' => 4,
+			 'wydarzenie' => null,
+			 'new_port_id' => null],
+			 /****/
+			 ['id' => 6, 'atakujacy_gracz_id' => 1, 'atakujacy_port_id' => 1,
+			 'broniacy_gracz_id' => null, 'broniacy_port_id' => null,
+			 'dataBojki' => Carbon::now()->yesterday()->addMinutes(4),
+			 'dataPowrotu' => Carbon::now()->addMinutes(8),
+			 'status' => 5,
+			 'cel_x' => 5,
+			 'cel_y' => 0,
+			 'wydarzenie' => 'Yggdrasil',
+			 'new_port_id' => 3],
 			
 		);
 

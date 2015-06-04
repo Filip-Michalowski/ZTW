@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>MyGame</title>
+<title>{{trans("messages.title")}}</title>
 
 <link rel="stylesheet" type="text/css" href="{{ asset('/css/style.css') }}" media="all" />
 <link href='http://fonts.googleapis.com/css?family=Amaranth' rel='stylesheet' type='text/css'>

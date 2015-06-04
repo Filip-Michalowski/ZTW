@@ -4,13 +4,12 @@
 
 
 <div id="content">
-	<h1 class="title">Witaj w swoim imperium!</h1>
+	<h1 class="title">{{trans("messages.overview_title")}}</h1>
 	<div class="line"></div>
-	<div class="intro">Twoje królestwo czeka na Ciebie</div>
-	
+	<div class="intro">{{trans("messages.overview_header")}}</div>
 	
     <!-- Wiosko -->
-    <h2>Przegląd wiosek</h2>
+    <h2>{{trans("messages.overview_ports")}}</h2>
     <div class="carousel">
       <!-- <div id="carousel-scroll"><a href="#" id="prev"></a><a href="#" id="next"></a></div> -->
       <ul>
@@ -27,19 +26,19 @@
     
    
 	<div id="portfolio">
-        <div id="footer">
-		<h3>Wydarzenia</h3>
-			<p>Najważniejsze wydarzenia dotyczące Twoich wiosek!</p>
-			<a href="{{url('/ataki')}}" class="button">Ataki</a>
-			<a href="#" class="button">Wywiad</a>
-      
-      <br />
-      </div>
+    <div id="footer">
+  		<h3>{{trans("messages.events")}}</h3>
+			<p>{{trans("messages.events_desc")}}</p>
+			<a href="{{url('/ataki')}}" class="button">{{trans("messages.attacks")}}</a>
+			{{--<a href="#" class="button">Wywiad</a>--}}
+    </div>
+  </div>
 		
-        <div class="clear"></div>
-        <div class="items">
+    <div class="clear"></div>
+        
+        {{--<div class="items">
           <div class="box col4 web">
           <div class="image">
           	<a href="style/images/art/p1-full.jpg" rel="prettyPhoto[portfolio]" title="Caption"><span class="overlay zoom"></span><img src="style/images/art/p1.jpg" alt="" /></a>
-          </div>
+        </div>--}}
 @stop

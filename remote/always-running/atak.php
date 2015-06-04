@@ -89,7 +89,7 @@
 					$cel = mysqli_fetch_assoc($result);
 					
 					if($cel['port_id'] == null) {
-						//TODO - kolonizacja
+						//Kolonizacja
 						//Bezludna wyspa (bez portu)
 						
 						$sql = "INSERT INTO porty (nazwa, gracz_id)
@@ -174,7 +174,7 @@
 						
 						//Zg³oszenie koñca przetwarzania tego ataku
 							$atak['status'] = 5;
-							$sql = "UPDATE ataki SET status=5 WHERE id=".$atak['id'];
+							$sql = "UPDATE ataki SET status=5, new_port_id=".$newport_id." WHERE id=".$atak['id'];
 							mysqli_query($con,$sql);						
 					} else {
 						$sql = "SELECT * FROM porty WHERE id=".$cel['port_id'];
@@ -657,7 +657,7 @@
 				}
 			}
 			
-			if($czas - $czas_startu >= 3)//(3599-$sleep))
+			if($czas - $czas_startu >= 600)//(3599-$sleep))
 			{
 				$stop = true;
 				echo 'Liczba petli: '.$rutabaga;

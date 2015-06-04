@@ -67,6 +67,12 @@ class CreateAtakTable extends Migration {
 			//Na przyszłość?: zdarzenia losowe dla wysp bezludnych
 			$table->string('wydarzenie')->nullable();
 
+			$table->integer('new_port_id')->unsigned()->nullable();
+			$table->foreign('new_port_id')
+				->references('id')
+				->on('porty')
+				->onDelete('set null');
+
 			$table->timestamps();
 		});
 	}

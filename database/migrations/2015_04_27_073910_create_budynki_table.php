@@ -16,7 +16,7 @@ class CreateBudynkiTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('nazwa');
-			$table->integer('koszt');	
+			//$table->integer('koszt');	
 			$table->timestamps();
 		});
 	}
