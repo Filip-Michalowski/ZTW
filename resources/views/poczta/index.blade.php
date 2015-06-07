@@ -32,9 +32,9 @@
 			<table>
 				<tr><td>Obiorca</td><td>Temat</td><td>Data</td><td>Akcja</td></tr>
 				@foreach ($archiwum as $archi)
-					
-						<tr><td>{{ $archi->odbiorca }}</td><td>{{ $archi->temat }}</td><td>{{ $archi->data }}</td><td><a href="{{ action('PocztaController@read_archiwum', [$poczta->id]) }}" class="button">Odczytaj</a><a href="{{ action('PocztaController@delete_archiwum', [$poczta->id]) }}" class="button">Usuń</a></td></tr>
-					
+					@if($archi->nadawca_id == $id)
+						<tr><td>{{ $archi->odbiorca }}</td><td>{{ $archi->temat }}</td><td>{{ $archi->data }}</td><td><a href="{{ action('PocztaController@read_archiwum', [$archi->id]) }}" class="button">Odczytaj</a><a href="{{ action('PocztaController@delete_archiwum', [$archi->id]) }}" class="button">Usuń</a></td></tr>
+					@endif
 				@endforeach
 			</table>
 	</div>

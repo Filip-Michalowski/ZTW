@@ -17,6 +17,8 @@ class PocztaController extends Controller {
 		$poczty = Poczta::all();
 		$archiwum = Archiwum::all();
 		$id = Auth::user()->id;
+	 	//$archiwum = Archiwum::where('nadawca_id',$id);
+	 	
 		return view('poczta.index', compact('archiwum','poczty', 'id'));
 	}
 
