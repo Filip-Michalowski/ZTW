@@ -52,7 +52,7 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">{{trans("messages.name_your_port")}}</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="nazwa">
+								<input type="text" class="form-control" name="nazwa" value="{{ old('nazwa') }}">
 							</div>
 						</div>
 

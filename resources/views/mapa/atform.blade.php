@@ -33,11 +33,16 @@
 					<fieldset>
 					<input type="text" 
 					@if($poj->jednostka_id == 100)
-						name="major-general"
+						<?php $gah = 'major-general'; ?>
+						name="major-general" value="{{-- old($gah) --}}"
+						{{--@if($errors->has('major-general'))
+							style="border-color: #bb1100;"
+						@endif--}}
 					@else
-						name="amount[{{ $i }}]"
+						<?php $gah = 'amount['.$i.']'; ?>
+						name="amount[{{ $i }}]" value="{{-- old($gah) --}}"
 					@endif
-					value="" class="text-input2 required" title=""/>
+					class="text-input2 required" title=""/>
 					<?php $i++; ?>
 					</fieldset>
 					</form>

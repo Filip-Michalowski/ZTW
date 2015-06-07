@@ -96,10 +96,10 @@ return [
 		],
 		'newport' => [
 			'required' => 'Arrr! Ye can\'t settle down a new port with no name, ye land rat!',//"Arr! Nie możesz założyć nowego portu bez nadania mu nazwy, ty szczurze lądowy!",
-			'unique' => 'Arrr! Port name \':attribute\' be already taken.'//"Arr! Nazwa portu \':attribute\' jest już zajęta.",
+			'unique' => 'Arrr! This port name be already taken.'//"Arr! Nazwa portu \':attribute\' jest już zajęta.",
 		],
 		'nazwa' => [
-			'unique' => 'Port name \':attribute\' is already taken.',//"Nazwa portu \':attribute\' jest już zajęta.",
+			'unique' => 'This port name has been already taken.',//"Nazwa portu \':attribute\' jest już zajęta.",
 			'wolne_miejsce' => 'All islands are already taken. You cannot register on this server.'//'Wszystkie wyspy są zajęte. Nie możesz się zarejestrować na tym serwerze.'
 		],
 		'atak_jednostki' => [

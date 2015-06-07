@@ -92,14 +92,14 @@ return [
 		'major-general' => [
 			'required' => "Potrzebujesz prawdziwego wzorca współczesnego Majora-Generała, by założyć nową kolonię.",
 			'min' => "Potrzebujesz prawdziwego wzorca współczesnego Majora-Generała, by założyć nową kolonię.",
-			'max' => "Dobry Panie, jeden Major-Generał wystarczy.",
+			'max' => "Dobry Posejdonie, jeden Major-Generał wystarczy.",
 		],
 		'newport' => [
 			'required' => "Arr! Nie możesz założyć nowego portu bez nadania mu nazwy, ty szczurze lądowy!",
-			'unique' => "Arr! Nazwa portu \':attribute\' jest już zajęta.",
+			'unique' => "Arr! Ta nazwa portu jest już zajęta.",
 		],
 		'nazwa' => [
-			'unique' => "Nazwa portu \':attribute\' jest już zajęta.",
+			'unique' => "Ta nazwa portu jest już zajęta.",
 			'wolne_miejsce' => 'Wszystkie wyspy są zajęte. Nie możesz się zarejestrować na tym serwerze.'
 		],
 		'atak_jednostki' => [

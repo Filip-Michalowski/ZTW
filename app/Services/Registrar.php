@@ -31,8 +31,7 @@ class Registrar implements RegistrarContract {
 			'name' => 'required|max:255|unique:users',
 			'email' => 'required|email|max:255|unique:users',
 			'password' => 'required|confirmed|min:6',
-			'nazwa' => 'required|max:60|unique:porty',
-			'nazwa' => 'wolne_miejsce'
+			'nazwa' => 'required|max:60|unique:porty,nazwa|wolne_miejsce',
 		]);
 
 		return $validator;
