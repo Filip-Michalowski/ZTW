@@ -62,5 +62,4 @@ class JednostkaController extends Controller {
 			return Redirect::action('JednostkaController@index')->withErrors(trans("validation.custom.jednostka.not_enough").trans("messages.".$poj->nazwa).'.');
 		}
 	}
-
 }

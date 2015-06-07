@@ -2,35 +2,35 @@
 
 @section('content')
 	 <!-- Begin Form -->
+
+  <h1 class="title">Wyślij wiadomość</h1>
+  <div class="line"></div>
+  <div class="intro"></div>
+
+
+
           <div class="form-container">
-            <form class="forms" action="contact/form-handler.php" method="post">
+            <form class="forms" action="{{ action('PocztaController@store')}}" method="post">
               <fieldset>
                 <ol>
                   <li class="form-row text-input-row">
-                    <label>Name</label>
-                    <input type="text" name="name" value="" class="text-input required" title="" />
+                    <label>Temat</label>
+                    <input type="hidden" name="nadawca" value="{{ $id }}">
+                    <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                    <input type="text" name="temat" value="" class="text-input required" title="" />
                   </li>
                   <li class="form-row text-input-row">
-                    <label>Email</label>
-                    <input type="text" name="email" value="" class="text-input required email" title="" />
-                  </li>
-                  <li class="form-row text-input-row">
-                    <label>Subject</label>
-                    <input type="text" name="subject" value="" class="text-input required" title="" />
+                    <label>Odbiorca</label>
+                    <input type="text" name="odbiorca" value="" class="text-input required email" title="" />
                   </li>
                   <li class="form-row text-area-row">
-                    <label>Message</label>
-                    <textarea name="message" class="text-area required"></textarea>
-                  </li>
-                  <li class="form-row hidden-row">
-                    <input type="hidden" name="hidden" value="" />
+                    <label>Treść</label>
+                    <textarea name="tekst" class="text-area required"></textarea>
                   </li>
                   <li class="button-row">
-                    <input  value="Submit" name="submit" class="btn-submit" />
+                    <input type="submit" value="Wyślij" name="submit" class="btn-submit" />
                   </li>
                 </ol>
-                <input type="hidden" name="v_error" id="v-error" value="Required" />
-                <input type="hidden" name="v_email" id="v-email" value="Enter a valid email" />
               </fieldset>
             </form>
             <div class="response"></div>

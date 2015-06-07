@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePocztyTable extends Migration {
+class CreateArchiwumTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,16 +12,16 @@ class CreatePocztyTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('poczty', function(Blueprint $table)
+		Schema::create('archiwum', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('nadawca');
-			$table->integer('odbiorca_id')->unsigned();
+			$table->integer('nadawca_id')->unsigned();
+			$table->string('odbiorca');
 			$table->string('temat');
 			$table->text('tekst');
 			$table->timestamp('data')->default(date("Y-m-d H:i:s"));
 
-			$table->foreign('odbiorca_id')
+			$table->foreign('nadawca_id')
 				  ->references('id')
 				  ->on('users')
 				  ->onDelete('cascade');
@@ -35,7 +35,7 @@ class CreatePocztyTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('poczty');
+		Schema::drop('archiwum');
 	}
 
 }
