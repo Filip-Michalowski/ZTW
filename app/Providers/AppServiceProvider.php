@@ -16,8 +16,11 @@ class AppServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$cookie_string = Crypt::decrypt(Cookie::get('lang'));
-		App::setLocale($cookie_string);
+		$cookie_encrypt = Cookie::get('lang');
+		if($cookie_encrypt != null) {
+			$cookie_string = Crypt::decrypt(Cookie::get('lang'));
+			App::setLocale($cookie_string);
+		}
 	}
 
 	/**
