@@ -9,7 +9,7 @@
 		(Notka dla siebie: dodaæ wtedy modu³ do wczytywania)
 	*/
 	ignore_user_abort(true);
-	//set_time_limit(0);//wy³¹czone na serwerze ze wzglêdów bezpieczeñstwa
+	set_time_limit(0);//wy³¹czone na serwerze ze wzglêdów bezpieczeñstwa
 	
 	demon($sleep,$con);
 	
@@ -657,7 +657,7 @@
 				}
 			}
 			
-			if($czas - $czas_startu >= 600)//(3599-$sleep))
+			if($czas - $czas_startu >= 1500)//(3599-$sleep))//25 minut
 			{
 				$stop = true;
 				echo 'Liczba petli: '.$rutabaga;

@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder {
         $porty = array(
         	['id' => 1, 'nazwa' => 'Helheim', 'gracz_id' => 1],
         	['id' => 2, 'nazwa' => 'Valhalla', 'gracz_id' => 2],
-        	['id' => 3, 'nazwa' => 'Yggdrasil', 'gracz_id' => 1],
+        	//['id' => 3, 'nazwa' => 'Yggdrasil', 'gracz_id' => 1],
     	);
     	
     	$mapy = array();
@@ -68,7 +68,7 @@ class DatabaseSeeder extends Seeder {
 				} else if($x == 5 && $y == 0) {
 					//echo "5,0<br/>";
 					//stała - nowa wyspa user@user.com
-					$pole['port_id'] = 3;
+					$pole['port_id'] = null;//3;
 					$pole['typ'] = 1;
 				} else if($x == 5 && $y == 3) {
 					//echo "5,3<br/>";
@@ -250,7 +250,7 @@ class DatabaseSeeder extends Seeder {
 			 'broniacy_gracz_id' => 2, 'broniacy_port_id' => 2,
 			 'dataBojki' => Carbon::now()->subMinutes(4),
 			 'dataPowrotu' => Carbon::now()->addMinutes(5),
-			 'status' => 2,
+			 'status' => 0,//będzie 2
 			 'cel_x' => 8,
 			 'cel_y' => 4,
 			 'wydarzenie' => null,
@@ -270,11 +270,11 @@ class DatabaseSeeder extends Seeder {
 			 'broniacy_gracz_id' => null, 'broniacy_port_id' => null,
 			 'dataBojki' => Carbon::now()->yesterday()->addMinutes(4),
 			 'dataPowrotu' => Carbon::now()->addMinutes(8),
-			 'status' => 5,
+			 'status' => 0,//będzie 5
 			 'cel_x' => 5,
 			 'cel_y' => 0,
 			 'wydarzenie' => 'Yggdrasil',
-			 'new_port_id' => 3],
+			 'new_port_id' => null],
 			
 		);
 
@@ -287,7 +287,18 @@ class DatabaseSeeder extends Seeder {
 			/* Pokojowy przemarsz z Helheimu do Helheimu */
 			['atak_id' => 3, 'jednostka_id' => 1, 'ilosc_wyjscie' => 1000],
 			['atak_id' => 3, 'jednostka_id' => 4, 'ilosc_wyjscie' => 1],
-			
+			/**/
+			['atak_id' => 4, 'jednostka_id' => 1, 'ilosc_wyjscie' => 50],
+			['atak_id' => 4, 'jednostka_id' => 2, 'ilosc_wyjscie' => 200],
+			['atak_id' => 4, 'jednostka_id' => 3, 'ilosc_wyjscie' => 211],
+			/***/
+			['atak_id' => 5, 'jednostka_id' => 1, 'ilosc_wyjscie' => 5],
+			['atak_id' => 5, 'jednostka_id' => 3, 'ilosc_wyjscie' => 4],
+			['atak_id' => 5, 'jednostka_id' => 4, 'ilosc_wyjscie' => 3],
+			/****/
+			['atak_id' => 6, 'jednostka_id' => 1, 'ilosc_wyjscie' => 12],
+			['atak_id' => 6, 'jednostka_id' => 2, 'ilosc_wyjscie' => 100],
+			['atak_id' => 6, 'jednostka_id' => 100, 'ilosc_wyjscie' => 1],
 		);
 		
 		DB::table('users')->insert($uzytkownik);

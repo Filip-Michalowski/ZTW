@@ -4,7 +4,7 @@
         <li><a href="{{ action('SurowiecController@index') }}">{{trans("messages.resources")}}</a></li>
         <li><a href="{{ action('BudynekController@index') }}">{{trans("messages.buildings")}}</a></li>
         <li><a href="{{ action('JednostkaController@index') }}">{{trans("messages.units")}}</a></li>
-		    <li><a {{--href="{{ action('KlanController@index') }}"--}} style="text-decoration: line-through;">{{trans("messages.clan")}}</a></li>
+		    {{--<li><a href="{{ action('KlanController@index') }}" style="text-decoration: line-through;">{{trans("messages.clan")}}</a></li>--}}
 		    <li><a href="{{ action('MapaController@index') }}">{{trans("messages.map")}}</a></li>
         <li><a href="{{ action('PocztaController@index') }}">{{trans("messages.inbox")}}</a></li>
         <li><a href="{{ action('HomeController@actual_logout') }}">{{trans("messages.logout_button")}}</a></li>

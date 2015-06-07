@@ -3,16 +3,16 @@
 @section('content')
 	 <!-- Begin Form -->
 
-  <h1 class="title">Przeczytaj wiadomość</h1>
+  <h1 class="title">{{trans("messages.mail_read_header")}}</h1>
   <div class="line"></div>
   <div class="intro"></div>
 
 
-     Temat: {{ $poczta->temat }} <br>
-     Data: {{ $poczta->data }} <br>
-     Nadawca: {{ $poczta->nadawca}} <br><br>
+     {{trans("messages.mail_subject")}}: {{ $poczta->temat }} <br>
+     {{trans("messages.mail_date")}}: {{ $poczta->data }} <br>
+     {{trans("messages.mail_sender")}}: {{ $poczta->nadawca}} <br><br>
 
-     Treść: <br>
+     {{trans("messages.mail_body")}}: <br>
      {{ $poczta->tekst }}
     
     

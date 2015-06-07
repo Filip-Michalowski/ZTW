@@ -118,6 +118,23 @@ return [
 	"overview_ports" => "Your ports:",//"Twoje porty:",
 	"events" => "Events",//"Wydarzenia",
 	"events_desc" => "Most important events involving your ports!",//"Najważniejsze wydarzenia dotyczące Twoich portów!",
+	
+	//Poczta
+	"mail_send_title" => "Compose a message",
+	"mail_subject" => "Subject",
+	"mail_recipient" => "Recipient",
+	"mail_body" => "Content",
+	"mail_send" => "Send",
+	"mail_sender" => "Sender",
+	"mail_date" => "Date",
+	"mail_action" => "Action",
+	"archive_header" => "Sent",
+	"mail_new" => "Write a message",
+	"mail_delete" => "Delete",
+	"mail_read" => "Read",
+	"mail_read_header" => "Read the message",
+	"mail_archive_header" => "Read your sent message",
+
 	"" => "",//"",
 	"" => "",//"",
 	"" => "",//"",
