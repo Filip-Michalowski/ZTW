@@ -37,7 +37,11 @@ Route::get('/poczta',['middleware' => 'auth', 'uses' => 'PocztaController@index'
 Route::post('/poczta/store',['middleware' => 'auth', 'uses' => 'PocztaController@store']);
 Route::get('/poczta/create',['middleware' => 'auth', 'uses' => 'PocztaController@create']);
 Route::get('/poczta/read/{id}',['middleware' => 'auth', 'uses' => 'PocztaController@read']);
+Route::get('/poczta/read_archiwum/{id}',['middleware' => 'auth', 'uses' => 'PocztaController@read_archiwum']);
+
 Route::get('/poczta/delete/{id}',['middleware' => 'auth', 'uses' => 'PocztaController@delete']);
+Route::get('/poczta/delete_archiwum/{id}',['middleware' => 'auth', 'uses' => 'PocztaController@delete_archiwum']);
+
 
 
 Route::get('/klan/create',['middleware' => 'auth', 'uses' => 'KlanController@index']);

@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Poczta;
 use Illuminate\Http\Request;
 use Auth;
+use App\Archiwum;
 use Illuminate\Support\Facades\Redirect;
 use App\User;
 
@@ -14,8 +15,9 @@ class PocztaController extends Controller {
 	public function index()
 	{
 		$poczty = Poczta::all();
+		$archiwum = Archiwum::all();
 		$id = Auth::user()->id;
-		return view('poczta.index', compact('poczty', 'id'));
+		return view('poczta.index', compact('archiwum','poczty', 'id'));
 	}
 
 	public function create()
@@ -37,7 +39,7 @@ class PocztaController extends Controller {
 		$tekst = $request->input('tekst');
 
 		Poczta::insert(['temat' => $temat, 'nadawca' => $nadawca2, 'odbiorca_id' => $odbiorca2, 'tekst' => $tekst, 'data' => $data]);
-
+		Archiwum::insert(['temat' => $temat,'nadawca_id' => $nadawca,  'odbiorca' => $odbiorca, 'tekst' => $tekst, 'data' => $data]);
 		return Redirect::action('PocztaController@index');
 	}
 
@@ -53,6 +55,20 @@ class PocztaController extends Controller {
 	 	Poczta::where('id', $id)->delete();
 	 	return Redirect::action('PocztaController@index');
 	}
+
+public function read_archiwum($id)
+	{
+		$archiwum = Archiwum::findOrFail($id);
+		return view('poczta.read_archiwum',compact('archiwum'));
+
+	}
+
+	public function delete_archiwum($id)
+	{
+	 	Archiwum::where('id', $id)->delete();
+	 	return Redirect::action('PocztaController@index');
+	}
+
 
 }
  
