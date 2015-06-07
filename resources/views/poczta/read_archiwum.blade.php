@@ -15,6 +15,6 @@
      Treść: <br>
      {{ $archiwum->tekst }}
     
-    
+     
         <!-- End Form -->
 @stop
