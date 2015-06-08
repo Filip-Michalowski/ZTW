@@ -40,7 +40,7 @@
 						@endif--}}
 					@else
 						<?php $gah = 'amount['.$i.']'; ?>
-						name="amount[{{ $i }}]" value="{{-- old($gah) --}}"
+						name="amount[{{ $i }}]" value="{{--old('amount.'.$i)--}}"
 					@endif
 					class="text-input2 required" title=""/>
 					<?php $i++; ?>

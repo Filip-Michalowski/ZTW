@@ -104,8 +104,12 @@ return [
 		],
 		'atak_jednostki' => [
 			'max' => 'You can\'t send more units than you own.',//'Nie możesz wysłać więcej jednostek niż posiadasz',
-			'min' => 'You need to send at least one unit in order to perform an attack.'//'Musisz wysłać przynajmniej jedną jednostkę, aby przeprowadzić atak'
+			'min' => 'You need to send at least one unit in order to perform an attack.',//'Musisz wysłać przynajmniej jedną jednostkę, aby przeprowadzić atak'
+			'alone' => 'Good Lord, if you send Major-Generals without any escort, they will die a horrible and pointless death.'
 		],
+		'amount' => [
+			'min' => 'You can\'t send a negative number of units.',
+		],		
 		'budynek' => [
 			"not_enough" => "There are not enough resources in the port to build ",//"W porcie jest za mało surowców, by móc zbudować ",
 		],

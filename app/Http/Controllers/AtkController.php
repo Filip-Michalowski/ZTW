@@ -122,7 +122,6 @@ class AtkController extends Controller {
 		$port_jednostki = Jednostka::join('port_jednostki',function($join){
 			$join->on('port_jednostki.jednostka_id','=','jednostki.id');})
 		->where('port_id','=',$ind)
-		->with('koszty')
 		->get();
 
 		$wyspa = Mapa::where('pos_x','=',$varx)
@@ -142,10 +141,7 @@ class AtkController extends Controller {
 		$port_jednostki = Jednostka::join('port_jednostki',function($join){
 			$join->on('port_jednostki.jednostka_id','=','jednostki.id');})
 		->where('port_id','=',$ind)
-		->with('koszty')
 		->get();
-		
-		
 		
 		$amount = $request->input('amount');
 	    $i=count($amount);
@@ -155,13 +151,31 @@ class AtkController extends Controller {
 			if($ilosc<$amount[$x]){
 				return Redirect::back()->withErrors(trans("validation.custom.atak_jednostki.max"));
 			}
+			if($amount[$x]<0) {
+				return Redirect::back()->withErrors(trans("validation.custom.amount.min"));
+			}
 			if(!(empty($amount[$x]))){
 				$z++;
 			}
 		}
+
+		$major_general = $request->input('major-general');
+		/*UWAGA! Ryzykowny kod!*/
+		$ilosc=$port_jednostki[$i]->ilosc;
+		/*Zakłada, że Major-Generał będzię ostatnią jednostką!*/
+		if($ilosc<$major_general){
+			return Redirect::back()->withErrors(trans("validation.custom.atak_jednostki.max"));
+		}
+		if($major_general<0) {
+			return Redirect::back()->withErrors(trans("validation.custom.amount.min"));
+		}
 		
-		if($z==0 && $request->input('colonization') == 0){
-			return Redirect::back()->withErrors(trans("validation.custom.atak_jednostki.min"));
+		if($z==0 && $request->input('colonization') == 0) {
+			if($request->input('major-general') == 0) {
+				return Redirect::back()->withErrors(trans("validation.custom.atak_jednostki.min"));
+			} else {
+				return Redirect::back()->withErrors(trans("validation.custom.atak_jednostki.alone"));
+			}
 		}
 		
 		$czas0 = Carbon::now();

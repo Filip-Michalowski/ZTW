@@ -41,7 +41,7 @@ class AtRequest extends Request {
 		    $rules['newport'] = 'required|unique:porty,nazwa';
 		    $rules['major-general'] = 'required|integer|min:1|max:1';
 		} else {
-			//
+			$rules['major-general'] = 'integer';
 		}
 
 		return $rules;

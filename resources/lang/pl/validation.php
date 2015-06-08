@@ -103,8 +103,12 @@ return [
 			'wolne_miejsce' => 'Wszystkie wyspy są zajęte. Nie możesz się zarejestrować na tym serwerze.'
 		],
 		'atak_jednostki' => [
-			'max' => 'Nie możesz wysłać więcej jednostek niż posiadasz',
-			'min' => 'Musisz wysłać przynajmniej jedną jednostkę, aby przeprowadzić atak'
+			'max' => 'Nie możesz wysłać więcej jednostek niż posiadasz.',
+			'min' => 'Musisz wysłać przynajmniej jedną jednostkę, aby przeprowadzić atak.',
+			'alone' => 'Dobry Posejdonie, jeśli wyślesz Majorów-Generałów bez eskorty, wszyscy umrą okropną i bezcelową śmiercią.'
+		],
+		'amount' => [
+			'min' => 'Nie możesz wysłać negatywnej liczby jednostek.',
 		],
 		'budynek' => [
 			"not_enough" => "W porcie jest za mało surowców, by móc zbudować ",
